@@ -1,0 +1,44 @@
+:root {
+  /* ========================================
+     TR//CE — Core Color System
+     ======================================== */
+
+  /* Backgrounds */
+  --background: #160a07;
+  --surface: #2b1410;
+  --surface-elevated: #3f1c14;
+  --surface-hover: #51251b;
+
+  /* Foreground */
+  --foreground: #f7eee6;
+  --foreground-secondary: #d9c7b8;
+  --muted-foreground: #a78f80;
+
+  /* Brand / Investigation states */
+
+  /* Discovery / selection / primary action */
+  --signal: #e8b923;
+  --signal-hover: #f2c94c;
+
+  /* Evidence / investigation */
+  --evidence: #f45d01;
+  --evidence-hover: #ff7626;
+
+  /* Contradiction / critical information */
+  --critical: #a90b00;
+  --critical-hover: #d60f01;
+
+  /* Physical evidence / documents */
+  --paper: #e3ceb5;
+  --paper-foreground: #29150f;
+
+  /* Borders */
+  --border: #4a2a21;
+  --border-subtle: #3b211a;
+
+  /* Status */
+  --success: #004e1f;
+
+  /* Overlay */
+  --overlay: rgb(10 4 2 / 72%);
+}
