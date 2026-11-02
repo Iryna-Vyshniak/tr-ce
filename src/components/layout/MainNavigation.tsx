@@ -1,19 +1,23 @@
+import { useLocale } from "../../features/localization/hooks/useLocale";
+
 const navigationItems = [
   {
-    label: "HQ",
+    key: "hq",
     href: "#hq",
   },
   {
-    label: "Cases",
+    key: "cases",
     href: "#cases",
   },
   {
-    label: "Archive",
+    key: "archive",
     href: "#archive",
   },
 ] as const;
 
 export function MainNavigation() {
+  const { t } = useLocale();
+
   return (
     <nav aria-label="Main navigation">
       <ul className="flex items-center gap-1">
@@ -21,7 +25,7 @@ export function MainNavigation() {
           const isActive = index === 0;
 
           return (
-            <li key={item.label}>
+            <li key={item.key}>
               <a
                 href={item.href}
                 aria-current={isActive ? "page" : undefined}
@@ -34,7 +38,7 @@ export function MainNavigation() {
                     : "text-muted-foreground hover:text-foreground",
                 ].join(" ")}
               >
-                {item.label}
+                {t.navigation[item.key]}
 
                 {isActive && (
                   <span
