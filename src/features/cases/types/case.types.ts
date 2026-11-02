@@ -1,6 +1,6 @@
-import type { LocalizedText } from "../../localization/localization.types";
+import type { LocalizedText } from '../../localization/localization.types';
 
-export type CaseStatus = "active" | "pending" | "solved" | "archived";
+export type CaseStatus = 'active' | 'pending' | 'solved' | 'archived';
 
 export interface CaseSummary {
   id: string;
@@ -38,7 +38,7 @@ export interface CaseMetadata {
   knownContradictionCount: number;
 }
 
-export type PersonRole = "victim" | "suspect" | "witness" | "person-of-interest";
+export type PersonRole = 'victim' | 'suspect' | 'witness' | 'person-of-interest';
 
 export interface CasePerson {
   id: string;
@@ -49,9 +49,11 @@ export interface CasePerson {
   profile: LocalizedText;
 }
 
-export type EvidenceKind = "physical" | "document" | "digital";
-export type EvidenceStatus = "verified" | "lead";
-export type EvidenceAvailability = "initial" | "discoverable";
+export type EvidenceKind = 'physical' | 'document' | 'digital';
+export type EvidenceStatus = 'verified' | 'lead';
+export type EvidenceAvailability = 'initial' | 'discoverable';
+
+export type BoardRelation = 'knows' | 'was-at' | 'contradicts' | 'owns' | 'motive' | 'alibi';
 
 export interface CaseEvidence {
   id: string;
@@ -64,6 +66,46 @@ export interface CaseEvidence {
   foundAt: string;
   locationId: string;
   relatedPersonIds: string[];
+}
+
+export interface EvidenceUnlockRule {
+  evidenceId: string;
+  requiredLink: {
+    sourceId: string;
+    targetId: string;
+    relation: BoardRelation;
+  };
+}
+
+export interface InterrogationTopic {
+  id: string;
+  personId: string;
+  question: LocalizedText;
+  response: LocalizedText;
+  requiredEvidenceIds: string[];
+}
+
+export interface InterrogationEvidenceUnlock {
+  evidenceId: string;
+  interrogationTopicId: string;
+}
+
+export interface SceneExaminationPoint {
+  id: string;
+  locationId: string;
+  position: {
+    x: number;
+    y: number;
+  };
+  title: LocalizedText;
+  observation: LocalizedText;
+  evidenceId?: string;
+}
+
+export interface TheoryMotiveOption {
+  id: string;
+  title: LocalizedText;
+  description: LocalizedText;
 }
 
 export interface CaseLocation {
@@ -81,7 +123,7 @@ export interface WitnessStatement {
   text: LocalizedText;
 }
 
-export type TimelineEventStatus = "confirmed" | "disputed" | "inferred";
+export type TimelineEventStatus = 'confirmed' | 'disputed' | 'inferred';
 
 export interface TimelineEvent {
   id: string;
@@ -148,6 +190,11 @@ export interface CaseFile {
   metadata: CaseMetadata;
   people: CasePerson[];
   evidence: CaseEvidence[];
+  evidenceUnlockRules: EvidenceUnlockRule[];
+  interrogationTopics: InterrogationTopic[];
+  interrogationEvidenceUnlocks: InterrogationEvidenceUnlock[];
+  scenePoints: SceneExaminationPoint[];
+  theoryMotiveOptions: TheoryMotiveOption[];
   locations: CaseLocation[];
   statements: WitnessStatement[];
   timeline: TimelineEvent[];
