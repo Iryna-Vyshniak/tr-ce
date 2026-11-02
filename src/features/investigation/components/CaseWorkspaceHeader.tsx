@@ -19,8 +19,18 @@ const workspaceNavigation = [
     end: false,
   },
   {
+    key: "scene",
+    path: "scene",
+    end: false,
+  },
+  {
     key: "people",
     path: "people",
+    end: false,
+  },
+    {
+    key: "interrogation",
+    path: "interrogation",
     end: false,
   },
   {
@@ -31,6 +41,11 @@ const workspaceNavigation = [
   {
     key: "board",
     path: "board",
+    end: false,
+  },
+  {
+    key: "theory",
+    path: "theory",
     end: false,
   },
 ] as const;
