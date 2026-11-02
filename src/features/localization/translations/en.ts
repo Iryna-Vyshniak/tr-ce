@@ -65,5 +65,23 @@ export const en = {
         lead: "Needs review",
       },
     },
+
+    peopleWorkspace: {
+      eyebrow: "People dossier",
+      title: "People in the case",
+      description:
+        "Compare connections, profiles, and statements. A mismatch between words and facts may be the key to the case.",
+      connection: "Connection to the case",
+      statements: "Recorded statements",
+      noStatements: "There are no recorded statements from this person yet.",
+      claimedTime: "Claimed time",
+      recordedAt: "Recorded at",
+      roles: {
+        victim: "Victim",
+        suspect: "Suspect",
+        witness: "Witness",
+        "person-of-interest": "Person of interest",
+      },
+    },
   },
 } as const;
