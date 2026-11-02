@@ -1,10 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 
 import { AppShell } from "../components/layout/AppShell";
-import { CaseEvidence } from "../features/investigation/components/CaseEvidence";
-import { CaseOverview } from "../features/investigation/components/CaseOverview";
-import { CasePeople } from "../features/investigation/components/CasePeople";
-import { CaseTimeline } from "../features/investigation/components/CaseTimeline";
 import { CasePage } from "../pages/CasePage";
 import { DetectiveHQPage } from "../pages/DetectiveHQPage";
 
@@ -22,19 +18,48 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <CaseOverview />,
+            lazy: async () => {
+              const { CaseOverview } =
+                await import("../features/investigation/components/CaseOverview");
+
+              return { Component: CaseOverview };
+            },
           },
           {
             path: "evidence",
-            element: <CaseEvidence />,
+            lazy: async () => {
+              const { CaseEvidence } =
+                await import("../features/investigation/components/CaseEvidence");
+
+              return { Component: CaseEvidence };
+            },
           },
           {
             path: "people",
-            element: <CasePeople />,
+            lazy: async () => {
+              const { CasePeople } =
+                await import("../features/investigation/components/CasePeople");
+
+              return { Component: CasePeople };
+            },
           },
           {
             path: "timeline",
-            element: <CaseTimeline />,
+            lazy: async () => {
+              const { CaseTimeline } =
+                await import("../features/investigation/components/CaseTimeline");
+
+              return { Component: CaseTimeline };
+            },
+          },
+          {
+            path: "board",
+            lazy: async () => {
+              const { CaseBoard } =
+                await import("../features/investigation/components/CaseBoard");
+
+              return { Component: CaseBoard };
+            },
           },
         ],
       },

@@ -100,5 +100,38 @@ export const uk = {
         inferred: "Відтворено",
       },
     },
+
+    boardWorkspace: {
+      eyebrow: "Детективна дошка",
+      title: "Побудуй власну версію",
+      description:
+        "Створюй зв’язки між доступними особами, доказами та подіями. Дошка фіксує твою версію, але не підказує, чи вона правильна.",
+      availableCards: "Доступні картки",
+      selectionHint:
+        "Обери першу картку, потім другу. Повторне натискання на першу скасовує вибір.",
+      connectionBuilder: "Новий зв’язок",
+      source: "Перша картка",
+      target: "Друга картка",
+      notSelected: "Не обрано",
+      relation: "Тип зв’язку",
+      createConnection: "Створити зв’язок",
+      connections: "Побудовані зв’язки",
+      noConnections:
+        "Дошка ще порожня. Побудуй перший зв’язок між доступними матеріалами.",
+      removeConnection: "Видалити",
+      nodeTypes: {
+        person: "Особа",
+        evidence: "Доказ",
+        event: "Подія",
+      },
+      relations: {
+        knows: "знає",
+        "was-at": "був / була в",
+        contradicts: "суперечить",
+        owns: "володіє",
+        motive: "має мотив",
+        alibi: "має алібі",
+      },
+    },
   },
 } as const;

@@ -1,7 +1,5 @@
-import { useState } from "react";
-
 import { activeCaseFile } from "../../cases/data/activeCase";
-import { createCaseProgress } from "../../cases/engine/createCaseProgress";
+import { useCaseProgress } from "../../cases/engine/useCaseProgress";
 import type { CaseEvidence } from "../../cases/types/case.types";
 import { useLocale } from "../../localization/hooks/useLocale";
 
@@ -12,8 +10,7 @@ const evidenceStatusStyles: Record<CaseEvidence["status"], string> = {
 
 export function CaseEvidence() {
   const { locale, t } = useLocale();
-
-  const [progress] = useState(() => createCaseProgress(activeCaseFile));
+  const { progress } = useCaseProgress();
 
   const discoveredEvidence = activeCaseFile.evidence.filter((evidence) =>
     progress.discoveredEvidenceIds.includes(evidence.id),

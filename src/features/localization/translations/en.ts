@@ -100,5 +100,38 @@ export const en = {
         inferred: "Inferred",
       },
     },
+
+    boardWorkspace: {
+      eyebrow: "Detective board",
+      title: "Build your own theory",
+      description:
+        "Create connections between available people, evidence, and events. The board records your theory, but does not tell you whether it is correct.",
+      availableCards: "Available cards",
+      selectionHint:
+        "Select the first card, then the second one. Selecting the first card again clears it.",
+      connectionBuilder: "New connection",
+      source: "First card",
+      target: "Second card",
+      notSelected: "Not selected",
+      relation: "Connection type",
+      createConnection: "Create connection",
+      connections: "Created connections",
+      noConnections:
+        "The board is empty. Create your first connection between available material.",
+      removeConnection: "Remove",
+      nodeTypes: {
+        person: "Person",
+        evidence: "Evidence",
+        event: "Event",
+      },
+      relations: {
+        knows: "knows",
+        "was-at": "was at",
+        contradicts: "contradicts",
+        owns: "owns",
+        motive: "has a motive",
+        alibi: "has an alibi",
+      },
+    },
   },
 } as const;

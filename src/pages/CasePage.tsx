@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Navigate, Outlet, useParams } from "react-router-dom";
 
 import { activeCase } from "../features/cases/data/activeCase";
@@ -15,7 +16,18 @@ export function CasePage() {
       <CaseWorkspaceHeader caseData={activeCase} />
 
       <div className="mx-auto w-full max-w-[100rem] px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
-        <Outlet />
+        <Suspense
+          fallback={
+            <div
+              className="flex min-h-48 items-center font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground"
+              role="status"
+            >
+              Завантаження матеріалів // Loading case files
+            </div>
+          }
+        >
+          <Outlet />
+        </Suspense>
       </div>
     </>
   );

@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { MotionConfig, motion } from "motion/react";
 
 import { activeCaseFile } from "../../cases/data/activeCase";
-import { createCaseProgress } from "../../cases/engine/createCaseProgress";
+import { useCaseProgress } from "../../cases/engine/useCaseProgress";
 import type { TimelineEvent } from "../../cases/types/case.types";
 import { useLocale } from "../../localization/hooks/useLocale";
 
@@ -13,8 +13,7 @@ const timelineStatusStyles: Record<TimelineEvent["status"], string> = {
 
 export function CaseTimeline() {
   const { locale, t } = useLocale();
-
-  const [progress] = useState(() => createCaseProgress(activeCaseFile));
+  const { progress } = useCaseProgress();
 
   const discoveredEvidenceIds = new Set(progress.discoveredEvidenceIds);
 
@@ -38,7 +37,8 @@ export function CaseTimeline() {
   );
 
   return (
-    <section aria-labelledby="case-timeline-title">
+    <MotionConfig reducedMotion="user">
+      <section aria-labelledby="case-timeline-title">
       <div className="flex flex-col gap-8 border-b border-border pb-8 lg:flex-row lg:items-end lg:justify-between">
         <div className="max-w-3xl">
           <p className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-evidence">
@@ -81,7 +81,7 @@ export function CaseTimeline() {
       </div>
 
       <ol className="mt-8 border-l border-border">
-        {visibleEvents.map((event) => {
+        {visibleEvents.map((event, index) => {
           const evidenceTitles = event.relatedEvidenceIds
             .map((evidenceId) => evidenceById.get(evidenceId))
             .filter((title): title is string => title !== undefined);
@@ -91,8 +91,16 @@ export function CaseTimeline() {
             .filter((name): name is string => name !== undefined);
 
           return (
-            <li
+            <motion.li
               key={event.id}
+              layout
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.28,
+                delay: index * 0.06,
+                ease: "easeOut",
+              }}
               className="relative pb-6 pl-7 last:pb-0 sm:pl-9"
             >
               <span
@@ -100,7 +108,10 @@ export function CaseTimeline() {
                 aria-hidden="true"
               />
 
-              <article className="border border-border bg-surface p-5 sm:p-6">
+              <motion.article
+                layout
+                className="border border-border bg-surface p-5 sm:p-6"
+              >
                 <div className="flex flex-wrap items-start justify-between gap-4">
                   <div className="flex items-baseline gap-4">
                     <time className="font-mono text-lg font-semibold text-signal">
@@ -149,11 +160,12 @@ export function CaseTimeline() {
                     </dd>
                   </div>
                 </dl>
-              </article>
-            </li>
+              </motion.article>
+            </motion.li>
           );
         })}
       </ol>
-    </section>
+      </section>
+    </MotionConfig>
   );
 }

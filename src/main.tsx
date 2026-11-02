@@ -12,6 +12,8 @@ import "@fontsource/ibm-plex-mono/500.css";
 import "@fontsource/ibm-plex-mono/600.css";
 
 import App from "./app/App";
+import { case001 } from "./data/cases";
+import { CaseProgressProvider } from "./features/cases/engine/CaseProgressProvider";
 import { LocaleProvider } from "./features/localization/components/LocaleProvider";
 
 import "./styles/variables.css";
@@ -20,7 +22,9 @@ import "./styles/globals.css";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <LocaleProvider>
-      <App />
+      <CaseProgressProvider caseFile={case001}>
+        <App />
+      </CaseProgressProvider>
     </LocaleProvider>
   </StrictMode>,
 );
