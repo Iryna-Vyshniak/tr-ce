@@ -1,12 +1,16 @@
 import {
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
 } from "react";
 
 import type { CaseFile } from "../types/case.types";
-import { createCaseProgress } from "./createCaseProgress";
 import { CaseProgressContext } from "./caseProgress.context";
+import {
+  loadCaseProgress,
+  persistCaseProgress,
+} from "./caseProgress.storage";
 
 interface CaseProgressProviderProps {
   caseFile: CaseFile;
@@ -18,8 +22,12 @@ export function CaseProgressProvider({
   children,
 }: CaseProgressProviderProps) {
   const [progress, setProgress] = useState(() =>
-    createCaseProgress(caseFile),
+    loadCaseProgress(caseFile),
   );
+
+  useEffect(() => {
+    persistCaseProgress(progress);
+  }, [progress]);
 
   const value = useMemo(
     () => ({

@@ -11,6 +11,8 @@ export function createCaseProgress(caseFile: CaseFile): CaseProgress {
     reviewedPersonIds: [],
     reviewedStatementIds: [],
     reviewedTimelineEventIds: [],
+    askedInterrogationTopicIds: [],
+    examinedScenePointIds: [],
     boardLinks: [],
   };
 }
