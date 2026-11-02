@@ -19,4 +19,4 @@ export function CasePage() {
       </div>
     </>
   );
-}5
+}

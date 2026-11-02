@@ -207,4 +207,4 @@ function CaseMetric({
       </dd>
     </div>
   );
-}5
+}
