@@ -20,3 +20,135 @@ export interface CaseSummary {
   suspectCount: number;
   contradictionCount: number;
 }
+
+export interface CaseMetadata {
+  id: string;
+  caseNumber: string;
+
+  title: LocalizedText;
+  classification: LocalizedText;
+  location: LocalizedText;
+  description: LocalizedText;
+  lastTrace: LocalizedText;
+
+  status: CaseStatus;
+  occurredOn: string;
+  occurredAt: string;
+  progress: number;
+  knownContradictionCount: number;
+}
+
+export type PersonRole = "victim" | "suspect" | "witness" | "person-of-interest";
+
+export interface CasePerson {
+  id: string;
+  name: LocalizedText;
+  role: PersonRole;
+  occupation: LocalizedText;
+  connection: LocalizedText;
+  profile: LocalizedText;
+}
+
+export type EvidenceKind = "physical" | "document" | "digital";
+export type EvidenceStatus = "verified" | "lead";
+export type EvidenceAvailability = "initial" | "discoverable";
+
+export interface CaseEvidence {
+  id: string;
+  catalogNumber: string;
+  kind: EvidenceKind;
+  status: EvidenceStatus;
+  availability: EvidenceAvailability;
+  title: LocalizedText;
+  description: LocalizedText;
+  foundAt: string;
+  locationId: string;
+  relatedPersonIds: string[];
+}
+
+export interface CaseLocation {
+  id: string;
+  name: LocalizedText;
+  description: LocalizedText;
+  relevance: LocalizedText;
+}
+
+export interface WitnessStatement {
+  id: string;
+  speakerId: string;
+  recordedAt: string;
+  claimedTime: string;
+  text: LocalizedText;
+}
+
+export type TimelineEventStatus = "confirmed" | "disputed" | "inferred";
+
+export interface TimelineEvent {
+  id: string;
+  occurredAt: string;
+  status: TimelineEventStatus;
+  title: LocalizedText;
+  description: LocalizedText;
+  relatedEvidenceIds: string[];
+  relatedPersonIds: string[];
+}
+
+export interface CaseContradiction {
+  id: string;
+  title: LocalizedText;
+  description: LocalizedText;
+  evidenceIds: string[];
+  statementIds: string[];
+}
+
+export interface CaseFact {
+  id: string;
+  text: LocalizedText;
+}
+
+export interface CharacterRelationship {
+  characterId: string;
+  relationship: LocalizedText;
+}
+
+export interface CharacterPrivateState {
+  characterId: string;
+  personality: LocalizedText[];
+  relationships: CharacterRelationship[];
+  knownFactIds: string[];
+  secretFactIds: string[];
+  actualTimelineEventIds: string[];
+  lieStatementIds: string[];
+  unknownFactIds: string[];
+  emotionalState: LocalizedText;
+}
+
+export interface CaseResolutionCriteria {
+  requiredCulpritId: string;
+  requiredMotiveFactIds: string[];
+  requiredTimelineEventIds: string[];
+  requiredEvidenceIds: string[];
+}
+
+export interface CaseGroundTruth {
+  culpritId: string;
+  narrative: LocalizedText;
+  facts: CaseFact[];
+  characterStates: CharacterPrivateState[];
+  contradictions: CaseContradiction[];
+  resolutionCriteria: CaseResolutionCriteria;
+}
+
+/**
+ * Дані, які можна безпечно віддавати гравцеві.
+ * Прихована істина справи навмисно зберігається окремо в CaseGroundTruth.
+ */
+export interface CaseFile {
+  summary: CaseSummary;
+  metadata: CaseMetadata;
+  people: CasePerson[];
+  evidence: CaseEvidence[];
+  locations: CaseLocation[];
+  statements: WitnessStatement[];
+  timeline: TimelineEvent[];
+}
