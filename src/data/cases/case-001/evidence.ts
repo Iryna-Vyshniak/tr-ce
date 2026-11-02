@@ -1,0 +1,130 @@
+import type { CaseEvidence } from "../../../features/cases/types/case.types";
+
+export const case001Evidence = [
+  {
+    id: "ev-001-lock-log",
+    catalogNumber: "EV-001",
+    kind: "digital",
+    status: "verified",
+    availability: "initial",
+    title: {
+      uk: "Журнал електронного замка",
+      en: "Electronic lock log",
+    },
+    description: {
+      uk: "Містить запис про ручне блокування номера о 23:35 з консолі охорони.",
+      en: "Contains a manual room-lock entry at 23:35 from the security console.",
+    },
+    foundAt: "00:12",
+    locationId: "security-office",
+    relatedPersonIds: ["andrii-holub"],
+  },
+  {
+    id: "ev-002-receipt",
+    catalogNumber: "EV-002",
+    kind: "document",
+    status: "verified",
+    availability: "initial",
+    title: {
+      uk: "Чек обслуговування номера",
+      en: "Room-service receipt",
+    },
+    description: {
+      uk: "Надрукований о 23:47 обліковим записом Ніни; у ньому вказано доставку чаю до номера 714.",
+      en: "Printed at 23:47 from Nina's account; it records tea delivery to room 714.",
+    },
+    foundAt: "00:04",
+    locationId: "seventh-floor-corridor",
+    relatedPersonIds: ["nina-orlenko"],
+  },
+  {
+    id: "ev-003-tea-tray",
+    catalogNumber: "EV-003",
+    kind: "physical",
+    status: "verified",
+    availability: "initial",
+    title: {
+      uk: "Незаймана таця з чаєм",
+      en: "Untouched tea tray",
+    },
+    description: {
+      uk: "Чай холодний, але пломба на кришці ціла. Тарілка залишилася в ніші коридору.",
+      en: "The tea is cold, but the lid seal is intact. The tray remained in the corridor alcove.",
+    },
+    foundAt: "00:03",
+    locationId: "seventh-floor-corridor",
+    relatedPersonIds: ["nina-orlenko"],
+  },
+  {
+    id: "ev-004-master-key-log",
+    catalogNumber: "EV-004",
+    kind: "digital",
+    status: "lead",
+    availability: "discoverable",
+    title: {
+      uk: "Журнал майстер-картки",
+      en: "Master keycard log",
+    },
+    description: {
+      uk: "Картку охорони винесли з док-станції о 23:41 і повернули о 23:50.",
+      en: "The security card left its dock at 23:41 and returned at 23:50.",
+    },
+    foundAt: "00:17",
+    locationId: "security-office",
+    relatedPersonIds: ["andrii-holub"],
+  },
+  {
+    id: "ev-005-phone-ping",
+    catalogNumber: "EV-005",
+    kind: "digital",
+    status: "verified",
+    availability: "discoverable",
+    title: {
+      uk: "Сигнал телефона Олега",
+      en: "Oleh's phone signal",
+    },
+    description: {
+      uk: "Пристрій Олега підключився до вузла біля службового ліфта о 23:43.",
+      en: "Oleh's device connected to the node near the service lift at 23:43.",
+    },
+    foundAt: "00:25",
+    locationId: "service-elevator",
+    relatedPersonIds: ["oleh-bereza"],
+  },
+  {
+    id: "ev-006-glass-shard",
+    catalogNumber: "EV-006",
+    kind: "physical",
+    status: "lead",
+    availability: "discoverable",
+    title: {
+      uk: "Скляна тріска",
+      en: "Glass shard",
+    },
+    description: {
+      uk: "Тонкий уламок загартованого скла зі слідом крові знайдено біля внутрішньої стіни номера.",
+      en: "A thin tempered-glass shard with a blood trace was found near the room's inner wall.",
+    },
+    foundAt: "00:08",
+    locationId: "room-714",
+    relatedPersonIds: ["marta-chorna"],
+  },
+  {
+    id: "ev-007-voice-note",
+    catalogNumber: "EV-007",
+    kind: "digital",
+    status: "lead",
+    availability: "discoverable",
+    title: {
+      uk: "Незавершене голосове повідомлення",
+      en: "Unfinished voice note",
+    },
+    description: {
+      uk: "На телефоні Марти залишився запис: «Він каже, що замкнув двері, але…»",
+      en: "Marta's phone contains a recording: “He says he locked the door, but…”",
+    },
+    foundAt: "00:21",
+    locationId: "room-714",
+    relatedPersonIds: ["marta-chorna", "andrii-holub"],
+  },
+] satisfies CaseEvidence[];
