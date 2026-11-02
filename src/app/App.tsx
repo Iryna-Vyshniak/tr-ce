@@ -1,12 +1,9 @@
-import { AppShell } from "../components/layout/AppShell";
-import { DetectiveHQPage } from "../pages/DetectiveHQPage";
+import { RouterProvider } from "react-router-dom";
+
+import { router } from "./router";
 
 function App() {
-  return (
-    <AppShell>
-      <DetectiveHQPage />
-    </AppShell>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

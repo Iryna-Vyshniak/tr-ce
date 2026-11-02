@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import { useLocale } from "../../localization/hooks/useLocale";
 import type { CaseSummary } from "../types/case.types";
 
@@ -91,11 +93,11 @@ export function ActiveCase({ caseData }: ActiveCaseProps) {
             </div>
           </dl>
 
-          {/* Primary action */}
+          {/* Primary navigation */}
           <div className="mt-9">
-            <button
-              type="button"
-              className="min-h-11 bg-signal px-6 py-3 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-background transition-colors duration-200 hover:bg-signal-hover"
+            <Link
+              to={`/cases/${caseData.id}`}
+              className="inline-flex min-h-11 items-center justify-center bg-signal px-6 py-3 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-background transition-colors duration-200 hover:bg-signal-hover"
             >
               {t.case.openCase}
 
@@ -105,7 +107,7 @@ export function ActiveCase({ caseData }: ActiveCaseProps) {
               >
                 //
               </span>
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -114,7 +116,7 @@ export function ActiveCase({ caseData }: ActiveCaseProps) {
           className="border-t border-border lg:border-l lg:border-t-0"
           aria-label={t.case.investigation}
         >
-          {/* Metrics */}
+          {/* Case metrics */}
           <dl className="grid grid-cols-3 border-b border-border">
             <CaseMetric
               label={t.case.evidence}
@@ -205,4 +207,4 @@ function CaseMetric({
       </dd>
     </div>
   );
-}
+}5
