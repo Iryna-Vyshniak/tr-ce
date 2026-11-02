@@ -35,12 +35,29 @@ export const router = createBrowserRouter([
             },
           },
           {
+            path: "scene",
+            lazy: async () => {
+              const { CaseScene } =
+                await import("../features/investigation/components/CaseScene");
+
+              return { Component: CaseScene };
+            },
+          },
+          {
             path: "people",
             lazy: async () => {
               const { CasePeople } =
                 await import("../features/investigation/components/CasePeople");
 
               return { Component: CasePeople };
+            },
+          },          {
+            path: "interrogation",
+            lazy: async () => {
+              const { CaseInterrogation } =
+                await import("../features/investigation/components/CaseInterrogation");
+
+              return { Component: CaseInterrogation };
             },
           },
           {
@@ -59,6 +76,15 @@ export const router = createBrowserRouter([
                 await import("../features/investigation/components/CaseBoard");
 
               return { Component: CaseBoard };
+            },
+          },
+          {
+            path: "theory",
+            lazy: async () => {
+              const { CaseTheory } =
+                await import("../features/investigation/components/CaseTheory");
+
+              return { Component: CaseTheory };
             },
           },
         ],
