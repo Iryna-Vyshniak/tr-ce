@@ -4,6 +4,7 @@ import { AppShell } from "../components/layout/AppShell";
 import { CaseEvidence } from "../features/investigation/components/CaseEvidence";
 import { CaseOverview } from "../features/investigation/components/CaseOverview";
 import { CasePeople } from "../features/investigation/components/CasePeople";
+import { CaseTimeline } from "../features/investigation/components/CaseTimeline";
 import { CasePage } from "../pages/CasePage";
 import { DetectiveHQPage } from "../pages/DetectiveHQPage";
 
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
           {
             path: "people",
             element: <CasePeople />,
+          },
+          {
+            path: "timeline",
+            element: <CaseTimeline />,
           },
         ],
       },

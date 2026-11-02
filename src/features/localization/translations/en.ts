@@ -83,5 +83,22 @@ export const en = {
         "person-of-interest": "Person of interest",
       },
     },
+
+    timelineWorkspace: {
+      eyebrow: "Event timeline",
+      title: "Reconstructed sequence",
+      description:
+        "Events become available only when they can be supported by discovered case material.",
+      reconstructed: "Reconstructed",
+      hidden: "Hidden",
+      relatedPeople: "Related people",
+      relatedEvidence: "Related evidence",
+      noEvidence: "None",
+      status: {
+        confirmed: "Confirmed",
+        disputed: "Disputed",
+        inferred: "Inferred",
+      },
+    },
   },
 } as const;

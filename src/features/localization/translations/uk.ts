@@ -83,5 +83,22 @@ export const uk = {
         "person-of-interest": "Особа інтересу",
       },
     },
+
+    timelineWorkspace: {
+      eyebrow: "Хронологія подій",
+      title: "Відновлена послідовність",
+      description:
+        "Події стають доступними лише тоді, коли їх можна обґрунтувати відкритими матеріалами справи.",
+      reconstructed: "Відновлено",
+      hidden: "Приховано",
+      relatedPeople: "Пов’язані особи",
+      relatedEvidence: "Пов’язані докази",
+      noEvidence: "Немає",
+      status: {
+        confirmed: "Підтверджено",
+        disputed: "Суперечливо",
+        inferred: "Відтворено",
+      },
+    },
   },
 } as const;
