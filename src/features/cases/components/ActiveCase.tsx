@@ -29,9 +29,7 @@ export function ActiveCase({ caseData }: ActiveCaseProps) {
       className="border-y border-border"
     >
       <div className="grid lg:grid-cols-[minmax(0,1.4fr)_minmax(20rem,0.6fr)]">
-        {/* Case overview */}
         <div className="px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
-          {/* Case status */}
           <div className="flex flex-wrap items-center gap-3">
             <span className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-signal">
               {t.case.case} // {caseData.caseNumber}
@@ -47,7 +45,6 @@ export function ActiveCase({ caseData }: ActiveCaseProps) {
             </span>
           </div>
 
-          {/* Case title */}
           <h2
             id={`case-${caseData.id}-title`}
             className="mt-5 font-display text-5xl font-extrabold uppercase leading-[0.9] tracking-[-0.035em] sm:text-6xl lg:text-7xl"
@@ -55,12 +52,10 @@ export function ActiveCase({ caseData }: ActiveCaseProps) {
             {caseData.title[locale]}
           </h2>
 
-          {/* Case description */}
           <p className="mt-6 max-w-2xl text-base leading-7 text-foreground-secondary">
             {caseData.description[locale]}
           </p>
 
-          {/* Case metadata */}
           <dl className="mt-8 grid max-w-2xl gap-x-8 gap-y-5 border-t border-border-subtle pt-6 sm:grid-cols-3">
             <div>
               <dt className="font-mono text-[0.6875rem] uppercase tracking-[0.12em] text-muted-foreground">
@@ -93,7 +88,6 @@ export function ActiveCase({ caseData }: ActiveCaseProps) {
             </div>
           </dl>
 
-          {/* Primary navigation */}
           <div className="mt-9">
             <Link
               to={`/cases/${caseData.id}`}
@@ -111,12 +105,10 @@ export function ActiveCase({ caseData }: ActiveCaseProps) {
           </div>
         </div>
 
-        {/* Investigation summary */}
         <aside
           className="border-t border-border lg:border-l lg:border-t-0"
           aria-label={t.case.investigation}
         >
-          {/* Case metrics */}
           <dl className="grid grid-cols-3 border-b border-border">
             <CaseMetric
               label={t.case.evidence}
@@ -137,7 +129,6 @@ export function ActiveCase({ caseData }: ActiveCaseProps) {
           </dl>
 
           <div className="p-6 sm:p-8">
-            {/* Investigation progress */}
             <div>
               <div className="flex items-center justify-between gap-4">
                 <p className="font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground">
@@ -170,7 +161,6 @@ export function ActiveCase({ caseData }: ActiveCaseProps) {
               </div>
             </div>
 
-            {/* Latest trace */}
             <div className="mt-10">
               <p className="font-mono text-[0.6875rem] font-medium uppercase tracking-[0.14em] text-evidence">
                 {t.case.latestTrace}

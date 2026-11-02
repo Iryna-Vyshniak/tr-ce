@@ -1,3 +1,4 @@
-import { case001Summary } from "../../../data/cases";
+import { case001 } from "../../../data/cases";
 
-export const activeCase = case001Summary;
+export const activeCaseFile = case001;
+export const activeCase = activeCaseFile.summary;
