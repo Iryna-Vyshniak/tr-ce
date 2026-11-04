@@ -1,0 +1,77 @@
+/*
+ * TR//CE — Fluid Spacing System
+ *
+ * Variables scale from compact touch layouts to the existing wide investigation
+ * workspace. Component classes are opt-in and never replace Tailwind's p-/m-
+ * utilities globally.
+ */
+
+:root {
+  /* Base scale */
+  --space-2xs: clamp(0.25rem, 0.3vw, 0.5rem);
+  --space-xs: clamp(0.5rem, 0.6vw, 0.75rem);
+  --space-sm: clamp(0.75rem, 1vw, 1rem);
+  --space-md: clamp(1rem, 1.5vw, 1.5rem);
+  --space-lg: clamp(1.5rem, 2vw, 2rem);
+  --space-xl: clamp(2rem, 3vw, 3rem);
+  --space-2xl: clamp(2.5rem, 4vw, 4rem);
+
+  /* Semantic scale */
+  --layout-gutter: clamp(1rem, 2vw, 2rem);
+  --section-space: var(--space-2xl);
+  --section-space-compact: clamp(1.5rem, 2.5vw, 2.5rem);
+  --section-heading-space: var(--space-lg);
+  --content-space: var(--space-lg);
+  --content-gap: clamp(1rem, 2vw, 2rem);
+  --content-gap-compact: var(--space-sm);
+  --card-padding: clamp(0.875rem, 1.5vw, 1.5rem);
+}
+
+@layer components {
+  .layout-container {
+    width: 100%;
+    max-width: 100rem;
+    margin-inline: auto;
+    padding-inline: var(--layout-gutter);
+  }
+
+  .section-spacing {
+    padding-block: var(--section-space);
+  }
+
+  .section-spacing-compact {
+    padding-block: var(--section-space-compact);
+  }
+
+  .section-spacing-end {
+    padding-bottom: var(--section-space);
+  }
+
+  .workspace-header-spacing {
+    padding-top: var(--space-md);
+  }
+
+  .section-heading-spacing {
+    padding-bottom: var(--section-heading-space);
+  }
+
+  .section-content-spacing {
+    margin-top: var(--content-space);
+  }
+
+  .section-divider-spacing {
+    padding-top: var(--content-space);
+  }
+
+  .card-spacing {
+    padding: var(--card-padding);
+  }
+
+  .content-gap {
+    gap: var(--content-gap);
+  }
+
+  .content-gap-compact {
+    gap: var(--content-gap-compact);
+  }
+}
