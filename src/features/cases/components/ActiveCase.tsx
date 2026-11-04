@@ -29,7 +29,7 @@ export function ActiveCase({ caseData }: ActiveCaseProps) {
       className="border-y border-border"
     >
       <div className="grid lg:grid-cols-[minmax(0,1.4fr)_minmax(20rem,0.6fr)]">
-        <div className="px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
+        <div className="card-spacing">
           <div className="flex flex-wrap items-center gap-3">
             <span className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-signal">
               {t.case.case} // {caseData.caseNumber}
@@ -128,7 +128,7 @@ export function ActiveCase({ caseData }: ActiveCaseProps) {
             />
           </dl>
 
-          <div className="p-6 sm:p-8">
+          <div className="card-spacing">
             <div>
               <div className="flex items-center justify-between gap-4">
                 <p className="font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground">

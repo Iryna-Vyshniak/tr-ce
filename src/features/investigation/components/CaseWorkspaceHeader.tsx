@@ -57,7 +57,7 @@ export function CaseWorkspaceHeader({
 
   return (
     <header className="border-b border-border">
-      <div className="mx-auto w-full max-w-[100rem] px-4 pt-6 sm:px-6 sm:pt-8 lg:px-8">
+      <div className="layout-container workspace-header-spacing">
         {/* Back navigation */}
         <Link
           to="/"
@@ -74,7 +74,7 @@ export function CaseWorkspaceHeader({
         </Link>
 
         {/* Case identity */}
-        <div className="mt-5 flex flex-col gap-6 pb-8 lg:flex-row lg:items-end lg:justify-between">
+        <div className="mt-5 content-gap flex flex-col pb-8 lg:flex-row lg:items-end lg:justify-between">
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-3">
               <p className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-signal">

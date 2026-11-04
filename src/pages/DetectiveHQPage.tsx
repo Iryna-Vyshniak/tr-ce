@@ -10,7 +10,7 @@ export function DetectiveHQPage() {
       <section
         id="hq"
         aria-labelledby="hq-title"
-        className="mx-auto w-full max-w-[100rem] px-4 py-10 sm:px-6 sm:py-14 lg:px-8 lg:py-16"
+        className="layout-container section-spacing"
       >
         <div className="max-w-4xl">
           <p className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-signal">
@@ -62,7 +62,7 @@ export function DetectiveHQPage() {
         </dl>
       </section>
 
-      <div className="mx-auto w-full max-w-[100rem] px-4 pb-16 sm:px-6 lg:px-8">
+      <div className="layout-container section-spacing-end">
         <ActiveCase caseData={activeCase} />
       </div>
     </>

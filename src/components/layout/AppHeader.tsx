@@ -7,7 +7,7 @@ export function AppHeader() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-border-subtle bg-background/95 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-[100rem] items-center gap-4 px-4 sm:gap-6 sm:px-6 lg:px-8">
+      <div className="layout-container flex h-16 items-center gap-4 sm:gap-6">
         <a
           href="/"
           className="shrink-0 font-display text-3xl font-extrabold uppercase leading-none tracking-[-0.04em]"

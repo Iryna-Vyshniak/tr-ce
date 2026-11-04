@@ -39,7 +39,7 @@ export function CaseTimeline() {
   return (
     <MotionConfig reducedMotion="user">
       <section aria-labelledby="case-timeline-title">
-      <div className="flex flex-col gap-8 border-b border-border pb-8 lg:flex-row lg:items-end lg:justify-between">
+      <div className="section-heading-spacing content-gap flex flex-col border-b border-border lg:flex-row lg:items-end lg:justify-between">
         <div className="max-w-3xl">
           <p className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-evidence">
             {t.case.timelineWorkspace.eyebrow}
@@ -80,7 +80,7 @@ export function CaseTimeline() {
         </dl>
       </div>
 
-      <ol className="mt-8 border-l border-border">
+      <ol className="section-content-spacing border-l border-border">
         {visibleEvents.map((event, index) => {
           const evidenceTitles = event.relatedEvidenceIds
             .map((evidenceId) => evidenceById.get(evidenceId))
@@ -110,7 +110,7 @@ export function CaseTimeline() {
 
               <motion.article
                 layout
-                className="border border-border bg-surface p-5 sm:p-6"
+                className="card-spacing border border-border bg-surface"
               >
                 <div className="flex flex-wrap items-start justify-between gap-4">
                   <div className="flex items-baseline gap-4">

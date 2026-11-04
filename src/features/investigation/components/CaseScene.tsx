@@ -58,7 +58,7 @@ export function CaseScene() {
 
   return (
     <section aria-labelledby="case-scene-title">
-      <div className="flex flex-col gap-8 border-b border-border pb-8 lg:flex-row lg:items-end lg:justify-between">
+      <div className="section-heading-spacing content-gap flex flex-col border-b border-border lg:flex-row lg:items-end lg:justify-between">
         <div className="max-w-3xl">
           <p className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-evidence">
             {t.case.sceneWorkspace.eyebrow}
@@ -89,7 +89,7 @@ export function CaseScene() {
         </dl>
       </div>
 
-      <div className="mt-8 grid gap-8 xl:grid-cols-[minmax(0,1.35fr)_minmax(20rem,0.65fr)]">
+      <div className="section-content-spacing content-gap grid xl:grid-cols-[minmax(0,1.35fr)_minmax(20rem,0.65fr)]">
         <div
           className="relative min-h-[30rem] overflow-hidden border border-border bg-surface"
           aria-label={t.case.sceneWorkspace.roomLabel}
@@ -146,7 +146,7 @@ export function CaseScene() {
           })}
         </div>
 
-        <aside className="border border-border bg-surface p-5 sm:p-6">
+        <aside className="card-spacing border border-border bg-surface">
           {selectedPoint ? (
             <>
               <p className="font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-evidence">

@@ -164,7 +164,7 @@ export function CaseBoard() {
   return (
     <MotionConfig reducedMotion="user">
       <section aria-labelledby="case-board-title">
-        <div className="border-b border-border pb-8">
+        <div className="section-heading-spacing border-b border-border">
           <p className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-evidence">
             {t.case.boardWorkspace.eyebrow}
           </p>
@@ -181,7 +181,7 @@ export function CaseBoard() {
           </p>
         </div>
 
-        <div className="mt-8 grid gap-8 xl:grid-cols-[minmax(0,1fr)_22rem]">
+        <div className="section-content-spacing content-gap grid xl:grid-cols-[minmax(0,1fr)_22rem]">
           <div>
             <p className="font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
               {t.case.boardWorkspace.availableCards}
@@ -234,7 +234,7 @@ export function CaseBoard() {
             </div>
           </div>
 
-          <aside className="border border-border bg-surface p-5 sm:p-6">
+          <aside className="card-spacing border border-border bg-surface">
             <p className="font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-evidence">
               {t.case.boardWorkspace.connectionBuilder}
             </p>

@@ -76,7 +76,7 @@ export function CaseInterrogation() {
 
   return (
     <section aria-labelledby="case-interrogation-title">
-      <div className="border-b border-border pb-8">
+      <div className="section-heading-spacing border-b border-border">
         <p className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-evidence">
           {t.case.interrogationWorkspace.eyebrow}
         </p>
@@ -93,7 +93,7 @@ export function CaseInterrogation() {
         </p>
       </div>
 
-      <div className="mt-8 grid gap-8 xl:grid-cols-[19rem_minmax(0,1fr)]">
+      <div className="section-content-spacing content-gap grid xl:grid-cols-[19rem_minmax(0,1fr)]">
         <aside>
           <p className="font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
             {t.case.interrogationWorkspace.targets}
@@ -132,7 +132,7 @@ export function CaseInterrogation() {
           </div>
         </aside>
 
-        <div className="border border-border bg-surface p-5 sm:p-6">
+        <div className="card-spacing border border-border bg-surface">
           {selectedPerson && (
             <>
               <div className="border-b border-border-subtle pb-5">

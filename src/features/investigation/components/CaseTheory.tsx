@@ -69,7 +69,7 @@ export function CaseTheory() {
 
   return (
     <section aria-labelledby="case-theory-title">
-      <div className="border-b border-border pb-8">
+      <div className="section-heading-spacing border-b border-border">
         <p className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-evidence">
           {t.case.theoryWorkspace.eyebrow}
         </p>
@@ -93,8 +93,8 @@ export function CaseTheory() {
         </p>
       </div>
 
-      <div className="mt-8 grid gap-8 xl:grid-cols-2">
-        <section className="border border-border bg-surface p-5 sm:p-6">
+      <div className="section-content-spacing content-gap grid xl:grid-cols-2">
+        <section className="card-spacing border border-border bg-surface">
           <p className="font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-evidence">
             01 // {t.case.theoryWorkspace.suspect}
           </p>
@@ -129,7 +129,7 @@ export function CaseTheory() {
           </div>
         </section>
 
-        <section className="border border-border bg-surface p-5 sm:p-6">
+        <section className="card-spacing border border-border bg-surface">
           <p className="font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-evidence">
             02 // {t.case.theoryWorkspace.motive}
           </p>
@@ -168,7 +168,7 @@ export function CaseTheory() {
           </div>
         </section>
 
-        <section className="border border-border bg-surface p-5 sm:p-6">
+        <section className="card-spacing border border-border bg-surface">
           <p className="font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-evidence">
             03 // {t.case.theoryWorkspace.supportingEvidence}
           </p>
@@ -204,7 +204,7 @@ export function CaseTheory() {
           </div>
         </section>
 
-        <section className="border border-border bg-surface p-5 sm:p-6">
+        <section className="card-spacing border border-border bg-surface">
           <p className="font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-evidence">
             04 // {t.case.theoryWorkspace.timeline}
           </p>
@@ -247,7 +247,7 @@ export function CaseTheory() {
           </div>
         </section>
 
-        <section className="border border-border bg-surface p-5 sm:p-6">
+        <section className="card-spacing border border-border bg-surface">
           <p className="font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-evidence">
             05 // {t.case.theoryWorkspace.rejectedEvidence}
           </p>
@@ -283,7 +283,7 @@ export function CaseTheory() {
           </div>
         </section>
 
-        <section className="border border-border bg-surface p-5 sm:p-6">
+        <section className="card-spacing border border-border bg-surface">
           <p className="font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-evidence">
             06 // {t.case.theoryWorkspace.rationale}
           </p>

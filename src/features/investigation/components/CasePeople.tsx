@@ -14,7 +14,7 @@ export function CasePeople() {
 
   return (
     <section aria-labelledby="case-people-title">
-      <div className="border-b border-border pb-8">
+      <div className="section-heading-spacing border-b border-border">
         <p className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-evidence">
           {t.case.peopleWorkspace.eyebrow}
         </p>
@@ -31,7 +31,7 @@ export function CasePeople() {
         </p>
       </div>
 
-      <div className="mt-8 grid gap-4 xl:grid-cols-2">
+      <div className="section-content-spacing content-gap grid xl:grid-cols-2">
         {activeCaseFile.people.map((person) => {
           const statements = activeCaseFile.statements.filter(
             (statement) => statement.speakerId === person.id,
@@ -40,7 +40,7 @@ export function CasePeople() {
           return (
             <article
               key={person.id}
-              className="border border-border bg-surface p-5 sm:p-6"
+              className="card-spacing border border-border bg-surface"
             >
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>

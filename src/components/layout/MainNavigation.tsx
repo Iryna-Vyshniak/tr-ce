@@ -19,8 +19,11 @@ export function MainNavigation() {
   const { t } = useLocale();
 
   return (
-    <nav aria-label="Main navigation">
-      <ul className="flex items-center gap-1">
+    <nav
+      aria-label="Main navigation"
+      className="min-w-0 flex-1 overflow-x-auto"
+    >
+      <ul className="flex min-w-max items-center gap-1">
         {navigationItems.map((item, index) => {
           const isActive = index === 0;
 

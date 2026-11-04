@@ -66,6 +66,10 @@ export function LocaleProvider({ children }: LocaleProviderProps) {
     [locale],
   );
 
+  useEffect(() => {
+  document.documentElement.lang = locale;
+}, [locale]);
+
   return (
     <LocaleContext.Provider value={value}>
       {children}
