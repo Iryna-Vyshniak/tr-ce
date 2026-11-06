@@ -1,44 +1,151 @@
+
+/*
+ * TR//CE — Design Tokens v0.2
+ * Cinematic Investigation Interface
+ */
+
 :root {
-  /* ========================================
-     TR//CE — Core Color System
-     ======================================== */
+  /* Core palette */
+  --cocoa: #2b1410;
+  --umber: #3e1e17;
+  --bark: #5a372c;
+  --paper-base: #d9c7b0;
+
+  --signal-yellow: #ffd600;
+  --alert-orange: #ff6a00;
+  --trace-red: #e10600;
 
   /* Backgrounds */
   --background: #160a07;
-  --surface: #2b1410;
-  --surface-elevated: #3f1c14;
+  --surface: var(--cocoa);
+  --surface-elevated: var(--umber);
   --surface-hover: #51251b;
 
-  /* Foreground */
+  /* Typography */
   --foreground: #f7eee6;
   --foreground-secondary: #d9c7b8;
   --muted-foreground: #a78f80;
 
-  /* Brand / Investigation states */
+  /* Interactive states */
+  --signal: var(--signal-yellow);
+  --signal-hover: #ffe34a;
 
-  /* Discovery / selection / primary action */
-  --signal: #e8b923;
-  --signal-hover: #f2c94c;
+  --evidence: var(--alert-orange);
+  --evidence-hover: #ff8738;
 
-  /* Evidence / investigation */
-  --evidence: #f45d01;
-  --evidence-hover: #ff7626;
+  --critical: var(--trace-red);
+  --critical-hover: #ff2922;
 
-  /* Contradiction / critical information */
-  --critical: #a90b00;
-  --critical-hover: #d60f01;
-
-  /* Physical evidence / documents */
-  --paper: #e3ceb5;
+  /* Documents */
+  --paper: var(--paper-base);
   --paper-foreground: #29150f;
 
   /* Borders */
-  --border: #4a2a21;
+  --border: #5a372c;
   --border-subtle: #3b211a;
 
   /* Status */
-  --success: #004e1f;
+  --success: #32835a;
 
   /* Overlay */
-  --overlay: rgb(10 4 2 / 72%);
+  --overlay: rgb(10 4 2 / 78%);
+
+  /* Page atmosphere */
+  --gradient-page:
+    radial-gradient(
+      ellipse at 75% 12%,
+      rgb(94 37 22 / 35%) 0%,
+      transparent 52%
+    ),
+    radial-gradient(
+      ellipse at 8% 85%,
+      rgb(100 29 15 / 18%) 0%,
+      transparent 45%
+    ),
+    linear-gradient(
+      135deg,
+      #160a07 0%,
+      #2b1410 55%,
+      #100605 100%
+    );
+
+  /* Elevated surfaces */
+  --gradient-surface:
+    linear-gradient(
+      145deg,
+      #3e1e17 0%,
+      #2b1410 58%,
+      #1a0c09 100%
+    );
+
+  --gradient-surface-hover:
+    linear-gradient(
+      145deg,
+      #51251b 0%,
+      #3e1e17 55%,
+      #2b1410 100%
+    );
+
+  /* Detective workspace */
+  --gradient-workspace:
+    radial-gradient(
+      ellipse at 55% 35%,
+      rgb(126 59 25 / 28%) 0%,
+      transparent 60%
+    ),
+    linear-gradient(
+      160deg,
+      #2b1410 0%,
+      #160a07 100%
+    );
+
+  /* Primary interaction */
+  --gradient-signal:
+    linear-gradient(
+      110deg,
+      #ffd600 0%,
+      #ffbc00 58%,
+      #ff6a00 100%
+    );
+
+  /* Critical discoveries */
+  --gradient-critical:
+    linear-gradient(
+      135deg,
+      #e10600 0%,
+      #80100a 100%
+    );
+
+  /* Highlighted evidence */
+  --gradient-evidence:
+    linear-gradient(
+      120deg,
+      #ff6a00 0%,
+      #b52b08 100%
+    );
+
+  /* Decorative light */
+  --glow-signal:
+    0 0 24px rgb(255 214 0 / 22%);
+
+  --glow-evidence:
+    0 0 24px rgb(255 106 0 / 25%);
+
+  --glow-critical:
+    0 0 28px rgb(225 6 0 / 28%);
+
+  /* Depth */
+  --shadow-panel:
+    0 16px 48px rgb(0 0 0 / 30%);
+
+  --shadow-elevated:
+    0 24px 64px rgb(0 0 0 / 42%);
+
+  /* Transitions */
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+
+  --ease-interface:
+    cubic-bezier(0.22, 1, 0.36, 1);
 }

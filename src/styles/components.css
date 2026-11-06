@@ -1,0 +1,223 @@
+
+/*
+ * TR//CE — Interface Components
+ */
+
+@layer components {
+  /* Buttons */
+
+  .trce-button {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+
+    padding: 0.75rem 1.5rem;
+    border: 1px solid transparent;
+
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: 0.08em;
+    text-align: center;
+    text-transform: uppercase;
+    text-decoration: none;
+
+    cursor: pointer;
+    transition:
+      background-color var(--duration-normal),
+      border-color var(--duration-normal),
+      box-shadow var(--duration-normal),
+      color var(--duration-normal),
+      transform var(--duration-normal);
+  }
+
+  .trce-button-primary {
+    background: var(--gradient-signal);
+    color: #160a07;
+  }
+
+  .trce-button-primary:hover {
+    box-shadow: var(--glow-signal);
+    transform: translateY(-1px);
+  }
+
+  .trce-button-secondary {
+    border-color: var(--evidence);
+    background: rgb(255 106 0 / 7%);
+    color: var(--evidence);
+  }
+
+  .trce-button-secondary:hover {
+    background: rgb(255 106 0 / 14%);
+    box-shadow: var(--glow-evidence);
+  }
+
+  .trce-button-ghost {
+    border-color: var(--border);
+    background: transparent;
+    color: var(--foreground);
+  }
+
+  .trce-button-ghost:hover {
+    border-color: var(--signal);
+    color: var(--signal);
+  }
+
+  .trce-button:disabled,
+  .trce-button[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* Cards */
+
+  .trce-card {
+    position: relative;
+    min-width: 0;
+    padding: var(--card-padding);
+    border: 1px solid var(--border);
+    background: var(--gradient-surface);
+    box-shadow: var(--shadow-panel);
+  }
+
+  .trce-card-interactive {
+    transition:
+      border-color var(--duration-normal),
+      box-shadow var(--duration-normal),
+      transform var(--duration-normal);
+  }
+
+  .trce-card-interactive:hover {
+    border-color: var(--bark);
+    box-shadow: var(--shadow-elevated);
+    transform: translateY(-2px);
+  }
+
+  /* Status indicators */
+
+  .trce-status {
+    display: inline-flex;
+    min-height: 1.75rem;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.625rem;
+    border: 1px solid currentColor;
+
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    line-height: 1.25;
+    text-transform: uppercase;
+  }
+
+  .trce-status-evidence {
+    color: var(--evidence);
+    background: rgb(255 106 0 / 10%);
+  }
+
+  .trce-status-critical {
+    color: var(--critical-hover);
+    background: rgb(225 6 0 / 12%);
+  }
+
+  .trce-status-signal {
+    color: var(--signal);
+    background: rgb(255 214 0 / 9%);
+  }
+
+  /* Progress */
+
+  .trce-progress {
+    height: 0.375rem;
+    overflow: hidden;
+    background: var(--border-subtle);
+  }
+
+  .trce-progress-fill {
+    height: 100%;
+    background: var(--gradient-signal);
+    box-shadow: var(--glow-signal);
+    transition: width var(--duration-slow) ease;
+  }
+
+  /* Navigation */
+
+  .trce-nav-link {
+    position: relative;
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    padding-inline: var(--space-sm);
+
+    color: var(--muted-foreground);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+
+    transition: color var(--duration-fast);
+  }
+
+  .trce-nav-link:hover,
+  .trce-nav-link[aria-current] {
+    color: var(--signal);
+  }
+
+  .trce-nav-link[aria-current]::after {
+    content: "";
+    position: absolute;
+    inset-inline: var(--space-sm);
+    bottom: 0;
+    height: 2px;
+    background: var(--gradient-signal);
+  }
+
+  /* Investigation alerts */
+
+  .trce-conflict {
+    border: 1px solid var(--critical);
+    background:
+      radial-gradient(
+        ellipse at 50% 100%,
+        rgb(225 6 0 / 20%),
+        transparent 75%
+      ),
+      var(--surface);
+    box-shadow: var(--glow-critical);
+  }
+
+  .trce-discovery {
+    border: 1px solid var(--signal);
+    background:
+      radial-gradient(
+        ellipse at 50% 100%,
+        rgb(255 214 0 / 12%),
+        transparent 75%
+      ),
+      var(--surface);
+    box-shadow: var(--glow-signal);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @layer components {
+    .trce-button,
+    .trce-card-interactive,
+    .trce-progress-fill,
+    .trce-nav-link {
+      transition: none;
+    }
+
+    .trce-button:hover,
+    .trce-card-interactive:hover {
+      transform: none;
+    }
+  }
+}

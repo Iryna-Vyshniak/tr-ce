@@ -1,0 +1,211 @@
+
+/*
+ * TR//CE — Investigation Workspace
+ * Board / Scene / Evidence / Interrogation
+ */
+
+@layer components {
+  /* Shared workspace */
+
+  .trce-workspace {
+    position: relative;
+    isolation: isolate;
+    min-width: 0;
+    background: var(--gradient-workspace);
+  }
+
+  .trce-workspace-panel {
+    min-width: 0;
+    border: 1px solid var(--border);
+    background: var(--gradient-surface);
+    box-shadow: var(--shadow-panel);
+  }
+
+  /* Detective board */
+
+  .trce-board {
+    position: relative;
+    min-height: clamp(25rem, 65vh, 55rem);
+    overflow: hidden;
+
+    background-color: #24120d;
+    background-image:
+      radial-gradient(
+        circle at 50% 35%,
+        rgb(139 70 31 / 24%),
+        transparent 65%
+      ),
+      repeating-linear-gradient(
+        0deg,
+        transparent 0,
+        transparent 39px,
+        rgb(217 199 176 / 4%) 40px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        transparent 0,
+        transparent 39px,
+        rgb(217 199 176 / 4%) 40px
+      );
+  }
+
+  .trce-board-card {
+    position: relative;
+    border: 1px solid #8e725c;
+    background: var(--paper);
+    color: var(--paper-foreground);
+    box-shadow: 0 8px 24px rgb(0 0 0 / 35%);
+  }
+
+  .trce-board-card-selected {
+    outline: 2px solid var(--signal);
+    outline-offset: 3px;
+  }
+
+  .trce-board-connection {
+    stroke: var(--trace-red);
+    stroke-width: 2;
+    fill: none;
+    filter: drop-shadow(0 0 4px rgb(225 6 0 / 40%));
+  }
+
+  /* Crime scene */
+
+  .trce-scene {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: #100807;
+  }
+
+  .trce-scene-media {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .trce-scene-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+
+    background:
+      linear-gradient(
+        0deg,
+        rgb(10 4 2 / 75%),
+        transparent 45%
+      ),
+      radial-gradient(
+        ellipse at center,
+        transparent 40%,
+        rgb(10 4 2 / 25%) 100%
+      );
+  }
+
+  .trce-hotspot {
+    position: absolute;
+    z-index: 2;
+    display: grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    place-items: center;
+
+    border: 1px solid var(--signal);
+    border-radius: 50%;
+    background: rgb(22 10 7 / 80%);
+    color: var(--signal);
+    box-shadow: var(--glow-signal);
+    cursor: pointer;
+
+    transition:
+      transform var(--duration-fast),
+      background-color var(--duration-fast);
+  }
+
+  .trce-hotspot:hover {
+    transform: scale(1.08);
+    background: var(--surface-elevated);
+  }
+
+  /* Evidence */
+
+  .trce-evidence-panel {
+    border: 1px solid var(--border);
+    background: var(--gradient-surface);
+  }
+
+  .trce-evidence-highlight {
+    border-color: var(--evidence);
+    box-shadow: var(--glow-evidence);
+  }
+
+  /* Interrogation */
+
+  .trce-interrogation {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(
+        ellipse at 85% 20%,
+        rgb(225 6 0 / 10%),
+        transparent 55%
+      ),
+      var(--gradient-surface);
+  }
+
+  .trce-dialogue {
+    padding: var(--card-padding);
+    border-left: 2px solid var(--border);
+    background: rgb(10 4 2 / 30%);
+  }
+
+  .trce-dialogue-player {
+    border-left-color: var(--signal);
+  }
+
+  .trce-dialogue-character {
+    border-left-color: var(--evidence);
+  }
+
+  .trce-dialogue-contradiction {
+    border-left-color: var(--critical);
+    background: rgb(225 6 0 / 8%);
+  }
+
+  /* Investigation metadata */
+
+  .trce-data-label {
+    color: var(--muted-foreground);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+}
+
+@media (max-width: 639px) {
+  @layer components {
+    .trce-board {
+      min-height: 60svh;
+    }
+
+    .trce-hotspot {
+      width: 2.75rem;
+      height: 2.75rem;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @layer components {
+    .trce-hotspot {
+      transition: none;
+    }
+
+    .trce-hotspot:hover {
+      transform: none;
+    }
+  }
+}

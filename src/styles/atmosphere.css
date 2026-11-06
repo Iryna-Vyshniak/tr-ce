@@ -1,0 +1,97 @@
+
+/*
+ * TR//CE — Cinematic Atmosphere
+ */
+
+@layer base {
+  html {
+    background: var(--background);
+  }
+
+  body {
+    background-color: var(--background);
+    background-image: var(--gradient-page);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  #root {
+    position: relative;
+    isolation: isolate;
+  }
+}
+
+@layer components {
+  .trce-surface {
+    background: var(--gradient-surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-panel);
+  }
+
+  .trce-surface-elevated {
+    background: var(--gradient-surface-hover);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-elevated);
+  }
+
+  .trce-atmosphere {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+  }
+
+  .trce-atmosphere::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+
+    background:
+      radial-gradient(
+        ellipse at 75% 25%,
+        rgb(225 6 0 / 10%),
+        transparent 55%
+      ),
+      radial-gradient(
+        ellipse at 15% 80%,
+        rgb(255 106 0 / 9%),
+        transparent 50%
+      );
+  }
+
+  .trce-workspace-surface {
+    background: var(--gradient-workspace);
+  }
+
+  .trce-signal-glow {
+    box-shadow: var(--glow-signal);
+  }
+
+  .trce-critical-glow {
+    box-shadow: var(--glow-critical);
+  }
+
+  .trce-evidence-glow {
+    box-shadow: var(--glow-evidence);
+  }
+}
+
+@media (max-width: 767px) {
+  @layer base {
+    body {
+      background-attachment: scroll;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @layer components {
+    .trce-atmosphere,
+    .trce-surface,
+    .trce-surface-elevated {
+      transition: none;
+    }
+  }
+}
