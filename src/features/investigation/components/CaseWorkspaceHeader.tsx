@@ -1,3 +1,4 @@
+
 import { Link, NavLink } from "react-router-dom";
 
 import type { CaseSummary } from "../../cases/types/case.types";
@@ -8,46 +9,14 @@ interface CaseWorkspaceHeaderProps {
 }
 
 const workspaceNavigation = [
-  {
-    key: "overview",
-    path: "",
-    end: true,
-  },
-  {
-    key: "evidence",
-    path: "evidence",
-    end: false,
-  },
-  {
-    key: "scene",
-    path: "scene",
-    end: false,
-  },
-  {
-    key: "people",
-    path: "people",
-    end: false,
-  },
-    {
-    key: "interrogation",
-    path: "interrogation",
-    end: false,
-  },
-  {
-    key: "timeline",
-    path: "timeline",
-    end: false,
-  },
-  {
-    key: "board",
-    path: "board",
-    end: false,
-  },
-  {
-    key: "theory",
-    path: "theory",
-    end: false,
-  },
+  { key: "overview", path: "", end: true },
+  { key: "evidence", path: "evidence", end: false },
+  { key: "scene", path: "scene", end: false },
+  { key: "people", path: "people", end: false },
+  { key: "interrogation", path: "interrogation", end: false },
+  { key: "timeline", path: "timeline", end: false },
+  { key: "board", path: "board", end: false },
+  { key: "theory", path: "theory", end: false },
 ] as const;
 
 export function CaseWorkspaceHeader({
@@ -55,16 +24,27 @@ export function CaseWorkspaceHeader({
 }: CaseWorkspaceHeaderProps) {
   const { locale, t } = useLocale();
 
+  const progress = Math.min(
+    100,
+    Math.max(0, caseData.progress),
+  );
+
   return (
-    <header className="border-b border-border">
+    <header className="border-b border-border bg-background/30">
       <div className="layout-container workspace-header-spacing">
-        {/* Back navigation */}
         <Link
           to="/"
-          className="inline-flex min-h-11 items-center font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.12em] text-muted-foreground transition-colors duration-200 hover:text-signal"
+          className={[
+            "inline-flex min-h-11 items-center gap-2",
+            "font-mono text-[0.6875rem]",
+            "font-semibold uppercase tracking-[0.1em]",
+            "text-muted-foreground",
+            "transition-colors duration-200",
+            "hover:text-signal",
+          ].join(" ")}
         >
           <span
-            className="mr-2 text-signal"
+            className="text-signal"
             aria-hidden="true"
           >
             ←
@@ -73,73 +53,72 @@ export function CaseWorkspaceHeader({
           {t.case.workspace.backToHQ}
         </Link>
 
-        {/* Case identity */}
-        <div className="mt-5 content-gap flex flex-col pb-8 lg:flex-row lg:items-end lg:justify-between">
+        <div className="mt-4 flex flex-col gap-5 pb-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-3">
-              <p className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-signal">
+              <p className="font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.12em] text-signal">
                 {t.case.case} // {caseData.caseNumber}
               </p>
 
               <span
-                className="size-1 shrink-0 bg-border"
+                className="size-1 bg-border"
                 aria-hidden="true"
               />
 
-              <p className="font-mono text-xs font-medium uppercase tracking-[0.12em] text-evidence">
+              <p className="font-mono text-[0.6875rem] font-medium uppercase tracking-[0.12em] text-evidence">
                 {t.case[caseData.status]}
               </p>
             </div>
 
-            <h1 className="mt-4 font-display text-5xl font-extrabold uppercase leading-[0.88] tracking-[-0.04em] sm:text-6xl lg:text-7xl">
+            <h1 className="mt-3 font-display font-extrabold uppercase text-foreground">
               {caseData.title[locale]}
             </h1>
 
-            <p className="mt-4 font-mono text-xs uppercase tracking-[0.08em] text-muted-foreground">
+            <p className="mt-3 font-mono text-[0.6875rem] uppercase leading-5 tracking-[0.06em] text-muted-foreground">
               {caseData.location[locale]}
             </p>
           </div>
 
-          {/* Case progress */}
           <div className="w-full max-w-xs shrink-0">
             <div className="flex items-center justify-between gap-4">
-              <span className="font-mono text-[0.6875rem] uppercase tracking-[0.12em] text-muted-foreground">
+              <span className="trce-data-label">
                 {t.case.workspace.progress}
               </span>
 
               <span
-                className="font-mono text-xs font-semibold text-signal"
+                className="font-mono text-sm font-semibold text-signal"
                 aria-hidden="true"
               >
-                {caseData.progress}%
+                {progress}%
               </span>
             </div>
 
             <div
-              className="mt-3 h-1 overflow-hidden bg-border-subtle"
+              className="trce-progress mt-3"
               role="progressbar"
               aria-label={t.case.workspace.progress}
               aria-valuemin={0}
               aria-valuemax={100}
-              aria-valuenow={caseData.progress}
-              aria-valuetext={`${caseData.progress}%`}
+              aria-valuenow={progress}
+              aria-valuetext={`${progress}%`}
             >
               <div
-                className="h-full bg-signal transition-[width] duration-300"
-                style={{
-                  width: `${caseData.progress}%`,
-                }}
+                className="trce-progress-fill"
+                style={{ width: `${progress}%` }}
               />
             </div>
           </div>
         </div>
 
-        {/* Investigation navigation */}
         <nav
           aria-label={t.case.investigation}
-          className="overflow-x-auto"
+          className={[
+            "overflow-x-auto",
+            "[scrollbar-width:none]",
+            "[&::-webkit-scrollbar]:hidden",
+          ].join(" ")}
         >
-          <ul className="flex min-w-max">
+          <ul className="flex min-w-max items-center">
             {workspaceNavigation.map((item) => (
               <li key={item.key}>
                 <NavLink
@@ -147,8 +126,11 @@ export function CaseWorkspaceHeader({
                   end={item.end}
                   className={({ isActive }) =>
                     [
-                      "relative flex min-h-12 items-center px-4",
-                      "font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.12em]",
+                      "relative inline-flex min-h-12",
+                      "items-center px-3 sm:px-4",
+                      "font-mono text-[0.6875rem]",
+                      "font-semibold uppercase",
+                      "tracking-[0.08em]",
                       "transition-colors duration-200",
                       isActive
                         ? "text-signal"
@@ -162,7 +144,13 @@ export function CaseWorkspaceHeader({
 
                       {isActive && (
                         <span
-                          className="absolute inset-x-4 bottom-0 h-px bg-signal"
+                          className={[
+                            "pointer-events-none",
+                            "absolute inset-x-3 bottom-0",
+                            "h-0.5",
+                            "bg-[image:var(--gradient-signal)]",
+                            "sm:inset-x-4",
+                          ].join(" ")}
                           aria-hidden="true"
                         />
                       )}
@@ -177,3 +165,4 @@ export function CaseWorkspaceHeader({
     </header>
   );
 }
+3
