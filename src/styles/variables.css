@@ -13,7 +13,7 @@
 
   --signal-yellow: #ffd600;
   --alert-orange: #ff6a00;
-  --trace-red: #e10600;
+  --trace-red: #da0000;
 
   /* Backgrounds */
   --background: #160a07;
@@ -34,7 +34,7 @@
   --evidence-hover: #ff8738;
 
   --critical: var(--trace-red);
-  --critical-hover: #ff2922;
+  --critical-hover: #b70600;
 
   /* Documents */
   --paper: var(--paper-base);
@@ -45,7 +45,7 @@
   --border-subtle: #3b211a;
 
   /* Status */
-  --success: #32835a;
+  --success: #004a25;
 
   /* Overlay */
   --overlay: rgb(10 4 2 / 78%);
