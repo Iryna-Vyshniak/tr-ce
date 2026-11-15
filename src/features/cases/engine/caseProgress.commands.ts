@@ -1,7 +1,7 @@
 import type { CaseFile } from "../types/case.types";
 import { getNewInterrogationEvidenceUnlocks } from "./resolveInterrogationEvidenceUnlocks";
 import { getNewEvidenceUnlocks } from "./resolveEvidenceUnlocks";
-import type { CaseProgress } from "./caseProgress.types";
+import type { CaseProgress, InvestigationBoardLink } from "./caseProgress.types";
 import { getNewSceneEvidenceUnlocks } from "./resolveSceneEvidenceUnlocks";
 
 export interface AskInterrogationTopicResult {
@@ -122,5 +122,43 @@ export function examineScenePoint(
       ],
     },
     newEvidenceIds,
+  };
+}
+
+export function createBoardLink(
+  progress: CaseProgress,
+  caseFile: CaseFile,
+  link: InvestigationBoardLink,
+) {
+  const nextProgress = {
+    ...progress,
+    phase: progress.phase === "briefing" ? "investigating" : progress.phase,
+    boardLinks: [...progress.boardLinks, link],
+  };
+
+  const newEvidenceIds = getNewEvidenceUnlocks(
+    nextProgress,
+    caseFile.evidenceUnlockRules,
+  );
+
+  return {
+    progress: {
+      ...nextProgress,
+      discoveredEvidenceIds: [
+        ...new Set([...progress.discoveredEvidenceIds, ...newEvidenceIds]),
+      ],
+    },
+    newEvidenceIds,
+  };
+}
+
+export function removeBoardLink(progress: CaseProgress, linkId: string) {
+  if (!progress.boardLinks.some((link) => link.id === linkId)) {
+    return progress;
+  }
+
+  return {
+    ...progress,
+    boardLinks: progress.boardLinks.filter((link) => link.id !== linkId),
   };
 }

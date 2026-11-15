@@ -1,4 +1,9 @@
 import {
+  createBoardLink as createBoardLinkCommand,
+  removeBoardLink as removeBoardLinkCommand,
+} from "./caseProgress.commands";
+import type { InvestigationBoardLink } from "./caseProgress.types";
+import {
   type ReactNode,
   useEffect,
   useMemo,
@@ -78,6 +83,22 @@ export function CaseProgressProvider({
 
         return result.newEvidenceIds;
       },
+    createBoardLink: (link: InvestigationBoardLink) => {
+      const result = createBoardLinkCommand(progress, caseFile, link);
+
+      if (result.progress !== progress) {
+        setProgress(result.progress);
+      }
+
+      return result.newEvidenceIds;
+    },
+    removeBoardLink: (linkId: string) => {
+      const nextProgress = removeBoardLinkCommand(progress, linkId);
+
+      if (nextProgress !== progress) {
+        setProgress(nextProgress);
+      }
+    },
     }),
     [caseFile, progress],
   );
@@ -88,3 +109,4 @@ export function CaseProgressProvider({
     </CaseProgressContext.Provider>
   );
 }
+

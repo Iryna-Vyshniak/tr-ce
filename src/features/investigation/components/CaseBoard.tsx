@@ -2,7 +2,6 @@ import { useState } from "react";
 import { AnimatePresence, MotionConfig, motion } from "motion/react";
 
 import { activeCaseFile } from "../../cases/data/activeCase";
-import { getNewEvidenceUnlocks } from "../../cases/engine/resolveEvidenceUnlocks";
 import { useCaseProgress } from "../../cases/engine/useCaseProgress";
 import type { InvestigationBoardLink } from "../../cases/engine/caseProgress.types";
 import { useLocale } from "../../localization/hooks/useLocale";
@@ -32,7 +31,7 @@ const nodeKindStyles: Record<BoardNodeKind, string> = {
 
 export function CaseBoard() {
   const { locale, t } = useLocale();
-  const { progress, setProgress } = useCaseProgress();
+  const { progress, createBoardLink, removeBoardLink } = useCaseProgress();
 
   const [sourceId, setSourceId] = useState<string | null>(null);
   const [targetId, setTargetId] = useState<string | null>(null);
@@ -112,54 +111,26 @@ export function CaseBoard() {
     setTargetId(nodeId);
   }
 
-  function handleCreateLink() {
-    if (!sourceId || !targetId || !canCreateLink) {
-      return;
-    }
-
-    const newLink = {
-      id: crypto.randomUUID(),
-      sourceId,
-      targetId,
-      relation,
-    } satisfies InvestigationBoardLink;
-
-    const nextProgress = {
-      ...progress,
-      phase:
-        progress.phase === "briefing"
-          ? "investigating"
-          : progress.phase,
-      boardLinks: [...progress.boardLinks, newLink],
-    };
-
-    const newEvidenceIds = getNewEvidenceUnlocks(
-      nextProgress,
-      activeCaseFile.evidenceUnlockRules,
-    );
-
-    setProgress({
-      ...nextProgress,
-      discoveredEvidenceIds: [
-        ...new Set([
-          ...progress.discoveredEvidenceIds,
-          ...newEvidenceIds,
-        ]),
-      ],
-    });
-
-    setSourceId(null);
-    setTargetId(null);
+function handleCreateLink() {
+  if (!sourceId || !targetId) {
+    return;
   }
 
-  function handleRemoveLink(linkId: string) {
-    setProgress((currentProgress) => ({
-      ...currentProgress,
-      boardLinks: currentProgress.boardLinks.filter(
-        (link) => link.id !== linkId,
-      ),
-    }));
-  }
+  const newLink = {
+  id: crypto.randomUUID(),
+  sourceId,
+  targetId,
+  relation,
+} satisfies InvestigationBoardLink;
+
+createBoardLink(newLink);
+  setSourceId(null);
+  setTargetId(null);
+}
+
+function handleRemoveLink(linkId: string) {
+  removeBoardLink(linkId);
+}
 
   return (
     <MotionConfig reducedMotion="user">
