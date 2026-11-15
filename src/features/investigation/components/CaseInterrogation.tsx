@@ -1,6 +1,8 @@
 import { useState } from "react";
 
+import { PortraitModal } from "../../../components/PortraitModal";
 import { activeCaseFile } from "../../cases/data/activeCase";
+import { personPortraits } from "../../cases/data/personPortraits";
 import { useCaseProgress } from "../../cases/engine/useCaseProgress";
 import { useLocale } from "../../localization/hooks/useLocale";
 
@@ -27,6 +29,7 @@ export function CaseInterrogation() {
   const [lastUnlockedEvidenceIds, setLastUnlockedEvidenceIds] = useState<
     string[]
   >([]);
+  const [isPortraitOpen, setIsPortraitOpen] = useState(false);
 
   const selectedPerson = activeCaseFile.people.find(
     (person) => person.id === selectedPersonId,
@@ -113,17 +116,34 @@ export function CaseInterrogation() {
           {selectedPerson && (
             <>
               <div className="border-b border-border-subtle pb-5">
-                <p className="font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-evidence">
-                  {t.case.interrogationWorkspace.availableQuestions}
-                </p>
+                <div className="trce-interrogation-person">
+                  <button
+                    aria-label={`${t.case.peopleWorkspace.viewPortrait}: ${selectedPerson.name[locale]}`}
+                    className="trce-person-portrait-button"
+                    onClick={() => setIsPortraitOpen(true)}
+                    type="button"
+                  >
+                    <img
+                      alt=""
+                      className="trce-interrogation-portrait"
+                      src={personPortraits[selectedPerson.id]}
+                    />
+                  </button>
 
-                <h3 className="mt-3 font-display text-4xl font-bold uppercase leading-none tracking-[-0.025em]">
-                  {selectedPerson.name[locale]}
-                </h3>
+                  <div>
+                    <p className="font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-evidence">
+                      {t.case.interrogationWorkspace.availableQuestions}
+                    </p>
 
-                <p className="mt-4 max-w-2xl text-sm leading-6 text-foreground-secondary">
-                  {selectedPerson.profile[locale]}
-                </p>
+                    <h3 className="mt-3 font-display text-4xl font-bold uppercase leading-none tracking-[-0.025em]">
+                      {selectedPerson.name[locale]}
+                    </h3>
+
+                    <p className="mt-4 max-w-2xl text-sm leading-6 text-foreground-secondary">
+                      {selectedPerson.profile[locale]}
+                    </p>
+                  </div>
+                </div>
               </div>
 
               {lastUnlockedEvidenceIds.length > 0 && (
@@ -186,6 +206,16 @@ export function CaseInterrogation() {
           )}
         </div>
       </div>
+
+      {selectedPerson && (
+        <PortraitModal
+          alt={`${selectedPerson.name[locale]} — ${selectedPerson.occupation[locale]}`}
+          closeLabel={t.case.peopleWorkspace.closePortrait}
+          isOpen={isPortraitOpen}
+          onClose={() => setIsPortraitOpen(false)}
+          src={personPortraits[selectedPerson.id]}
+        />
+      )}
     </section>
   );
 }

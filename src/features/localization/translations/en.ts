@@ -100,6 +100,8 @@ export const en = {
       connection: 'Connection to the case',
       statements: 'Recorded statements',
       noStatements: 'There are no recorded statements from this person yet.',
+      viewPortrait: 'Open portrait',
+      closePortrait: 'Close portrait',
       claimedTime: 'Claimed time',
       recordedAt: 'Recorded at',
       roles: {

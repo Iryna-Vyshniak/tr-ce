@@ -100,6 +100,8 @@ export const uk = {
       connection: 'Зв’язок зі справою',
       statements: 'Зафіксовані показання',
       noStatements: 'Для цієї особи ще немає зафіксованих показань.',
+      viewPortrait: 'Відкрити портрет',
+      closePortrait: 'Закрити портрет',
       claimedTime: 'Заявлений час',
       recordedAt: 'Записано',
       roles: {

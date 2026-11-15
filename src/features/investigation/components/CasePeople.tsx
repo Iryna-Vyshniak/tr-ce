@@ -1,5 +1,9 @@
 
+import { useState } from "react";
+
+import { PortraitModal } from "../../../components/PortraitModal";
 import { activeCaseFile } from "../../cases/data/activeCase";
+import { personPortraits } from "../../cases/data/personPortraits";
 import type { CasePerson } from "../../cases/types/case.types";
 import { useLocale } from "../../localization/hooks/useLocale";
 
@@ -16,6 +20,12 @@ const roleStyles: Record<CasePerson["role"], string> = {
 
 export function CasePeople() {
   const { locale, t } = useLocale();
+  const [portraitPersonId, setPortraitPersonId] = useState<string | null>(
+    null,
+  );
+  const portraitPerson = activeCaseFile.people.find(
+    (person) => person.id === portraitPersonId,
+  );
 
   return (
     <section aria-labelledby="case-people-title">
@@ -48,14 +58,29 @@ export function CasePeople() {
               className="trce-card min-w-0"
             >
               <div className="flex flex-wrap items-start justify-between gap-3">
-                <div className="min-w-0 flex-1">
-                  <p className="trce-data-label">
-                    {person.occupation[locale]}
-                  </p>
+                <div className="trce-person-card-heading min-w-0 flex-1">
+                  <button
+                    aria-label={`${t.case.peopleWorkspace.viewPortrait}: ${person.name[locale]}`}
+                    className="trce-person-portrait-button"
+                    onClick={() => setPortraitPersonId(person.id)}
+                    type="button"
+                  >
+                    <img
+                      alt=""
+                      className="trce-person-portrait"
+                      src={personPortraits[person.id]}
+                    />
+                  </button>
 
-                  <h3 className="mt-3 font-display font-bold uppercase text-foreground">
-                    {person.name[locale]}
-                  </h3>
+                  <div className="min-w-0">
+                    <p className="trce-data-label">
+                      {person.occupation[locale]}
+                    </p>
+
+                    <h3 className="mt-3 font-display font-bold uppercase text-foreground">
+                      {person.name[locale]}
+                    </h3>
+                  </div>
                 </div>
 
                 <span
@@ -124,6 +149,16 @@ export function CasePeople() {
           );
         })}
       </div>
+
+      {portraitPerson && (
+        <PortraitModal
+          alt={`${portraitPerson.name[locale]} — ${portraitPerson.occupation[locale]}`}
+          closeLabel={t.case.peopleWorkspace.closePortrait}
+          isOpen={true}
+          onClose={() => setPortraitPersonId(null)}
+          src={personPortraits[portraitPerson.id]}
+        />
+      )}
     </section>
   );
 }
