@@ -143,7 +143,7 @@ export const en = {
       eyebrow: 'Final case report',
       title: 'Review and fix the conclusion',
       description:
-        'The client checks material completeness and provenance. It has no Ground Truth and does not judge whether the conclusion is correct.',
+        'The client checks material completeness and provenance; it does not judge whether the conclusion is correct.',
       readiness: 'Review readiness',
       complete: 'All report-structure requirements are complete.',
       incomplete: 'Complete the required items before fixing the report.',
@@ -173,8 +173,8 @@ export const en = {
       alternatives: 'Considered alternatives',
       limitations: 'Counterevidence and limits',
       noAlternatives: 'Not recorded',
-      groundTruthBoundary:
-        'Ground Truth is isolated outside the client. Final comparison is possible only inside a protected server boundary.',
+      clientBoundary:
+        'This report contains only the client-side version. Final verification happens outside the client.',
     },
 
     timelineWorkspace: {

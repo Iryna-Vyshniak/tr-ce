@@ -23,7 +23,7 @@ export interface CaseReportReadiness {
 /**
  * Checks whether a client-side report is complete and traceable.
  * It intentionally does not assess whether the accusation is true; that
- * comparison belongs to the protected server-side Ground Truth boundary.
+ * correctness is evaluated outside the client boundary.
  */
 export function getCaseReportReadiness(
   progress: CaseProgress,

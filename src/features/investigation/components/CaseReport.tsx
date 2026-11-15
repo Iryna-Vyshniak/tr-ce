@@ -280,7 +280,7 @@ function CaseReportContents({
       )}
 
       <p className="border-l-2 border-evidence bg-evidence/10 px-4 py-3 text-sm leading-6 text-evidence">
-        {t.case.reportWorkspace.groundTruthBoundary}
+        {t.case.reportWorkspace.clientBoundary}
       </p>
     </div>
   );
