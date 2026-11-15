@@ -121,6 +121,10 @@ export const uk = {
       question: "Питання",
       response: "Відповідь",
       askQuestion: "Поставити питання",
+      listenResponse: "Прослухати відповідь",
+      pauseResponse: "Призупинити відповідь",
+      audioProgress: "Хід відтворення відповіді",
+      audioUnavailable: "Запис відповіді тимчасово недоступний.",
       noQuestions:
         "Для цієї особи поки немає доступних питань. Перевір інші матеріали справи.",
       materialUnlocked:

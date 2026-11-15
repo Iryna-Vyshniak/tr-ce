@@ -121,6 +121,10 @@ export const en = {
       question: 'Question',
       response: 'Response',
       askQuestion: 'Ask question',
+      listenResponse: 'Listen to response',
+      pauseResponse: 'Pause response',
+      audioProgress: 'Response playback progress',
+      audioUnavailable: 'The response recording is temporarily unavailable.',
       noQuestions:
         'There are no available questions for this person yet. Review other case material.',
       materialUnlocked: 'New material has been added to the evidence archive.',

@@ -602,6 +602,7 @@
 
   .trce-interrogation {
     position: relative;
+    isolation: isolate;
     overflow: hidden;
     background:
       radial-gradient(
@@ -610,6 +611,110 @@
         transparent 55%
       ),
       var(--gradient-surface);
+  }
+
+  .trce-interrogation-target {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border);
+    background: rgb(10 4 2 / 36%);
+    color: var(--foreground);
+    cursor: pointer;
+    transition:
+      border-color var(--duration-fast),
+      background-color var(--duration-fast);
+  }
+
+  .trce-interrogation-target:hover {
+    border-color: var(--muted-foreground);
+    background: rgb(62 30 23 / 72%);
+  }
+
+  .trce-interrogation-target--selected {
+    border-color: var(--signal);
+    background: rgb(255 214 0 / 9%);
+    box-shadow: inset 0.2rem 0 0 var(--signal), var(--glow-signal);
+  }
+
+  .trce-interrogation-target__content {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .trce-interrogation-target__portrait {
+    width: 3.25rem;
+    aspect-ratio: 1;
+    flex: none;
+    border: 1px solid var(--border);
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  .trce-interrogation-stage {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 88% 12%, rgb(255 106 0 / 13%), transparent 28%),
+      linear-gradient(145deg, rgb(62 30 23 / 94%), rgb(16 7 5 / 96%));
+    box-shadow: var(--shadow-panel);
+  }
+
+  .trce-interrogation-stage::before {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    content: "";
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 3.75rem,
+      rgb(255 214 0 / 2%) 3.8125rem,
+      transparent 3.875rem
+    );
+  }
+
+  .trce-interrogation-stage > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .trce-interrogation-waveform {
+    display: flex;
+    width: min(100%, 13rem);
+    height: 2rem;
+    align-items: center;
+    gap: 0.25rem;
+    margin-top: 1.25rem;
+    color: var(--critical);
+  }
+
+  .trce-interrogation-waveform span {
+    width: 0.12rem;
+    min-height: 0.2rem;
+    background: currentcolor;
+    box-shadow: 0 0 0.4rem rgb(218 0 0 / 52%);
+    transform-origin: center;
+    opacity: 0.45;
+  }
+
+  .trce-interrogation-waveform--active span {
+    animation: trce-waveform-pulse 1.2s var(--ease-interface) infinite alternate;
+  }
+
+  .trce-interrogation-waveform--active span:nth-child(3n) {
+    animation-delay: 180ms;
+  }
+
+  .trce-interrogation-waveform--active span:nth-child(3n + 1) {
+    animation-delay: 360ms;
+  }
+
+  .trce-interrogation-topic {
+    padding: 0.25rem;
+    border: 1px solid var(--border-subtle);
+    background: rgb(10 4 2 / 46%);
   }
 
   .trce-dialogue {
@@ -626,9 +731,80 @@
     border-left-color: var(--evidence);
   }
 
+  .trce-interrogation-audio {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.75rem 1rem;
+    align-items: center;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .trce-interrogation-audio__control {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--evidence);
+    background: rgb(255 106 0 / 9%);
+    color: var(--evidence);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+      background-color var(--duration-fast),
+      color var(--duration-fast);
+  }
+
+  .trce-interrogation-audio__control:hover,
+  .trce-interrogation-audio__control:focus-visible {
+    background: var(--evidence);
+    color: var(--background);
+  }
+
+  .trce-interrogation-audio__progress {
+    display: grid;
+    min-width: 0;
+    gap: 0.35rem;
+    color: var(--muted-foreground);
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.04em;
+  }
+
+  .trce-interrogation-audio__progress input {
+    width: 100%;
+    accent-color: var(--evidence);
+    cursor: pointer;
+  }
+
+  .trce-interrogation-audio__unavailable {
+    margin-top: 1rem;
+    color: var(--muted-foreground);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+  }
+
   .trce-dialogue-contradiction {
     border-left-color: var(--critical);
     background: rgb(225 6 0 / 8%);
+  }
+
+  @keyframes trce-waveform-pulse {
+    from {
+      transform: scaleY(0.52);
+      opacity: 0.5;
+    }
+
+    to {
+      transform: scaleY(1);
+      opacity: 1;
+    }
   }
 
   /* Investigation metadata */
@@ -667,6 +843,19 @@
     .trce-interrogation-person {
       gap: 0.75rem;
     }
+
+    .trce-interrogation-target__portrait {
+      width: 2.75rem;
+    }
+
+    .trce-interrogation-audio {
+      grid-template-columns: 1fr;
+      gap: 0.625rem;
+    }
+
+    .trce-interrogation-audio__control {
+      justify-content: center;
+    }
   }
 }
 
@@ -678,6 +867,10 @@
 
     .trce-hotspot:hover {
       transform: none;
+    }
+
+    .trce-interrogation-waveform--active span {
+      animation: none;
     }
   }
 }

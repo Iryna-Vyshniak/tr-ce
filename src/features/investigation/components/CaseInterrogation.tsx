@@ -5,7 +5,12 @@ import { activeCaseFile } from "../../cases/data/activeCase";
 import { personPortraits } from "../../cases/data/personPortraits";
 import { useCaseProgress } from "../../cases/engine/useCaseProgress";
 import { useLocale } from "../../localization/hooks/useLocale";
+import { InterrogationAudioPlayer } from "./InterrogationAudioPlayer";
+import { interrogationAudio } from "../data/interrogationAudio";
 
+const waveformBars = [
+  34, 52, 74, 44, 88, 60, 38, 70, 48, 80, 42, 62,
+];
 
 export function CaseInterrogation() {
   const { locale, t } = useLocale();
@@ -30,6 +35,7 @@ export function CaseInterrogation() {
     string[]
   >([]);
   const [isPortraitOpen, setIsPortraitOpen] = useState(false);
+  const [playingTopicId, setPlayingTopicId] = useState<string | null>(null);
 
   const selectedPerson = activeCaseFile.people.find(
     (person) => person.id === selectedPersonId,
@@ -46,6 +52,7 @@ export function CaseInterrogation() {
   );
 
   function handleAskQuestion(topicId: string) {
+    setPlayingTopicId(null);
     const newEvidenceIds = askInterrogationTopic(
       selectedPersonId,
       topicId,
@@ -55,7 +62,7 @@ export function CaseInterrogation() {
   }
 
   return (
-    <section aria-labelledby="case-interrogation-title">
+    <section className="trce-interrogation" aria-labelledby="case-interrogation-title">
       <div className="section-heading-spacing border-b border-border">
         <p className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-evidence">
           {t.case.interrogationWorkspace.eyebrow}
@@ -91,20 +98,31 @@ export function CaseInterrogation() {
                   onClick={() => {
                     setSelectedPersonId(person.id);
                     setLastUnlockedEvidenceIds([]);
+                    setPlayingTopicId(null);
                   }}
                   className={[
-                    "border p-4 text-left transition-colors duration-200",
+                    "trce-interrogation-target text-left",
                     isSelected
-                      ? "border-signal bg-signal/10"
-                      : "border-border bg-surface hover:border-muted-foreground",
+                      ? "trce-interrogation-target--selected"
+                      : "",
                   ].join(" ")}
                 >
-                  <span className="font-mono text-[0.625rem] uppercase tracking-[0.12em] text-muted-foreground">
-                    {person.occupation[locale]}
-                  </span>
+                  <span className="trce-interrogation-target__content">
+                    <img
+                      alt=""
+                      className="trce-interrogation-target__portrait"
+                      src={personPortraits[person.id]}
+                    />
 
-                  <span className="mt-2 block font-display text-3xl font-bold uppercase leading-none tracking-[-0.025em]">
-                    {person.name[locale]}
+                    <span className="min-w-0">
+                      <span className="block font-mono text-[0.625rem] uppercase tracking-[0.12em] text-muted-foreground">
+                        {person.occupation[locale]}
+                      </span>
+
+                      <span className="mt-2 block font-display text-3xl font-bold uppercase leading-none tracking-[-0.025em]">
+                        {person.name[locale]}
+                      </span>
+                    </span>
                   </span>
                 </button>
               );
@@ -112,7 +130,7 @@ export function CaseInterrogation() {
           </div>
         </aside>
 
-        <div className="card-spacing border border-border bg-surface">
+        <div className="trce-interrogation-stage card-spacing border border-border">
           {selectedPerson && (
             <>
               <div className="border-b border-border-subtle pb-5">
@@ -142,6 +160,21 @@ export function CaseInterrogation() {
                     <p className="mt-4 max-w-2xl text-sm leading-6 text-foreground-secondary">
                       {selectedPerson.profile[locale]}
                     </p>
+
+                    <div
+                      aria-hidden="true"
+                      className={[
+                        "trce-interrogation-waveform",
+                        playingTopicId ? "trce-interrogation-waveform--active" : "",
+                      ].join(" ")}
+                    >
+                      {waveformBars.map((height, index) => (
+                        <span
+                          key={index}
+                          style={{ height: `${height}%` }}
+                        />
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -160,22 +193,25 @@ export function CaseInterrogation() {
                   {availableTopics.map((topic) => {
                     const hasBeenAsked =
                       progress.askedInterrogationTopicIds.includes(topic.id);
+                    const audioClip = interrogationAudio[topic.id]?.[locale];
 
                     return (
                       <article
                         key={topic.id}
-                        className="border border-border-subtle bg-background p-5"
+                        className="trce-interrogation-topic"
                       >
-                        <p className="font-mono text-[0.625rem] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
-                          {t.case.interrogationWorkspace.question}
-                        </p>
+                        <div className="trce-dialogue trce-dialogue-player">
+                          <p className="font-mono text-[0.625rem] font-semibold uppercase tracking-[0.12em] text-signal">
+                            {t.case.interrogationWorkspace.question}
+                          </p>
 
-                        <p className="mt-3 text-base leading-7 text-foreground">
-                          {topic.question[locale]}
-                        </p>
+                          <p className="mt-3 text-base leading-7 text-foreground">
+                            {topic.question[locale]}
+                          </p>
+                        </div>
 
                         {hasBeenAsked ? (
-                          <div className="mt-5 border-l-2 border-evidence pl-4">
+                          <div className="trce-dialogue trce-dialogue-character mt-4">
                             <p className="font-mono text-[0.625rem] font-semibold uppercase tracking-[0.12em] text-evidence">
                               {t.case.interrogationWorkspace.response}
                             </p>
@@ -183,6 +219,28 @@ export function CaseInterrogation() {
                             <p className="mt-3 text-sm leading-6 text-foreground-secondary">
                               {topic.response[locale]}
                             </p>
+
+                            {audioClip && (
+                              <InterrogationAudioPlayer
+                                clip={audioClip}
+                                isPlaying={playingTopicId === topic.id}
+                                listenLabel={t.case.interrogationWorkspace.listenResponse}
+                                onPlayingChange={(isPlaying) => {
+                                  setPlayingTopicId((currentTopicId) => {
+                                    if (isPlaying) {
+                                      return topic.id;
+                                    }
+
+                                    return currentTopicId === topic.id
+                                      ? null
+                                      : currentTopicId;
+                                  });
+                                }}
+                                pauseLabel={t.case.interrogationWorkspace.pauseResponse}
+                                progressLabel={t.case.interrogationWorkspace.audioProgress}
+                                unavailableLabel={t.case.interrogationWorkspace.audioUnavailable}
+                              />
+                            )}
                           </div>
                         ) : (
                           <button
