@@ -131,12 +131,13 @@ export function loadCaseProgress(caseFile: CaseFile): CaseProgress {
       caseId: parsedProgress.caseId,
       phase: parsedProgress.phase,
       discoveredEvidenceIds: parsedProgress.discoveredEvidenceIds,
-      reviewedEvidenceIds: isStringArray(
-  parsedProgress.reviewedEvidenceIds,
-)
-  ? parsedProgress.reviewedEvidenceIds
-  : [],
-      reviewedPersonIds: parsedProgress.reviewedPersonIds,
+      
+            reviewedEvidenceIds: isStringArray(
+        parsedProgress.reviewedEvidenceIds,
+      )
+        ? parsedProgress.reviewedEvidenceIds
+        : [],
+reviewedPersonIds: parsedProgress.reviewedPersonIds,
       reviewedStatementIds: parsedProgress.reviewedStatementIds,
       reviewedTimelineEventIds: parsedProgress.reviewedTimelineEventIds,
       askedInterrogationTopicIds: isStringArray(
@@ -144,6 +145,7 @@ export function loadCaseProgress(caseFile: CaseFile): CaseProgress {
       )
         ? parsedProgress.askedInterrogationTopicIds
         : [],
+              characterKnowledgeByPersonId: {},
       examinedScenePointIds: isStringArray(
         parsedProgress.examinedScenePointIds,
       )

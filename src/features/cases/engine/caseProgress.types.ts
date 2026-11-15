@@ -33,6 +33,7 @@ export interface CaseProgress {
   reviewedStatementIds: string[];
   reviewedTimelineEventIds: string[];
   askedInterrogationTopicIds: string[];
+    characterKnowledgeByPersonId: Record<string, string[]>;
   examinedScenePointIds: string[];
   boardLinks: InvestigationBoardLink[];
   accusation?: CaseAccusation;

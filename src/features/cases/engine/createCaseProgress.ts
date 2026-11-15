@@ -13,6 +13,7 @@ export function createCaseProgress(caseFile: CaseFile): CaseProgress {
     reviewedStatementIds: [],
     reviewedTimelineEventIds: [],
     askedInterrogationTopicIds: [],
+          characterKnowledgeByPersonId: {},
     examinedScenePointIds: [],
     boardLinks: [],
   };
