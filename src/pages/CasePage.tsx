@@ -22,7 +22,7 @@ export function CasePage() {
               className="flex min-h-48 items-center font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground"
               role="status"
             >
-              Завантаження матеріалів // Loading case files
+              Завантаження матеріалів…
             </div>
           }
         >

@@ -62,11 +62,11 @@ export const case001Evidence = [
     status: "lead",
     availability: "discoverable",
     title: {
-      uk: "Журнал майстер-картки",
+      uk: "Журнал використання службової картки доступу",
       en: "Master keycard log",
     },
     description: {
-      uk: "Картку охорони винесли з док-станції о 23:41 і повернули о 23:50.",
+      uk: "Службову картку охорони забрали зі станції зберігання о 23:41 і повернули о 23:50.",
       en: "The security card left its dock at 23:41 and returned at 23:50.",
     },
     foundAt: "00:17",

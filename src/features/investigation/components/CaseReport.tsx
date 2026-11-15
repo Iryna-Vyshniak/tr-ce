@@ -36,13 +36,6 @@ export function CaseReport() {
   const suspectName = accusation?.suspectId
     ? peopleById.get(accusation.suspectId)
     : undefined;
-  const fixedAt = report
-    ? new Intl.DateTimeFormat(locale === "uk" ? "uk-UA" : "en-GB", {
-        dateStyle: "medium",
-        timeStyle: "short",
-      }).format(new Date(report.createdAt))
-    : null;
-
   return (
     <section aria-labelledby="case-report-title">
       <div className="section-heading-spacing border-b border-border">
@@ -69,20 +62,6 @@ export function CaseReport() {
               {t.case.reportWorkspace.reportLocked}
             </p>
 
-            <dl className="mt-6 grid gap-5 border-t border-signal/30 pt-5 sm:grid-cols-3">
-              <ReportDetail
-                label={t.case.reportWorkspace.reportId}
-                value={report.id}
-              />
-              <ReportDetail
-                label={t.case.reportWorkspace.createdAt}
-                value={fixedAt ?? report.createdAt}
-              />
-              <ReportDetail
-                label={t.case.reportWorkspace.policy}
-                value={report.policyVersion}
-              />
-            </dl>
           </section>
 
           <CaseReportContents
@@ -194,7 +173,7 @@ function CaseReportContents({
     <div className="content-gap grid">
       <section className="card-spacing border border-border bg-surface">
         <p className="font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-evidence">
-          {t.case.reportWorkspace.primaryClaim}
+            {t.case.reportWorkspace.primaryConclusion}
         </p>
 
         <p className="mt-4 font-display text-4xl font-bold uppercase leading-none tracking-[-0.025em]">
@@ -280,7 +259,7 @@ function CaseReportContents({
       )}
 
       <p className="border-l-2 border-evidence bg-evidence/10 px-4 py-3 text-sm leading-6 text-evidence">
-        {t.case.reportWorkspace.clientBoundary}
+        {t.case.reportWorkspace.reviewReminder}
       </p>
     </div>
   );

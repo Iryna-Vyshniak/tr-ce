@@ -53,7 +53,7 @@ export const case001Locations = [
       en: "Security office",
     },
     description: {
-      uk: "Приміщення з консоллю блокування номерів, журналом майстер-карток і резервним відеосервером.",
+      uk: "Приміщення з консоллю блокування номерів, журналом використання службових карток доступу й резервним відеосервером.",
       en: "A room with the lock console, the master-keycard log, and a backup video server.",
     },
     relevance: {

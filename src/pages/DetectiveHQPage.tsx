@@ -1,9 +1,16 @@
 import { ActiveCase } from "../features/cases/components/ActiveCase";
-import { activeCase } from "../features/cases/data/activeCase";
+import {
+  activeCase,
+  activeCaseFile,
+} from "../features/cases/data/activeCase";
+import { getCaseCompletion } from "../features/cases/engine/caseReport.readiness";
+import { useCaseProgress } from "../features/cases/engine/useCaseProgress";
 import { useLocale } from "../features/localization/hooks/useLocale";
 
 export function DetectiveHQPage() {
   const { t } = useLocale();
+  const { progress: caseProgress } = useCaseProgress();
+  const progress = getCaseCompletion(caseProgress, activeCaseFile);
 
   return (
     <>
@@ -63,7 +70,7 @@ export function DetectiveHQPage() {
       </section>
 
       <div className="layout-container section-spacing-end">
-        <ActiveCase caseData={activeCase} />
+        <ActiveCase caseData={{ ...activeCase, progress }} />
       </div>
     </>
   );

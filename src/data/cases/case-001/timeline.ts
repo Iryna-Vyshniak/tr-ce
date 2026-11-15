@@ -51,11 +51,11 @@ export const case001Timeline = [
     occurredAt: "23:41",
     status: "confirmed",
     title: {
-      uk: "Майстер-картка зникає з док-станції",
+      uk: "Службову картку доступу забрали зі станції зберігання",
       en: "Master keycard leaves its dock",
     },
     description: {
-      uk: "Картка охорони не повертається до 23:50.",
+      uk: "Картку охорони повернули лише о 23:50.",
       en: "The security keycard does not return until 23:50.",
     },
     relatedEvidenceIds: ["ev-004-master-key-log"],

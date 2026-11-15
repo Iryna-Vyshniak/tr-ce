@@ -29,7 +29,7 @@ export const case001Metadata = {
     en: "A locked hotel room. Four conflicting statements. Seven pieces of evidence. Someone is lying about what happened before the door was locked.",
   },
 
-  progress: 34,
+  progress: 0,
   knownContradictionCount: 1,
 
   lastTrace: {

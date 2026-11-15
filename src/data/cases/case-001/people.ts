@@ -37,7 +37,7 @@ export const case001People = [
       en: "First to report that the room was sealed",
     },
     profile: {
-      uk: "Мав доступ до майстер-картки й журналу блокування. Наполягає, що після 23:35 ніхто не міг увійти до номера.",
+      uk: "Мав доступ до службової картки доступу й журналу блокування. Наполягає, що після 23:35 ніхто не міг увійти до номера.",
       en: "He had access to the master keycard and the lock log. He insists no one could enter after 23:35.",
     },
   },

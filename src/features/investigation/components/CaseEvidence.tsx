@@ -17,6 +17,9 @@ export function CaseEvidence() {
   const [lastUnlockedEvidenceIds, setLastUnlockedEvidenceIds] = useState<
     string[]
   >([]);
+  const [inspectedEvidenceId, setInspectedEvidenceId] = useState<string | null>(
+    null,
+  );
 
   const discoveredEvidence = activeCaseFile.evidence.filter((evidence) =>
     progress.discoveredEvidenceIds.includes(evidence.id),
@@ -24,13 +27,6 @@ export function CaseEvidence() {
   const reviewedEvidenceIds = new Set(progress.reviewedEvidenceIds);
   const undiscoveredEvidenceCount =
     activeCaseFile.evidence.length - discoveredEvidence.length;
-  const reviewLabel = locale === "uk" ? "Перевірити матеріал" : "Review material";
-  const reviewedLabel = locale === "uk" ? "Перевірено" : "Reviewed";
-  const unlockedLabel =
-    locale === "uk"
-      ? "Новий матеріал додано до картотеки доказів."
-      : "New material has been added to the evidence archive.";
-
   const peopleById = new Map(
     activeCaseFile.people.map((person) => [person.id, person.name[locale]]),
   );
@@ -40,10 +36,11 @@ export function CaseEvidence() {
       location.name[locale],
     ]),
   );
-  function handleReviewEvidence(evidenceId: string) {
+  function handleFinishInspection(evidenceId: string) {
     const newEvidenceIds = reviewEvidence(evidenceId);
 
     setLastUnlockedEvidenceIds(newEvidenceIds);
+    setInspectedEvidenceId(null);
   }
   
 
@@ -89,13 +86,15 @@ export function CaseEvidence() {
           className="mx-6 mt-6 border-l-2 border-signal bg-signal/10 px-4 py-3 text-sm leading-6 text-signal"
           role="status"
         >
-          {unlockedLabel}
+          {t.case.evidenceWorkspace.materialUnlocked}
         </p>
       )}
 
       <div className="section-content-spacing content-gap grid lg:grid-cols-2">
         {discoveredEvidence.map((evidence) => {
           const hasBeenReviewed = reviewedEvidenceIds.has(evidence.id);
+          const isInspecting = inspectedEvidenceId === evidence.id;
+          const showDetails = hasBeenReviewed || isInspecting;
           const relatedPeople = evidence.relatedPersonIds
             .map((personId) => peopleById.get(personId))
             .filter((name): name is string => name !== undefined);
@@ -125,48 +124,60 @@ export function CaseEvidence() {
                 {evidence.title[locale]}
               </h3>
               <p className="mt-4 text-sm leading-6 text-foreground-secondary">
-                {evidence.description[locale]}
+                {showDetails
+                  ? evidence.description[locale]
+                  : t.case.evidenceWorkspace.inspectionHint}
               </p>
 
-              <dl className="mt-6 grid gap-5 border-t border-border-subtle pt-5 sm:grid-cols-2">
-                <div>
-                  <dt className="font-mono text-[0.625rem] uppercase tracking-[0.12em] text-muted-foreground">
-                    {t.case.evidenceWorkspace.foundAt}
-                  </dt>
-                  <dd className="mt-2 font-mono text-sm text-foreground">
-                    {evidence.foundAt}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="font-mono text-[0.625rem] uppercase tracking-[0.12em] text-muted-foreground">
-                    {t.case.evidenceWorkspace.location}
-                  </dt>
-                  <dd className="mt-2 text-sm text-foreground">
-                    {locationName}
-                  </dd>
-                </div>
-                <div className="sm:col-span-2">
-                  <dt className="font-mono text-[0.625rem] uppercase tracking-[0.12em] text-muted-foreground">
-                    {t.case.evidenceWorkspace.relatedPeople}
-                  </dt>
-                  <dd className="mt-2 text-sm text-foreground">
-                    {relatedPeople.join(", ")}
-                  </dd>
-                </div>
-              </dl>
+              {showDetails && (
+                <dl className="mt-6 grid gap-5 border-t border-border-subtle pt-5 sm:grid-cols-2">
+                  <div>
+                    <dt className="font-mono text-[0.625rem] uppercase tracking-[0.12em] text-muted-foreground">
+                      {t.case.evidenceWorkspace.foundAt}
+                    </dt>
+                    <dd className="mt-2 font-mono text-sm text-foreground">
+                      {evidence.foundAt}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="font-mono text-[0.625rem] uppercase tracking-[0.12em] text-muted-foreground">
+                      {t.case.evidenceWorkspace.location}
+                    </dt>
+                    <dd className="mt-2 text-sm text-foreground">
+                      {locationName}
+                    </dd>
+                  </div>
+                  <div className="sm:col-span-2">
+                    <dt className="font-mono text-[0.625rem] uppercase tracking-[0.12em] text-muted-foreground">
+                      {t.case.evidenceWorkspace.relatedPeople}
+                    </dt>
+                    <dd className="mt-2 text-sm text-foreground">
+                      {relatedPeople.join(", ")}
+                    </dd>
+                  </div>
+                </dl>
+              )}
 
               <div className="mt-6 border-t border-border-subtle pt-5">
                 {hasBeenReviewed ? (
                   <p className="font-mono text-[0.625rem] font-semibold uppercase tracking-[0.12em] text-signal">
-                    {reviewedLabel}
+                    {t.case.evidenceWorkspace.inspected}
                   </p>
+                ) : isInspecting ? (
+                  <button
+                    type="button"
+                    onClick={() => handleFinishInspection(evidence.id)}
+                    className="min-h-11 border border-signal bg-signal/10 px-4 font-mono text-xs font-semibold uppercase tracking-[0.1em] text-signal transition-colors duration-200 hover:bg-signal hover:text-background"
+                  >
+                    {t.case.evidenceWorkspace.finishInspection}
+                  </button>
                 ) : (
                   <button
                     type="button"
-                    onClick={() => handleReviewEvidence(evidence.id)}
+                    onClick={() => setInspectedEvidenceId(evidence.id)}
                     className="min-h-11 border border-evidence bg-evidence/10 px-4 font-mono text-xs font-semibold uppercase tracking-[0.1em] text-evidence transition-colors duration-200 hover:bg-evidence hover:text-background"
                   >
-                    {reviewLabel}
+                    {t.case.evidenceWorkspace.inspect}
                   </button>
                 )}
               </div>

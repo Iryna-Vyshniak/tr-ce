@@ -46,11 +46,11 @@ export const case001InterrogationTopics = [
     id: "int-004-andrii-master-key",
     personId: "andrii-holub",
     question: {
-      uk: "Хто взяв майстер-картку між 23:41 і 23:50?",
+      uk: "Хто взяв службову картку доступу між 23:41 і 23:50?",
       en: "Who took the master keycard between 23:41 and 23:50?",
     },
     response: {
-      uk: "Картку могли брати для звичайної перевірки обладнання. Журнал док-станції не пояснює, хто саме нею користувався.",
+      uk: "Картку могли брати для звичайної перевірки обладнання. Журнал станції зберігання не пояснює, хто саме нею користувався.",
       en: "The card may have been taken for a routine equipment check. The docking log does not establish who used it.",
     },
     requiredEvidenceIds: ["ev-004-master-key-log"],

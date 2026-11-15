@@ -69,6 +69,12 @@ export const en = {
         verified: 'Verified',
         lead: 'Needs review',
       },
+      inspectionHint:
+        'Open the material to review its contents and provenance.',
+      inspect: 'Inspect material',
+      finishInspection: 'Complete inspection',
+      inspected: 'Inspection complete',
+      materialUnlocked: 'New material has been added to the evidence archive.',
     },
 
     sceneWorkspace: {
@@ -123,7 +129,7 @@ export const en = {
       title: 'Build your version',
       description:
         'Choose a suspect, a motive, and the material that supports your version. A draft is not yet an accusation.',
-      autosave: 'Your theory draft is saved automatically in this case.',
+      autosave: 'Your version is kept with the case material.',
       suspect: 'Primary suspect',
       motive: 'Possible motive',
       supportingEvidence: 'Supporting evidence',
@@ -135,46 +141,41 @@ export const en = {
       rationale: 'Rationale',
       rationalePlaceholder:
         'Explain how the selected evidence, motive, and timeline account for Marta’s disappearance.',
-      finalized:
-        'A report has already been fixed. This draft is now read-only.',
+      finalized: 'The conclusion is already saved. This version can no longer be changed.',
     },
 
     reportWorkspace: {
-      eyebrow: 'Final case report',
-      title: 'Review and fix the conclusion',
+      eyebrow: 'Case summary',
+      title: 'Draw your conclusion',
       description:
-        'The client checks material completeness and provenance; it does not judge whether the conclusion is correct.',
-      readiness: 'Review readiness',
-      complete: 'All report-structure requirements are complete.',
-      incomplete: 'Complete the required items before fixing the report.',
+        'Build a version of events that the evidence can withstand.',
+      readiness: 'What to verify',
+      complete: 'Your version is ready to save.',
+      incomplete: 'Add the missing details before saving your conclusion.',
       requirements: {
-        subject: 'A claim subject is selected',
-        motive: 'A motive or interest is selected',
-        evidence: 'At least two reviewed pieces of evidence are selected',
-        timeline: 'A supported timeline event is selected',
+        subject: 'The evidence points to a person',
+        motive: 'A possible motive is identified',
+        evidence: 'At least two inspected pieces of evidence are selected',
+        timeline: 'A timeline event is included',
         countercase: 'An alternative or counterevidence is considered',
-        graph: 'The graph connects the claim to selected evidence',
-        rationale: 'The rationale has at least 120 characters',
+        graph: 'The board connects the suspect to evidence',
+        rationale: 'A rationale for the version is included',
       },
-      finalize: 'Fix case report',
-      finalizationNote:
-        'Fixing creates an immutable local snapshot. A new conclusion requires a new report version.',
-      reportLocked: 'Case report fixed',
-      reportId: 'Snapshot ID',
-      createdAt: 'Fixed at',
-      policy: 'Policy',
-      evidenceGraph: 'Reasoning chain',
-      source: 'Source',
-      observation: 'Observation',
-      inference: 'Interpretation',
+      finalize: 'Save conclusion',
+      finalizationNote: 'A saved conclusion cannot be changed.',
+      reportLocked: 'Conclusion saved',
+      evidenceGraph: 'Evidence chain',
+      source: 'Evidence',
+      observation: 'What we know',
+      inference: 'How it supports the version',
       conclusion: 'Conclusion',
-      noEvidence: 'No supporting evidence was captured in this snapshot.',
-      primaryClaim: 'Primary claim',
-      alternatives: 'Considered alternatives',
-      limitations: 'Counterevidence and limits',
+      noEvidence: 'No evidence was selected for this version.',
+      primaryConclusion: 'Your conclusion',
+      alternatives: 'Other versions',
+      limitations: 'What does not fit',
       noAlternatives: 'Not recorded',
-      clientBoundary:
-        'This report contains only the client-side version. Final verification happens outside the client.',
+      reviewReminder:
+        'Check every connection: a strong version accounts for both the evidence and the doubts.',
     },
 
     timelineWorkspace: {
@@ -198,7 +199,7 @@ export const en = {
       eyebrow: 'Detective board',
       title: 'Build your own theory',
       description:
-        'Create connections between available people, evidence, and events. The board records your theory, but does not tell you whether it is correct.',
+        'Look for connections between people, evidence, and events to see the whole picture.',
       availableCards: 'Available cards',
       selectionHint:
         'Select the first card, then the second one. Selecting the first card again clears it.',
