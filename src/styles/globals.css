@@ -15,6 +15,11 @@
     "Roboto Condensed",
     "Arial Narrow",
     sans-serif;
+    
+  --font-label:
+    "Barlow Condensed",
+    "Arial Narrow",
+    sans-serif;
 
   --font-mono:
     "IBM Plex Mono",
