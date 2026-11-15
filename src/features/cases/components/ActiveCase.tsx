@@ -23,19 +23,15 @@ const metricValueStyles = {
 export function ActiveCase({ caseData }: ActiveCaseProps) {
   const { locale, t } = useLocale();
 
-  const progress = Math.min(
-    100,
-    Math.max(0, caseData.progress),
-  );
+  const progress = Number.isFinite(caseData.progress)
+    ? Math.min(100, Math.max(0, caseData.progress))
+    : 0;
 
   return (
     <article
       id="active-case"
       aria-labelledby={`case-${caseData.id}-title`}
-      className={[
-        "trce-surface",
-        "overflow-hidden",
-      ].join(" ")}
+      className="trce-surface scroll-mt-16 overflow-hidden"
     >
       <div className="grid lg:grid-cols-[minmax(0,1.4fr)_minmax(20rem,0.6fr)]">
         <div className="card-spacing">

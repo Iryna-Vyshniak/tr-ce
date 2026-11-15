@@ -1,20 +1,17 @@
 
-import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 import { useLocale } from "../../features/localization/hooks/useLocale";
 
 const navigationItems = [
   {
     key: "hq",
-    href: "#hq",
+    hash: "#hq",
   },
   {
     key: "cases",
-    href: "#cases",
-  },
-  {
-    key: "archive",
-    href: "#archive",
+    hash: "#active-case",
   },
 ] as const;
 
@@ -22,11 +19,26 @@ export function MainNavigation() {
   const { t } = useLocale();
   const location = useLocation();
 
-  const activeHash = location.hash || "#hq";
+  const activeHash =
+    location.pathname === "/" ? location.hash || "#hq" : undefined;
+
+  useEffect(() => {
+    if (location.pathname !== "/" || !location.hash) {
+      return;
+    }
+
+    const frame = window.requestAnimationFrame(() => {
+      document
+        .getElementById(location.hash.slice(1))
+        ?.scrollIntoView({ block: "start" });
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [location.hash, location.pathname]);
 
   return (
     <nav
-      aria-label="Main navigation"
+      aria-label={t.navigation.ariaLabel}
       className={[
         "min-w-0 flex-1",
         "overflow-x-auto",
@@ -36,14 +48,12 @@ export function MainNavigation() {
     >
       <ul className="flex min-w-max items-center gap-0.5 sm:gap-1">
         {navigationItems.map((item) => {
-          const isActive =
-            location.pathname === "/" &&
-            activeHash === item.href;
+          const isActive = activeHash === item.hash;
 
           return (
             <li key={item.key}>
-              <a
-                href={`/${item.href}`}
+              <Link
+                to={{ pathname: "/", hash: item.hash }}
                 aria-current={isActive ? "location" : undefined}
                 className={[
                   "trce-nav-link",
@@ -57,20 +67,7 @@ export function MainNavigation() {
                 ].join(" ")}
               >
                 {t.navigation[item.key]}
-
-                {isActive && (
-                  <span
-                    className={[
-                      "pointer-events-none",
-                      "absolute inset-x-2 bottom-0",
-                      "h-0.5",
-                      "bg-[image:var(--gradient-signal)]",
-                      "sm:inset-x-3",
-                    ].join(" ")}
-                    aria-hidden="true"
-                  />
-                )}
-              </a>
+              </Link>
             </li>
           );
         })}
@@ -78,4 +75,3 @@ export function MainNavigation() {
     </nav>
   );
 }
-6

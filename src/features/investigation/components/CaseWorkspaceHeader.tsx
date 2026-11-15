@@ -24,10 +24,9 @@ export function CaseWorkspaceHeader({
 }: CaseWorkspaceHeaderProps) {
   const { locale, t } = useLocale();
 
-  const progress = Math.min(
-    100,
-    Math.max(0, caseData.progress),
-  );
+  const progress = Number.isFinite(caseData.progress)
+    ? Math.min(100, Math.max(0, caseData.progress))
+    : 0;
 
   return (
     <header className="border-b border-border bg-background/30">
@@ -165,4 +164,3 @@ export function CaseWorkspaceHeader({
     </header>
   );
 }
-3

@@ -34,7 +34,7 @@ export function AppHeader() {
             "leading-none tracking-[-0.045em]",
             "text-foreground",
             "transition-opacity duration-200",
-            "hover:opacity-85",
+            "hover:opacity-[.85]",
             "sm:text-3xl",
           ].join(" ")}
         >

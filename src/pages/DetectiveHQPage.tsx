@@ -10,7 +10,7 @@ export function DetectiveHQPage() {
       <section
         id="hq"
         aria-labelledby="hq-title"
-        className="layout-container section-spacing"
+        className="layout-container section-spacing scroll-mt-16"
       >
         <div className="max-w-4xl">
           <p className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-signal">
