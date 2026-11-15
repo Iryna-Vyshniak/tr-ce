@@ -28,6 +28,7 @@ export interface CaseProgress {
   caseId: string;
   phase: InvestigationPhase;
   discoveredEvidenceIds: string[];
+  reviewedEvidenceIds: string[];
   reviewedPersonIds: string[];
   reviewedStatementIds: string[];
   reviewedTimelineEventIds: string[];

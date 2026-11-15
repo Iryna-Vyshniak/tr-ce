@@ -1,4 +1,7 @@
+import { useState } from "react";
+
 import { activeCaseFile } from "../../cases/data/activeCase";
+import { getNewEvidenceUnlocks } from "../../cases/engine/resolveEvidenceUnlocks";
 import { useCaseProgress } from "../../cases/engine/useCaseProgress";
 import type { CaseEvidence } from "../../cases/types/case.types";
 import { useLocale } from "../../localization/hooks/useLocale";
@@ -10,25 +13,62 @@ const evidenceStatusStyles: Record<CaseEvidence["status"], string> = {
 
 export function CaseEvidence() {
   const { locale, t } = useLocale();
-  const { progress } = useCaseProgress();
+  const { progress, setProgress } = useCaseProgress();
+  const [lastUnlockedEvidenceIds, setLastUnlockedEvidenceIds] = useState<
+    string[]
+  >([]);
 
   const discoveredEvidence = activeCaseFile.evidence.filter((evidence) =>
     progress.discoveredEvidenceIds.includes(evidence.id),
   );
-
+  const reviewedEvidenceIds = new Set(progress.reviewedEvidenceIds);
   const undiscoveredEvidenceCount =
     activeCaseFile.evidence.length - discoveredEvidence.length;
+  const reviewLabel = locale === "uk" ? "Перевірити матеріал" : "Review material";
+  const reviewedLabel = locale === "uk" ? "Перевірено" : "Reviewed";
+  const unlockedLabel =
+    locale === "uk"
+      ? "Новий матеріал додано до картотеки доказів."
+      : "New material has been added to the evidence archive.";
 
   const peopleById = new Map(
     activeCaseFile.people.map((person) => [person.id, person.name[locale]]),
   );
-
   const locationsById = new Map(
     activeCaseFile.locations.map((location) => [
       location.id,
       location.name[locale],
     ]),
   );
+
+  function handleReviewEvidence(evidenceId: string) {
+    if (
+      !progress.discoveredEvidenceIds.includes(evidenceId) ||
+      reviewedEvidenceIds.has(evidenceId)
+    ) {
+      return;
+    }
+
+    const nextProgress = {
+      ...progress,
+      reviewedEvidenceIds: [...progress.reviewedEvidenceIds, evidenceId],
+    };
+    const newEvidenceIds = getNewEvidenceUnlocks(
+      nextProgress,
+      activeCaseFile.evidenceUnlockRules,
+    );
+
+    setProgress({
+      ...nextProgress,
+      discoveredEvidenceIds: [
+        ...new Set([
+          ...progress.discoveredEvidenceIds,
+          ...newEvidenceIds,
+        ]),
+      ],
+    });
+    setLastUnlockedEvidenceIds(newEvidenceIds);
+  }
 
   return (
     <section aria-labelledby="case-evidence-title">
@@ -37,35 +77,29 @@ export function CaseEvidence() {
           <p className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-evidence">
             {t.case.evidenceWorkspace.eyebrow}
           </p>
-
           <h2
             id="case-evidence-title"
             className="mt-4 font-display text-4xl font-bold uppercase leading-[0.95] tracking-[-0.03em] sm:text-5xl"
           >
             {t.case.evidenceWorkspace.title}
           </h2>
-
           <p className="mt-5 text-base leading-7 text-foreground-secondary">
             {t.case.evidenceWorkspace.description}
           </p>
         </div>
-
         <dl className="flex shrink-0 gap-6 font-mono text-xs uppercase tracking-[0.1em]">
           <div>
             <dt className="text-muted-foreground">
               {t.case.evidenceWorkspace.discovered}
             </dt>
-
             <dd className="mt-2 text-lg font-semibold text-signal">
               {String(discoveredEvidence.length).padStart(2, "0")}
             </dd>
           </div>
-
           <div>
             <dt className="text-muted-foreground">
               {t.case.evidenceWorkspace.undiscovered}
             </dt>
-
             <dd className="mt-2 text-lg font-semibold text-muted-foreground">
               {String(undiscoveredEvidenceCount).padStart(2, "0")}
             </dd>
@@ -73,12 +107,21 @@ export function CaseEvidence() {
         </dl>
       </div>
 
+      {lastUnlockedEvidenceIds.length > 0 && (
+        <p
+          className="mx-6 mt-6 border-l-2 border-signal bg-signal/10 px-4 py-3 text-sm leading-6 text-signal"
+          role="status"
+        >
+          {unlockedLabel}
+        </p>
+      )}
+
       <div className="section-content-spacing content-gap grid lg:grid-cols-2">
         {discoveredEvidence.map((evidence) => {
+          const hasBeenReviewed = reviewedEvidenceIds.has(evidence.id);
           const relatedPeople = evidence.relatedPersonIds
             .map((personId) => peopleById.get(personId))
             .filter((name): name is string => name !== undefined);
-
           const locationName =
             locationsById.get(evidence.locationId) ?? evidence.locationId;
 
@@ -91,7 +134,6 @@ export function CaseEvidence() {
                 <span className="font-mono text-xs font-semibold tracking-[0.12em] text-muted-foreground">
                   {evidence.catalogNumber}
                 </span>
-
                 <span
                   className={[
                     "border px-2 py-1 font-mono text-[0.625rem] font-semibold uppercase tracking-[0.1em]",
@@ -105,7 +147,6 @@ export function CaseEvidence() {
               <h3 className="mt-8 font-display text-3xl font-bold uppercase leading-none tracking-[-0.025em]">
                 {evidence.title[locale]}
               </h3>
-
               <p className="mt-4 text-sm leading-6 text-foreground-secondary">
                 {evidence.description[locale]}
               </p>
@@ -115,32 +156,43 @@ export function CaseEvidence() {
                   <dt className="font-mono text-[0.625rem] uppercase tracking-[0.12em] text-muted-foreground">
                     {t.case.evidenceWorkspace.foundAt}
                   </dt>
-
                   <dd className="mt-2 font-mono text-sm text-foreground">
                     {evidence.foundAt}
                   </dd>
                 </div>
-
                 <div>
                   <dt className="font-mono text-[0.625rem] uppercase tracking-[0.12em] text-muted-foreground">
                     {t.case.evidenceWorkspace.location}
                   </dt>
-
                   <dd className="mt-2 text-sm text-foreground">
                     {locationName}
                   </dd>
                 </div>
-
                 <div className="sm:col-span-2">
                   <dt className="font-mono text-[0.625rem] uppercase tracking-[0.12em] text-muted-foreground">
                     {t.case.evidenceWorkspace.relatedPeople}
                   </dt>
-
                   <dd className="mt-2 text-sm text-foreground">
                     {relatedPeople.join(", ")}
                   </dd>
                 </div>
               </dl>
+
+              <div className="mt-6 border-t border-border-subtle pt-5">
+                {hasBeenReviewed ? (
+                  <p className="font-mono text-[0.625rem] font-semibold uppercase tracking-[0.12em] text-signal">
+                    {reviewedLabel}
+                  </p>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => handleReviewEvidence(evidence.id)}
+                    className="min-h-11 border border-evidence bg-evidence/10 px-4 font-mono text-xs font-semibold uppercase tracking-[0.1em] text-evidence transition-colors duration-200 hover:bg-evidence hover:text-background"
+                  >
+                    {reviewLabel}
+                  </button>
+                )}
+              </div>
             </article>
           );
         })}

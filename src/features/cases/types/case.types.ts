@@ -70,11 +70,7 @@ export interface CaseEvidence {
 
 export interface EvidenceUnlockRule {
   evidenceId: string;
-  requiredLink: {
-    sourceId: string;
-    targetId: string;
-    relation: BoardRelation;
-  };
+  requiredReviewedEvidenceIds: string[];
 }
 
 export interface InterrogationTopic {

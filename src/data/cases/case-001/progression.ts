@@ -6,11 +6,7 @@ import type {
 export const case001EvidenceUnlockRules = [
   {
     evidenceId: "ev-004-master-key-log",
-    requiredLink: {
-      sourceId: "andrii-holub",
-      targetId: "ev-001-lock-log",
-      relation: "contradicts",
-    },
+    requiredReviewedEvidenceIds: ["ev-001-lock-log", "ev-002-receipt"],
   },
 ] satisfies EvidenceUnlockRule[];
 
