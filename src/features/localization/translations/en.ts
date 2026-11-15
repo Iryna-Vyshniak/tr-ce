@@ -132,7 +132,18 @@ export const en = {
       autosave: 'Your version is kept with the case material.',
       suspect: 'Primary suspect',
       motive: 'Possible motive',
+      observations: 'Reviewed observations',
       supportingEvidence: 'Supporting evidence',
+      interpretations: 'Interpretations',
+      interpretationsDescription:
+        'An interpretation explains what observations might mean. It is not an established fact yet.',
+      groundedIn: 'Grounded in',
+      noInterpretations:
+        'Complete the review of linked material to unlock grounded interpretations.',
+      supportsHypothesis: 'Supports this account',
+      challengesHypothesis: 'Challenges this account',
+      noSupport: 'No reviewed basis yet',
+      noChallenges: 'None identified yet',
       timeline: 'Key events',
       rejectedEvidence: 'Counterevidence and limits',
       alternativeHypotheses: 'Competing hypotheses',
@@ -156,9 +167,10 @@ export const en = {
         subject: 'The evidence points to a person',
         motive: 'A possible motive is identified',
         evidence: 'At least two inspected pieces of evidence are selected',
+        interpretation: 'A grounded interpretation is selected',
         timeline: 'A timeline event is included',
         countercase: 'An alternative or counterevidence is considered',
-        graph: 'The board connects the suspect to evidence',
+        graph: 'The graph traces observation → interpretation → conclusion',
         rationale: 'A rationale for the version is included',
       },
       finalize: 'Save conclusion',
@@ -196,10 +208,10 @@ export const en = {
     },
 
     boardWorkspace: {
-      eyebrow: 'Detective board',
-      title: 'Build your own theory',
+      eyebrow: 'Evidence graph',
+      title: 'Trace a path to the conclusion',
       description:
-        'Look for connections between people, evidence, and events to see the whole picture.',
+        'Connect observations to interpretations, then interpretations to people and events. Do not jump from evidence directly to a conclusion.',
       availableCards: 'Available cards',
       selectionHint:
         'Select the first card, then the second one. Selecting the first card again clears it.',
@@ -215,6 +227,7 @@ export const en = {
       nodeTypes: {
         person: 'Person',
         evidence: 'Evidence',
+        interpretation: 'Interpretation',
         event: 'Event',
       },
       relations: {
@@ -224,6 +237,8 @@ export const en = {
         owns: 'owns',
         motive: 'has a motive',
         alibi: 'has an alibi',
+        supports: 'supports',
+        explains: 'explains',
       },
     },
   },
