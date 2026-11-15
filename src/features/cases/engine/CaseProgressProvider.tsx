@@ -1,11 +1,12 @@
 import {
+  type ReactNode,
   useEffect,
   useMemo,
   useState,
-  type ReactNode,
 } from "react";
 
 import type { CaseFile } from "../types/case.types";
+import { askInterrogationTopic as askInterrogationTopicCommand } from "./caseProgress.commands";
 import { CaseProgressContext } from "./caseProgress.context";
 import {
   loadCaseProgress,
@@ -33,8 +34,22 @@ export function CaseProgressProvider({
     () => ({
       progress,
       setProgress,
+      askInterrogationTopic: (personId: string, topicId: string) => {
+        const result = askInterrogationTopicCommand(
+          progress,
+          caseFile,
+          personId,
+          topicId,
+        );
+
+        if (result.progress !== progress) {
+          setProgress(result.progress);
+        }
+
+        return result.newEvidenceIds;
+      },
     }),
-    [progress],
+    [caseFile, progress],
   );
 
   return (

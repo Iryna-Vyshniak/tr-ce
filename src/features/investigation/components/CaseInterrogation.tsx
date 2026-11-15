@@ -1,14 +1,13 @@
 import { useState } from "react";
 
 import { activeCaseFile } from "../../cases/data/activeCase";
-import { getNewInterrogationEvidenceUnlocks } from "../../cases/engine/resolveInterrogationEvidenceUnlocks";
 import { useCaseProgress } from "../../cases/engine/useCaseProgress";
 import { useLocale } from "../../localization/hooks/useLocale";
 
+
 export function CaseInterrogation() {
   const { locale, t } = useLocale();
-  const { progress, setProgress } = useCaseProgress();
-
+  const { progress, askInterrogationTopic } = useCaseProgress();
   const suspects = activeCaseFile.people.filter(
     (person) => person.role === "suspect",
   );
@@ -44,41 +43,10 @@ export function CaseInterrogation() {
   );
 
   function handleAskQuestion(topicId: string) {
-    if (progress.askedInterrogationTopicIds.includes(topicId)) {
-      return;
-    }
-
-    const nextProgress = {
-      ...progress,
-      askedInterrogationTopicIds: [
-        ...progress.askedInterrogationTopicIds,
-        topicId,
-      ],
-            characterKnowledgeByPersonId: {
-        ...progress.characterKnowledgeByPersonId,
-        [selectedPersonId]: [
-          ...new Set([
-            ...(progress.characterKnowledgeByPersonId[selectedPersonId] ?? []),
-            topicId,
-          ]),
-        ],
-      },
-    };
-
-    const newEvidenceIds = getNewInterrogationEvidenceUnlocks(
-      nextProgress,
-      activeCaseFile.interrogationEvidenceUnlocks,
+    const newEvidenceIds = askInterrogationTopic(
+      selectedPersonId,
+      topicId,
     );
-
-    setProgress({
-      ...nextProgress,
-      discoveredEvidenceIds: [
-        ...new Set([
-          ...progress.discoveredEvidenceIds,
-          ...newEvidenceIds,
-        ]),
-      ],
-    });
 
     setLastUnlockedEvidenceIds(newEvidenceIds);
   }
