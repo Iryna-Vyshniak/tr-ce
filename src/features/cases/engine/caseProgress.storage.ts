@@ -49,6 +49,13 @@ function isStringArray(value: unknown): value is string[] {
   return Array.isArray(value) && value.every((item) => typeof item === "string");
 }
 
+function isStringArrayRecord(
+  value: unknown,
+): value is Record<string, string[]> {
+  return isRecord(value) && Object.values(value).every(isStringArray);
+}
+
+
 function isInvestigationPhase(
   value: unknown,
 ): value is InvestigationPhase {
@@ -145,7 +152,11 @@ reviewedPersonIds: parsedProgress.reviewedPersonIds,
       )
         ? parsedProgress.askedInterrogationTopicIds
         : [],
-              characterKnowledgeByPersonId: {},
+                    characterKnowledgeByPersonId: isStringArrayRecord(
+        parsedProgress.characterKnowledgeByPersonId,
+      )
+        ? parsedProgress.characterKnowledgeByPersonId
+        : {},
       examinedScenePointIds: isStringArray(
         parsedProgress.examinedScenePointIds,
       )

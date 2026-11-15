@@ -54,6 +54,15 @@ export function CaseInterrogation() {
         ...progress.askedInterrogationTopicIds,
         topicId,
       ],
+            characterKnowledgeByPersonId: {
+        ...progress.characterKnowledgeByPersonId,
+        [selectedPersonId]: [
+          ...new Set([
+            ...(progress.characterKnowledgeByPersonId[selectedPersonId] ?? []),
+            topicId,
+          ]),
+        ],
+      },
     };
 
     const newEvidenceIds = getNewInterrogationEvidenceUnlocks(
