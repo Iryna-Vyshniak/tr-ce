@@ -20,8 +20,7 @@ function toggleId(ids: string[], id: string) {
 
 export function CaseTheory() {
   const { locale, t } = useLocale();
-  const { progress, setProgress } = useCaseProgress();
-
+const { progress, updateAccusation } = useCaseProgress();
   const draft = progress.accusation ?? emptyAccusation;
 
   const suspects = activeCaseFile.people.filter(
@@ -38,16 +37,9 @@ export function CaseTheory() {
     ),
   );
 
-  function updateDraft(update: Partial<CaseAccusation>) {
-    setProgress((currentProgress) => ({
-      ...currentProgress,
-      phase: "theory",
-      accusation: {
-        ...(currentProgress.accusation ?? emptyAccusation),
-        ...update,
-      },
-    }));
-  }
+function updateDraft(update: Partial<CaseAccusation>) {
+    updateAccusation(update);
+}
 
   function toggleSupportingEvidence(evidenceId: string) {
     updateDraft({

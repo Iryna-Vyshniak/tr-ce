@@ -2,6 +2,7 @@ import type { CaseFile } from "../types/case.types";
 import { getNewInterrogationEvidenceUnlocks } from "./resolveInterrogationEvidenceUnlocks";
 import { getNewEvidenceUnlocks } from "./resolveEvidenceUnlocks";
 import type { CaseProgress, InvestigationBoardLink } from "./caseProgress.types";
+import type { CaseAccusation } from "./caseProgress.types";
 import { getNewSceneEvidenceUnlocks } from "./resolveSceneEvidenceUnlocks";
 
 export interface AskInterrogationTopicResult {
@@ -160,5 +161,27 @@ export function removeBoardLink(progress: CaseProgress, linkId: string) {
   return {
     ...progress,
     boardLinks: progress.boardLinks.filter((link) => link.id !== linkId),
+  };
+}
+const emptyAccusation: CaseAccusation = {
+  suspectId: "",
+  motiveFactIds: [],
+  timelineEventIds: [],
+  evidenceIds: [],
+  rejectedEvidenceIds: [],
+  rationale: "",
+};
+
+export function updateCaseAccusation(
+  progress: CaseProgress,
+  update: Partial<CaseAccusation>,
+): CaseProgress {
+  return {
+    ...progress,
+    phase: "theory",
+    accusation: {
+      ...(progress.accusation ?? emptyAccusation),
+      ...update,
+    },
   };
 }

@@ -1,3 +1,5 @@
+import { updateCaseAccusation as updateCaseAccusationCommand } from "./caseProgress.commands";
+import type { CaseAccusation } from "./caseProgress.types";
 import {
   createBoardLink as createBoardLinkCommand,
   removeBoardLink as removeBoardLinkCommand,
@@ -94,6 +96,13 @@ export function CaseProgressProvider({
     },
     removeBoardLink: (linkId: string) => {
       const nextProgress = removeBoardLinkCommand(progress, linkId);
+
+      if (nextProgress !== progress) {
+        setProgress(nextProgress);
+      }
+    },
+    updateAccusation: (update: Partial<CaseAccusation>) => {
+      const nextProgress = updateCaseAccusationCommand(progress, update);
 
       if (nextProgress !== progress) {
         setProgress(nextProgress);
