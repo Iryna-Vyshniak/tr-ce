@@ -8,6 +8,7 @@ import {
 import type { CaseFile } from "../types/case.types";
 import {
   askInterrogationTopic as askInterrogationTopicCommand,
+  examineScenePoint as examineScenePointCommand,
   reviewEvidence as reviewEvidenceCommand,
 } from "./caseProgress.commands";
 import { CaseProgressContext } from "./caseProgress.context";
@@ -56,6 +57,19 @@ export function CaseProgressProvider({
           progress,
           caseFile,
           evidenceId,
+        );
+
+        if (result.progress !== progress) {
+          setProgress(result.progress);
+        }
+
+        return result.newEvidenceIds;
+      },
+      examineScenePoint: (pointId: string) => {
+        const result = examineScenePointCommand(
+          progress,
+          caseFile,
+          pointId,
         );
 
         if (result.progress !== progress) {

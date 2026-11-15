@@ -1,13 +1,12 @@
 import { useState } from "react";
 
 import { activeCaseFile } from "../../cases/data/activeCase";
-import { getNewSceneEvidenceUnlocks } from "../../cases/engine/resolveSceneEvidenceUnlocks";
 import { useCaseProgress } from "../../cases/engine/useCaseProgress";
 import { useLocale } from "../../localization/hooks/useLocale";
 
 export function CaseScene() {
   const { locale, t } = useLocale();
-  const { progress, setProgress } = useCaseProgress();
+    const { progress, examineScenePoint } = useCaseProgress();
 
   const scenePoints = activeCaseFile.scenePoints.filter(
     (point) => point.locationId === "room-714",
@@ -25,37 +24,11 @@ export function CaseScene() {
     (point) => point.id === selectedPointId,
   );
 
-  function handleExaminePoint(pointId: string) {
-    if (progress.examinedScenePointIds.includes(pointId)) {
-      return;
-    }
-
-    const nextProgress = {
-      ...progress,
-      examinedScenePointIds: [
-        ...progress.examinedScenePointIds,
-        pointId,
-      ],
-    };
-
-    const newEvidenceIds = getNewSceneEvidenceUnlocks(
-      nextProgress,
-      scenePoints,
-    );
-
-    setProgress({
-      ...nextProgress,
-      discoveredEvidenceIds: [
-        ...new Set([
-          ...progress.discoveredEvidenceIds,
-          ...newEvidenceIds,
-        ]),
-      ],
-    });
+    function handleExaminePoint(pointId: string) {
+    const newEvidenceIds = examineScenePoint(pointId);
 
     setLastUnlockedEvidenceIds(newEvidenceIds);
   }
-
   return (
     <section aria-labelledby="case-scene-title">
       <div className="section-heading-spacing content-gap flex flex-col border-b border-border lg:flex-row lg:items-end lg:justify-between">

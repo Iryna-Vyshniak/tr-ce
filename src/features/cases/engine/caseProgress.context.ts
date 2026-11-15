@@ -11,6 +11,7 @@ export interface CaseProgressContextValue {
   setProgress: Dispatch<SetStateAction<CaseProgress>>;
   askInterrogationTopic: (personId: string, topicId: string) => string[];
   reviewEvidence: (evidenceId: string) => string[];
+  examineScenePoint: (pointId: string) => string[];
 }
 
 export const CaseProgressContext =

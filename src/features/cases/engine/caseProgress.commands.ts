@@ -2,6 +2,7 @@ import type { CaseFile } from "../types/case.types";
 import { getNewInterrogationEvidenceUnlocks } from "./resolveInterrogationEvidenceUnlocks";
 import { getNewEvidenceUnlocks } from "./resolveEvidenceUnlocks";
 import type { CaseProgress } from "./caseProgress.types";
+import { getNewSceneEvidenceUnlocks } from "./resolveSceneEvidenceUnlocks";
 
 export interface AskInterrogationTopicResult {
   progress: CaseProgress;
@@ -73,6 +74,41 @@ export function reviewEvidence(
   const newEvidenceIds = getNewEvidenceUnlocks(
     nextProgress,
     caseFile.evidenceUnlockRules,
+  );
+
+  return {
+    progress: {
+      ...nextProgress,
+      discoveredEvidenceIds: [
+        ...new Set([
+          ...progress.discoveredEvidenceIds,
+          ...newEvidenceIds,
+        ]),
+      ],
+    },
+    newEvidenceIds,
+  };
+}
+
+export function examineScenePoint(
+  progress: CaseProgress,
+  caseFile: CaseFile,
+  pointId: string,
+) {
+  if (progress.examinedScenePointIds.includes(pointId)) {
+    return { progress, newEvidenceIds: [] };
+  }
+
+  const nextProgress = {
+    ...progress,
+    examinedScenePointIds: [
+      ...progress.examinedScenePointIds,
+      pointId,
+    ],
+  };
+  const newEvidenceIds = getNewSceneEvidenceUnlocks(
+    nextProgress,
+    caseFile.scenePoints,
   );
 
   return {
