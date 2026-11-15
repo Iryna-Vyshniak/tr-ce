@@ -79,10 +79,18 @@
   }
 
   .trce-glass-room {
+    aspect-ratio: 16 / 9;
+    min-height: 0;
     box-shadow: var(--shadow-elevated);
     background:
       linear-gradient(180deg, rgb(9 4 3 / 4%), rgb(9 4 3 / 70%)),
       linear-gradient(115deg, #130906 0%, #35170e 48%, #160806 100%);
+  }
+
+  .trce-glass-room__media {
+    position: absolute;
+    inset: 0;
+    object-position: center;
   }
 
   .trce-glass-room::before,
@@ -458,6 +466,36 @@
     box-shadow: var(--glow-evidence);
   }
 
+  .trce-scene-detail {
+    position: relative;
+    margin-inline: 0;
+    overflow: hidden;
+    border: 1px solid var(--evidence);
+    background: var(--background);
+    box-shadow: var(--glow-evidence);
+  }
+
+  .trce-scene-detail img {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+  }
+
+  .trce-scene-detail figcaption {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 0.65rem 0.75rem;
+    background: linear-gradient(transparent, rgb(10 4 2 / 92%));
+    color: var(--foreground-secondary);
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
   /* Evidence */
 
   .trce-evidence-panel {
@@ -524,6 +562,16 @@
     .trce-hotspot {
       width: 2.75rem;
       height: 2.75rem;
+    }
+
+    .trce-scene__label {
+      top: 0.75rem;
+      left: 0.75rem;
+      font-size: 0.5625rem;
+    }
+
+    .trce-scene__coordinate {
+      display: none;
     }
   }
 }

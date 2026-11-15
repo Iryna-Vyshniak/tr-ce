@@ -1,8 +1,18 @@
 import { useState } from "react";
 
+import evidenceGlassShardImage from "../../../assets/evidence-glass-shard.png";
+import glassRoomMainImage from "../../../assets/glass-room-main.png";
 import { activeCaseFile } from "../../cases/data/activeCase";
 import { useCaseProgress } from "../../cases/engine/useCaseProgress";
 import { useLocale } from "../../localization/hooks/useLocale";
+
+const scenePointAnchors: Record<string, { x: number; y: number }> = {
+  // These coordinates follow stable landmarks in the scene image, not case data.
+  "scene-001-entry-lock": { x: 17, y: 40 },
+  "scene-002-work-desk": { x: 62, y: 72 },
+  "scene-003-panoramic-wall": { x: 84, y: 26 },
+  "scene-004-inner-wall": { x: 47, y: 53 },
+};
 
 export function CaseScene() {
   const { locale, t } = useLocale();
@@ -23,6 +33,8 @@ export function CaseScene() {
   const selectedPoint = scenePoints.find(
     (point) => point.id === selectedPointId,
   );
+  const selectedPointHasEvidenceImage =
+    selectedPoint?.evidenceId === "ev-006-glass-shard";
 
   function handleExaminePoint(pointId: string) {
     const newEvidenceIds = examineScenePoint(pointId);
@@ -64,34 +76,17 @@ export function CaseScene() {
 
       <div className="section-content-spacing content-gap grid xl:grid-cols-[minmax(0,1.35fr)_minmax(20rem,0.65fr)]">
         <div
-          className="trce-scene trce-glass-room min-h-[32rem] border border-border"
+          className="trce-scene trce-glass-room border border-border"
           role="group"
           aria-label={t.case.sceneWorkspace.roomLabel}
         >
-          <div className="trce-glass-room__atmosphere" aria-hidden="true" />
-          <div className="trce-glass-room__window" aria-hidden="true">
-            <span className="trce-glass-room__window-light trce-glass-room__window-light--one" />
-            <span className="trce-glass-room__window-light trce-glass-room__window-light--two" />
-            <span className="trce-glass-room__window-light trce-glass-room__window-light--three" />
-            <span className="trce-glass-room__window-frame trce-glass-room__window-frame--vertical" />
-            <span className="trce-glass-room__window-frame trce-glass-room__window-frame--horizontal" />
-            <span className="trce-glass-room__wet-trace" />
-          </div>
-          <div className="trce-glass-room__door" aria-hidden="true">
-            <span className="trce-glass-room__door-lock" />
-          </div>
-          <div className="trce-glass-room__desk" aria-hidden="true">
-            <span className="trce-glass-room__laptop" />
-            <span className="trce-glass-room__paper" />
-          </div>
-          <div className="trce-glass-room__lamp" aria-hidden="true">
-            <span className="trce-glass-room__lamp-shade" />
-            <span className="trce-glass-room__lamp-stem" />
-          </div>
-          <div className="trce-glass-room__armchair" aria-hidden="true" />
-          <div className="trce-glass-room__cabinet" aria-hidden="true">
-            <span className="trce-glass-room__glass-shard" />
-          </div>
+          <img
+            alt=""
+            aria-hidden="true"
+            className="trce-scene-media trce-glass-room__media"
+            src={glassRoomMainImage}
+          />
+          <div className="trce-scene-overlay" aria-hidden="true" />
 
           <p className="trce-scene__label">
             {t.case.sceneWorkspace.roomLabel}
@@ -106,6 +101,7 @@ export function CaseScene() {
             const isExamined = progress.examinedScenePointIds.includes(
               point.id,
             );
+            const anchor = scenePointAnchors[point.id] ?? point.position;
 
             return (
               <button
@@ -126,8 +122,8 @@ export function CaseScene() {
                       : "",
                 ].join(" ")}
                 style={{
-                  left: `${point.position.x}%`,
-                  top: `${point.position.y}%`,
+                  left: `${anchor.x}%`,
+                  top: `${anchor.y}%`,
                 }}
               >
                 <span aria-hidden="true">
@@ -152,15 +148,29 @@ export function CaseScene() {
               {progress.examinedScenePointIds.includes(
                 selectedPoint.id,
               ) ? (
-                <div className="mt-6 border-l-2 border-evidence pl-4">
-                  <p className="font-mono text-[0.625rem] font-semibold uppercase tracking-[0.12em] text-evidence">
-                    {t.case.sceneWorkspace.observation}
-                  </p>
+                <>
+                  {selectedPointHasEvidenceImage && (
+                    <figure className="trce-scene-detail mt-6">
+                      <img
+                        alt={`${selectedPoint.title[locale]} — ${selectedPoint.observation[locale]}`}
+                        src={evidenceGlassShardImage}
+                      />
+                      <figcaption>
+                        {selectedPoint.title[locale]}
+                      </figcaption>
+                    </figure>
+                  )}
 
-                  <p className="mt-3 text-sm leading-6 text-foreground-secondary">
-                    {selectedPoint.observation[locale]}
-                  </p>
-                </div>
+                  <div className="mt-6 border-l-2 border-evidence pl-4">
+                    <p className="font-mono text-[0.625rem] font-semibold uppercase tracking-[0.12em] text-evidence">
+                      {t.case.sceneWorkspace.observation}
+                    </p>
+
+                    <p className="mt-3 text-sm leading-6 text-foreground-secondary">
+                      {selectedPoint.observation[locale]}
+                    </p>
+                  </div>
+                </>
               ) : (
                 <button
                   type="button"
