@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { activeCaseFile } from "../../cases/data/activeCase";
-import { getNewEvidenceUnlocks } from "../../cases/engine/resolveEvidenceUnlocks";
+
 import { useCaseProgress } from "../../cases/engine/useCaseProgress";
 import type { CaseEvidence } from "../../cases/types/case.types";
 import { useLocale } from "../../localization/hooks/useLocale";
@@ -13,7 +13,7 @@ const evidenceStatusStyles: Record<CaseEvidence["status"], string> = {
 
 export function CaseEvidence() {
   const { locale, t } = useLocale();
-  const { progress, setProgress } = useCaseProgress();
+  const { progress, reviewEvidence } = useCaseProgress();
   const [lastUnlockedEvidenceIds, setLastUnlockedEvidenceIds] = useState<
     string[]
   >([]);
@@ -40,35 +40,12 @@ export function CaseEvidence() {
       location.name[locale],
     ]),
   );
-
   function handleReviewEvidence(evidenceId: string) {
-    if (
-      !progress.discoveredEvidenceIds.includes(evidenceId) ||
-      reviewedEvidenceIds.has(evidenceId)
-    ) {
-      return;
-    }
+    const newEvidenceIds = reviewEvidence(evidenceId);
 
-    const nextProgress = {
-      ...progress,
-      reviewedEvidenceIds: [...progress.reviewedEvidenceIds, evidenceId],
-    };
-    const newEvidenceIds = getNewEvidenceUnlocks(
-      nextProgress,
-      activeCaseFile.evidenceUnlockRules,
-    );
-
-    setProgress({
-      ...nextProgress,
-      discoveredEvidenceIds: [
-        ...new Set([
-          ...progress.discoveredEvidenceIds,
-          ...newEvidenceIds,
-        ]),
-      ],
-    });
     setLastUnlockedEvidenceIds(newEvidenceIds);
   }
+  
 
   return (
     <section aria-labelledby="case-evidence-title">
@@ -200,3 +177,4 @@ export function CaseEvidence() {
     </section>
   );
 }
+

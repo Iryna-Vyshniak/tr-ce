@@ -6,7 +6,10 @@ import {
 } from "react";
 
 import type { CaseFile } from "../types/case.types";
-import { askInterrogationTopic as askInterrogationTopicCommand } from "./caseProgress.commands";
+import {
+  askInterrogationTopic as askInterrogationTopicCommand,
+  reviewEvidence as reviewEvidenceCommand,
+} from "./caseProgress.commands";
 import { CaseProgressContext } from "./caseProgress.context";
 import {
   loadCaseProgress,
@@ -40,6 +43,19 @@ export function CaseProgressProvider({
           caseFile,
           personId,
           topicId,
+        );
+
+        if (result.progress !== progress) {
+          setProgress(result.progress);
+        }
+
+        return result.newEvidenceIds;
+      },
+      reviewEvidence: (evidenceId: string) => {
+        const result = reviewEvidenceCommand(
+          progress,
+          caseFile,
+          evidenceId,
         );
 
         if (result.progress !== progress) {

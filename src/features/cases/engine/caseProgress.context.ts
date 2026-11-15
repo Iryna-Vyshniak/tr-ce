@@ -9,7 +9,8 @@ import type { CaseProgress } from "./caseProgress.types";
 export interface CaseProgressContextValue {
   progress: CaseProgress;
   setProgress: Dispatch<SetStateAction<CaseProgress>>;
-    askInterrogationTopic: (personId: string, topicId: string) => string[];
+  askInterrogationTopic: (personId: string, topicId: string) => string[];
+  reviewEvidence: (evidenceId: string) => string[];
 }
 
 export const CaseProgressContext =
