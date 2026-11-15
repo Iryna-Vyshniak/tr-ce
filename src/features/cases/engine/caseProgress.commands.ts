@@ -174,6 +174,7 @@ export function removeBoardLink(progress: CaseProgress, linkId: string) {
 }
 const emptyAccusation: CaseAccusation = {
   suspectId: "",
+  interpretationIds: [],
   motiveFactIds: [],
   timelineEventIds: [],
   evidenceIds: [],
@@ -223,6 +224,7 @@ export function finalizeCaseReport(
     policyVersion: "case-report-v1",
     accusation: {
       ...progress.accusation,
+      interpretationIds: [...progress.accusation.interpretationIds],
       motiveFactIds: [...progress.accusation.motiveFactIds],
       timelineEventIds: [...progress.accusation.timelineEventIds],
       evidenceIds: [...progress.accusation.evidenceIds],

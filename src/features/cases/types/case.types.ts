@@ -53,7 +53,15 @@ export type EvidenceKind = 'physical' | 'document' | 'digital';
 export type EvidenceStatus = 'verified' | 'lead';
 export type EvidenceAvailability = 'initial' | 'discoverable';
 
-export type BoardRelation = 'knows' | 'was-at' | 'contradicts' | 'owns' | 'motive' | 'alibi';
+export type BoardRelation =
+  | 'knows'
+  | 'was-at'
+  | 'contradicts'
+  | 'owns'
+  | 'motive'
+  | 'alibi'
+  | 'supports'
+  | 'explains';
 
 export interface CaseEvidence {
   id: string;
@@ -104,6 +112,24 @@ export interface TheoryMotiveOption {
   description: LocalizedText;
 }
 
+/** A reasoned reading of one or more reviewed observations, never a fact itself. */
+export interface CaseInterpretation {
+  id: string;
+  title: LocalizedText;
+  description: LocalizedText;
+  observationEvidenceIds: string[];
+}
+
+/** A competing account of the case, kept distinct from the final conclusion. */
+export interface CaseHypothesis {
+  id: string;
+  personId: string;
+  title: LocalizedText;
+  description: LocalizedText;
+  supportingInterpretationIds: string[];
+  challengingInterpretationIds: string[];
+}
+
 export interface CaseLocation {
   id: string;
   name: LocalizedText;
@@ -150,6 +176,8 @@ export interface CaseFile {
   interrogationEvidenceUnlocks: InterrogationEvidenceUnlock[];
   scenePoints: SceneExaminationPoint[];
   theoryMotiveOptions: TheoryMotiveOption[];
+  interpretations: CaseInterpretation[];
+  hypotheses: CaseHypothesis[];
   locations: CaseLocation[];
   statements: WitnessStatement[];
   timeline: TimelineEvent[];

@@ -37,6 +37,8 @@ const boardRelations: BoardRelation[] = [
   "owns",
   "motive",
   "alibi",
+  "supports",
+  "explains",
 ];
 
 function getStorageKey(caseId: string) {
@@ -88,6 +90,7 @@ function isCaseAccusation(value: unknown): value is CaseAccusation {
   return (
     isRecord(value) &&
     typeof value.suspectId === "string" &&
+    (value.interpretationIds === undefined || isStringArray(value.interpretationIds)) &&
     isStringArray(value.motiveFactIds) &&
     isStringArray(value.timelineEventIds) &&
     isStringArray(value.evidenceIds) &&
@@ -187,6 +190,11 @@ reviewedPersonIds: parsedProgress.reviewedPersonIds,
       accusation: parsedProgress.accusation
         ? {
             ...parsedProgress.accusation,
+            interpretationIds: isStringArray(
+              parsedProgress.accusation.interpretationIds,
+            )
+              ? parsedProgress.accusation.interpretationIds
+              : [],
             alternativeSuspectIds: isStringArray(
               parsedProgress.accusation.alternativeSuspectIds,
             )

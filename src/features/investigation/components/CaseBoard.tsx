@@ -6,7 +6,7 @@ import { useCaseProgress } from "../../cases/engine/useCaseProgress";
 import type { InvestigationBoardLink } from "../../cases/engine/caseProgress.types";
 import { useLocale } from "../../localization/hooks/useLocale";
 
-type BoardNodeKind = "person" | "evidence" | "event";
+type BoardNodeKind = "person" | "evidence" | "interpretation" | "event";
 
 interface BoardNode {
   id: string;
@@ -21,11 +21,14 @@ const relationOptions: InvestigationBoardLink["relation"][] = [
   "owns",
   "motive",
   "alibi",
+  "supports",
+  "explains",
 ];
 
 const nodeKindStyles: Record<BoardNodeKind, string> = {
   person: "text-foreground",
   evidence: "text-evidence",
+  interpretation: "text-signal",
   event: "text-signal",
 };
 
@@ -50,6 +53,13 @@ export function CaseBoard() {
     ),
   );
 
+  const visibleInterpretations = activeCaseFile.interpretations.filter(
+    (interpretation) =>
+      interpretation.observationEvidenceIds.every((evidenceId) =>
+        progress.reviewedEvidenceIds.includes(evidenceId),
+      ),
+  );
+
   const personNodes = activeCaseFile.people.map<BoardNode>((person) => ({
     id: person.id,
     label: person.name[locale],
@@ -62,13 +72,26 @@ export function CaseBoard() {
     kind: "evidence",
   }));
 
+  const interpretationNodes = visibleInterpretations.map<BoardNode>(
+    (interpretation) => ({
+      id: interpretation.id,
+      label: interpretation.title[locale],
+      kind: "interpretation",
+    }),
+  );
+
   const eventNodes = visibleTimelineEvents.map<BoardNode>((event) => ({
     id: event.id,
     label: `${event.occurredAt} — ${event.title[locale]}`,
     kind: "event",
   }));
 
-  const nodes = [...personNodes, ...evidenceNodes, ...eventNodes];
+  const nodes = [
+    ...personNodes,
+    ...evidenceNodes,
+    ...interpretationNodes,
+    ...eventNodes,
+  ];
 
   const nodeById = new Map(nodes.map((node) => [node.id, node]));
 

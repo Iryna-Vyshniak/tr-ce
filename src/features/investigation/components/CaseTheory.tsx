@@ -1,10 +1,15 @@
 import type { CaseAccusation } from "../../cases/engine/caseProgress.types";
 import { activeCaseFile } from "../../cases/data/activeCase";
+import type {
+  CaseHypothesis,
+  CaseInterpretation,
+} from "../../cases/types/case.types";
 import { useCaseProgress } from "../../cases/engine/useCaseProgress";
 import { useLocale } from "../../localization/hooks/useLocale";
 
 const emptyAccusation: CaseAccusation = {
   suspectId: "",
+  interpretationIds: [],
   motiveFactIds: [],
   timelineEventIds: [],
   evidenceIds: [],
@@ -29,8 +34,30 @@ export function CaseTheory() {
     (person) => person.role === "suspect",
   );
 
-  const discoveredEvidence = activeCaseFile.evidence.filter((evidence) =>
-    progress.discoveredEvidenceIds.includes(evidence.id),
+  const reviewedEvidence = activeCaseFile.evidence.filter((evidence) =>
+    progress.reviewedEvidenceIds.includes(evidence.id),
+  );
+  const reviewedEvidenceIds = new Set(progress.reviewedEvidenceIds);
+  const evidenceById = new Map(
+    activeCaseFile.evidence.map((evidence) => [evidence.id, evidence]),
+  );
+  const visibleInterpretations = activeCaseFile.interpretations.filter(
+    (interpretation) =>
+      interpretation.observationEvidenceIds.every((evidenceId) =>
+        reviewedEvidenceIds.has(evidenceId),
+      ),
+  );
+  const hypothesisByPersonId = new Map(
+    activeCaseFile.hypotheses.map((hypothesis) => [
+      hypothesis.personId,
+      hypothesis,
+    ]),
+  );
+  const interpretationById = new Map(
+    activeCaseFile.interpretations.map((interpretation) => [
+      interpretation.id,
+      interpretation,
+    ]),
   );
 
   const visibleTimelineEvents = activeCaseFile.timeline.filter((event) =>
@@ -42,6 +69,12 @@ export function CaseTheory() {
 function updateDraft(update: Partial<CaseAccusation>) {
     updateAccusation(update);
 }
+
+  function toggleInterpretation(interpretationId: string) {
+    updateDraft({
+      interpretationIds: toggleId(draft.interpretationIds, interpretationId),
+    });
+  }
 
   function toggleSupportingEvidence(evidenceId: string) {
     updateDraft({
@@ -102,6 +135,7 @@ function updateDraft(update: Partial<CaseAccusation>) {
           <div className="mt-5 grid gap-3 sm:grid-cols-2">
             {suspects.map((person) => {
               const isSelected = draft.suspectId === person.id;
+              const hypothesis = hypothesisByPersonId.get(person.id);
 
               return (
                 <button
@@ -131,6 +165,21 @@ function updateDraft(update: Partial<CaseAccusation>) {
                   <span className="mt-2 block font-display text-3xl font-bold uppercase leading-none tracking-[-0.025em]">
                     {person.name[locale]}
                   </span>
+
+                  {hypothesis && (
+                    <>
+                      <span className="mt-3 block text-sm leading-6 text-foreground-secondary">
+                        {hypothesis.title[locale]}
+                      </span>
+                      <span className="mt-2 block text-xs leading-5 text-muted-foreground">
+                        {hypothesis.description[locale]}
+                      </span>
+                      <HypothesisBalance
+                        hypothesis={hypothesis}
+                        interpretationById={interpretationById}
+                      />
+                    </>
+                  )}
                 </button>
               );
             })}
@@ -191,6 +240,7 @@ function updateDraft(update: Partial<CaseAccusation>) {
               .filter((person) => person.id !== draft.suspectId)
               .map((person) => {
                 const isSelected = draft.alternativeSuspectIds.includes(person.id);
+                const hypothesis = hypothesisByPersonId.get(person.id);
 
                 return (
                   <label
@@ -220,6 +270,17 @@ function updateDraft(update: Partial<CaseAccusation>) {
                       <span className="ml-3 text-foreground">
                         {person.name[locale]}
                       </span>
+                      {hypothesis && (
+                        <>
+                          <span className="mt-2 block text-xs leading-5 text-muted-foreground">
+                            {hypothesis.description[locale]}
+                          </span>
+                          <HypothesisBalance
+                            hypothesis={hypothesis}
+                            interpretationById={interpretationById}
+                          />
+                        </>
+                      )}
                     </span>
                   </label>
                 );
@@ -229,11 +290,11 @@ function updateDraft(update: Partial<CaseAccusation>) {
 
         <section className="card-spacing border border-border bg-surface">
           <p className="font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-evidence">
-            04 // {t.case.theoryWorkspace.supportingEvidence}
+            04 // {t.case.theoryWorkspace.observations}
           </p>
 
           <div className="mt-5 space-y-3">
-            {discoveredEvidence.map((evidence) => {
+            {reviewedEvidence.map((evidence) => {
               const isSelected = draft.evidenceIds.includes(evidence.id);
 
               return (
@@ -266,7 +327,65 @@ function updateDraft(update: Partial<CaseAccusation>) {
 
         <section className="card-spacing border border-border bg-surface">
           <p className="font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-evidence">
-            05 // {t.case.theoryWorkspace.timeline}
+            05 // {t.case.theoryWorkspace.interpretations}
+          </p>
+
+          <p className="mt-4 text-sm leading-6 text-foreground-secondary">
+            {t.case.theoryWorkspace.interpretationsDescription}
+          </p>
+
+          {visibleInterpretations.length > 0 ? (
+            <div className="mt-5 space-y-3">
+              {visibleInterpretations.map((interpretation) => {
+                const isSelected = draft.interpretationIds.includes(
+                  interpretation.id,
+                );
+                const evidenceLabels = interpretation.observationEvidenceIds
+                  .flatMap((evidenceId) => {
+                    const evidence = evidenceById.get(evidenceId);
+
+                    return evidence ? [evidence.catalogNumber] : [];
+                  })
+                  .join(", ");
+
+                return (
+                  <label
+                    key={interpretation.id}
+                    className="flex cursor-pointer gap-3 border border-border-subtle bg-background p-4 text-sm leading-6 transition-colors hover:border-muted-foreground"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={isSelected}
+                      disabled={isFinalized}
+                      onChange={() => toggleInterpretation(interpretation.id)}
+                      className="mt-1 size-4 accent-evidence"
+                    />
+
+                    <span>
+                      <span className="font-display text-xl font-bold uppercase leading-none tracking-[-0.02em] text-foreground">
+                        {interpretation.title[locale]}
+                      </span>
+                      <span className="mt-3 block text-sm leading-6 text-foreground-secondary">
+                        {interpretation.description[locale]}
+                      </span>
+                      <span className="mt-3 block font-mono text-[0.625rem] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                        {t.case.theoryWorkspace.groundedIn}: {evidenceLabels}
+                      </span>
+                    </span>
+                  </label>
+                );
+              })}
+            </div>
+          ) : (
+            <p className="mt-5 border border-dashed border-border p-5 text-sm leading-6 text-muted-foreground">
+              {t.case.theoryWorkspace.noInterpretations}
+            </p>
+          )}
+        </section>
+
+        <section className="card-spacing border border-border bg-surface">
+          <p className="font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-evidence">
+            06 // {t.case.theoryWorkspace.timeline}
           </p>
 
           <div className="mt-5 space-y-3">
@@ -310,11 +429,11 @@ function updateDraft(update: Partial<CaseAccusation>) {
 
         <section className="card-spacing border border-border bg-surface">
           <p className="font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-evidence">
-            06 // {t.case.theoryWorkspace.rejectedEvidence}
+            07 // {t.case.theoryWorkspace.rejectedEvidence}
           </p>
 
           <div className="mt-5 space-y-3">
-            {discoveredEvidence.map((evidence) => {
+            {reviewedEvidence.map((evidence) => {
               const isSelected = draft.rejectedEvidenceIds.includes(evidence.id);
 
               return (
@@ -347,7 +466,7 @@ function updateDraft(update: Partial<CaseAccusation>) {
 
         <section className="card-spacing border border-border bg-surface">
           <p className="font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-evidence">
-            07 // {t.case.theoryWorkspace.rationale}
+            08 // {t.case.theoryWorkspace.rationale}
           </p>
 
           <textarea
@@ -362,5 +481,52 @@ function updateDraft(update: Partial<CaseAccusation>) {
         </section>
       </div>
     </section>
+  );
+}
+
+interface HypothesisBalanceProps {
+  hypothesis: CaseHypothesis;
+  interpretationById: Map<string, CaseInterpretation>;
+}
+
+function HypothesisBalance({
+  hypothesis,
+  interpretationById,
+}: HypothesisBalanceProps) {
+  const { locale, t } = useLocale();
+  const supporting = hypothesis.supportingInterpretationIds
+    .map((interpretationId) => interpretationById.get(interpretationId))
+    .filter(
+      (interpretation): interpretation is CaseInterpretation =>
+        interpretation !== undefined,
+    )
+    .map((interpretation) => interpretation.title[locale]);
+  const challenging = hypothesis.challengingInterpretationIds
+    .map((interpretationId) => interpretationById.get(interpretationId))
+    .filter(
+      (interpretation): interpretation is CaseInterpretation =>
+        interpretation !== undefined,
+    )
+    .map((interpretation) => interpretation.title[locale]);
+
+  return (
+    <dl className="mt-4 grid gap-3 border-t border-border-subtle pt-3 text-xs leading-5">
+      <div>
+        <dt className="font-mono text-[0.625rem] font-semibold uppercase tracking-[0.1em] text-signal">
+          {t.case.theoryWorkspace.supportsHypothesis}
+        </dt>
+        <dd className="mt-1 text-foreground-secondary">
+          {supporting.join("; ") || t.case.theoryWorkspace.noSupport}
+        </dd>
+      </div>
+      <div>
+        <dt className="font-mono text-[0.625rem] font-semibold uppercase tracking-[0.1em] text-evidence">
+          {t.case.theoryWorkspace.challengesHypothesis}
+        </dt>
+        <dd className="mt-1 text-foreground-secondary">
+          {challenging.join("; ") || t.case.theoryWorkspace.noChallenges}
+        </dd>
+      </div>
+    </dl>
   );
 }

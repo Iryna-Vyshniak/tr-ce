@@ -1,6 +1,7 @@
 import { activeCaseFile } from "../../cases/data/activeCase";
 import { getCaseReportReadiness } from "../../cases/engine/caseReport.readiness";
 import type { CaseAccusation } from "../../cases/engine/caseProgress.types";
+import type { CaseInterpretation } from "../../cases/types/case.types";
 import { useCaseProgress } from "../../cases/engine/useCaseProgress";
 import { useLocale } from "../../localization/hooks/useLocale";
 
@@ -20,6 +21,12 @@ export function CaseReport() {
   const timelineById = new Map(
     activeCaseFile.timeline.map((event) => [event.id, event]),
   );
+  const interpretationById = new Map(
+    activeCaseFile.interpretations.map((interpretation) => [
+      interpretation.id,
+      interpretation,
+    ]),
+  );
 
   const selectedEvidence = (accusation?.evidenceIds ?? [])
     .map((evidenceId) => evidenceById.get(evidenceId))
@@ -27,6 +34,12 @@ export function CaseReport() {
   const selectedTimeline = (accusation?.timelineEventIds ?? [])
     .map((eventId) => timelineById.get(eventId))
     .filter((event) => event !== undefined);
+  const selectedInterpretations = (accusation?.interpretationIds ?? [])
+    .map((interpretationId) => interpretationById.get(interpretationId))
+    .filter(
+      (interpretation): interpretation is CaseInterpretation =>
+        interpretation !== undefined,
+    );
   const alternateNames = (accusation?.alternativeSuspectIds ?? [])
     .map((personId) => peopleById.get(personId))
     .filter((name): name is string => name !== undefined);
@@ -71,6 +84,7 @@ export function CaseReport() {
             limitationNames={limitationNames}
             selectedTimeline={selectedTimeline}
             selectedEvidence={selectedEvidence}
+            selectedInterpretations={selectedInterpretations}
           />
         </div>
       ) : (
@@ -157,6 +171,7 @@ interface CaseReportContentsProps {
   limitationNames: string[];
   selectedTimeline: (typeof activeCaseFile.timeline)[number][];
   selectedEvidence: (typeof activeCaseFile.evidence)[number][];
+  selectedInterpretations: CaseInterpretation[];
 }
 
 function CaseReportContents({
@@ -166,6 +181,7 @@ function CaseReportContents({
   limitationNames,
   selectedTimeline,
   selectedEvidence,
+  selectedInterpretations,
 }: CaseReportContentsProps) {
   const { locale, t } = useLocale();
 
@@ -219,7 +235,16 @@ function CaseReportContents({
                   />
                   <GraphStep
                     label={t.case.reportWorkspace.inference}
-                    value={accusation?.rationale || t.case.reportWorkspace.noAlternatives}
+                    value={
+                      selectedInterpretations
+                        .filter((interpretation) =>
+                          interpretation.observationEvidenceIds.includes(
+                            evidence.id,
+                          ),
+                        )
+                        .map((interpretation) => interpretation.title[locale])
+                        .join(" · ") || t.case.reportWorkspace.noAlternatives
+                    }
                   />
                   <GraphStep
                     label={t.case.reportWorkspace.conclusion}

@@ -13,7 +13,11 @@ import {
 } from "./case-001/progression";
 import { case001ScenePoints } from "./case-001/scene";
 import { case001Statements } from "./case-001/statements";
-import { case001TheoryMotiveOptions } from "./case-001/theory";
+import {
+  case001Hypotheses,
+  case001Interpretations,
+  case001TheoryMotiveOptions,
+} from "./case-001/theory";
 import { case001Timeline } from "./case-001/timeline";
 
 export const case001Summary = {
@@ -34,6 +38,8 @@ export const case001 = {
   interrogationEvidenceUnlocks: case001InterrogationEvidenceUnlocks,
   scenePoints: case001ScenePoints,
   theoryMotiveOptions: case001TheoryMotiveOptions,
+  interpretations: case001Interpretations,
+  hypotheses: case001Hypotheses,
   locations: case001Locations,
   statements: case001Statements,
   timeline: case001Timeline,

@@ -16,6 +16,7 @@ export interface InvestigationBoardLink {
 
 export interface CaseAccusation {
   suspectId: string;
+  interpretationIds: string[];
   motiveFactIds: string[];
   timelineEventIds: string[];
   evidenceIds: string[];

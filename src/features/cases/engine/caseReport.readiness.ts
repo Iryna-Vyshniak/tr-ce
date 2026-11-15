@@ -5,6 +5,7 @@ export type CaseReportRequirementId =
   | "subject"
   | "motive"
   | "evidence"
+  | "interpretation"
   | "timeline"
   | "countercase"
   | "graph"
@@ -44,6 +45,7 @@ export function getCaseReportReadiness(
 
   const selectedEvidenceIds = accusation?.evidenceIds ?? [];
   const selectedTimelineIds = accusation?.timelineEventIds ?? [];
+  const selectedInterpretationIds = accusation?.interpretationIds ?? [];
   const selectedSuspectId = accusation?.suspectId ?? "";
   const selectedEvidenceIsReviewed =
     selectedEvidenceIds.length >= 2 &&
@@ -51,19 +53,48 @@ export function getCaseReportReadiness(
   const selectedTimelineIsAvailable =
     selectedTimelineIds.length > 0 &&
     selectedTimelineIds.every((eventId) => availableTimelineIds.has(eventId));
-  const graphConnectsClaim = progress.boardLinks.some((link) => {
-    const linkedToSuspect =
-      link.sourceId === selectedSuspectId || link.targetId === selectedSuspectId;
-    const linkedEvidenceId =
-      link.sourceId === selectedSuspectId ? link.targetId : link.sourceId;
+  const selectedInterpretations = caseFile.interpretations.filter(
+    (interpretation) => selectedInterpretationIds.includes(interpretation.id),
+  );
+  const interpretationsAreGrounded =
+    selectedInterpretations.length > 0 &&
+    selectedInterpretations.every((interpretation) =>
+      interpretation.observationEvidenceIds.every((evidenceId) =>
+        reviewedEvidenceIds.has(evidenceId),
+      ),
+    );
+  const graphConnectsClaim = selectedInterpretations.some(
+    (interpretation) => {
+      const observationLinkExists = interpretation.observationEvidenceIds.some(
+        (evidenceId) =>
+          selectedEvidenceIds.includes(evidenceId) &&
+          progress.boardLinks.some(
+            (link) =>
+              ((link.sourceId === evidenceId &&
+                link.targetId === interpretation.id) ||
+                (link.targetId === evidenceId &&
+                  link.sourceId === interpretation.id)) &&
+              (link.relation === "supports" || link.relation === "explains"),
+          ),
+      );
+      const conclusionLinkExists = progress.boardLinks.some(
+        (link) =>
+          ((link.sourceId === interpretation.id &&
+            link.targetId === selectedSuspectId) ||
+            (link.targetId === interpretation.id &&
+              link.sourceId === selectedSuspectId)) &&
+          (link.relation === "supports" || link.relation === "explains"),
+      );
 
-    return linkedToSuspect && selectedEvidenceIds.includes(linkedEvidenceId);
-  });
+      return observationLinkExists && conclusionLinkExists;
+    },
+  );
 
   const requirements: CaseReportRequirement[] = [
     { id: "subject", satisfied: selectedSuspectId.length > 0 },
     { id: "motive", satisfied: (accusation?.motiveFactIds.length ?? 0) > 0 },
     { id: "evidence", satisfied: selectedEvidenceIsReviewed },
+    { id: "interpretation", satisfied: interpretationsAreGrounded },
     { id: "timeline", satisfied: selectedTimelineIsAvailable },
     {
       id: "countercase",
