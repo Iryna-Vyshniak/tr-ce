@@ -1,5 +1,6 @@
 export const en = {
   navigation: {
+    ariaLabel: 'Main navigation',
     hq: 'HQ',
     cases: 'Cases',
     archive: 'Archive',

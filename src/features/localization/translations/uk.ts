@@ -1,5 +1,6 @@
 export const uk = {
   navigation: {
+    ariaLabel: 'Головна навігація',
     hq: 'Бюро',
     cases: 'Справи',
     archive: 'Архів',
