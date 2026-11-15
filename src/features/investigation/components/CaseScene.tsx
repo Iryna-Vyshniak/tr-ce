@@ -6,7 +6,7 @@ import { useLocale } from "../../localization/hooks/useLocale";
 
 export function CaseScene() {
   const { locale, t } = useLocale();
-    const { progress, examineScenePoint } = useCaseProgress();
+  const { progress, examineScenePoint } = useCaseProgress();
 
   const scenePoints = activeCaseFile.scenePoints.filter(
     (point) => point.locationId === "room-714",
@@ -24,7 +24,7 @@ export function CaseScene() {
     (point) => point.id === selectedPointId,
   );
 
-    function handleExaminePoint(pointId: string) {
+  function handleExaminePoint(pointId: string) {
     const newEvidenceIds = examineScenePoint(pointId);
 
     setLastUnlockedEvidenceIds(newEvidenceIds);
@@ -64,22 +64,40 @@ export function CaseScene() {
 
       <div className="section-content-spacing content-gap grid xl:grid-cols-[minmax(0,1.35fr)_minmax(20rem,0.65fr)]">
         <div
-          className="relative min-h-[30rem] overflow-hidden border border-border bg-surface"
+          className="trce-scene trce-glass-room min-h-[32rem] border border-border"
+          role="group"
           aria-label={t.case.sceneWorkspace.roomLabel}
         >
-          <div className="absolute inset-5 border border-border-subtle" />
+          <div className="trce-glass-room__atmosphere" aria-hidden="true" />
+          <div className="trce-glass-room__window" aria-hidden="true">
+            <span className="trce-glass-room__window-light trce-glass-room__window-light--one" />
+            <span className="trce-glass-room__window-light trce-glass-room__window-light--two" />
+            <span className="trce-glass-room__window-light trce-glass-room__window-light--three" />
+            <span className="trce-glass-room__window-frame trce-glass-room__window-frame--vertical" />
+            <span className="trce-glass-room__window-frame trce-glass-room__window-frame--horizontal" />
+            <span className="trce-glass-room__wet-trace" />
+          </div>
+          <div className="trce-glass-room__door" aria-hidden="true">
+            <span className="trce-glass-room__door-lock" />
+          </div>
+          <div className="trce-glass-room__desk" aria-hidden="true">
+            <span className="trce-glass-room__laptop" />
+            <span className="trce-glass-room__paper" />
+          </div>
+          <div className="trce-glass-room__lamp" aria-hidden="true">
+            <span className="trce-glass-room__lamp-shade" />
+            <span className="trce-glass-room__lamp-stem" />
+          </div>
+          <div className="trce-glass-room__armchair" aria-hidden="true" />
+          <div className="trce-glass-room__cabinet" aria-hidden="true">
+            <span className="trce-glass-room__glass-shard" />
+          </div>
 
-          <div className="absolute inset-x-5 top-5 h-20 border-b border-border-subtle bg-surface-elevated/50" />
-
-          <div className="absolute bottom-5 left-5 h-28 w-24 border-r border-t border-border-subtle bg-background/40" />
-
-          <div className="absolute bottom-5 right-5 h-36 w-40 border border-border-subtle bg-background/40" />
-
-          <p className="absolute left-9 top-9 font-mono text-[0.625rem] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+          <p className="trce-scene__label">
             {t.case.sceneWorkspace.roomLabel}
           </p>
 
-          <p className="absolute right-9 top-9 font-mono text-[0.625rem] uppercase tracking-[0.12em] text-muted-foreground">
+          <p className="trce-scene__coordinate">
             714 // 7F
           </p>
 
@@ -100,20 +118,21 @@ export function CaseScene() {
                   setLastUnlockedEvidenceIds([]);
                 }}
                 className={[
-                  "absolute -translate-x-1/2 -translate-y-1/2 border px-3 py-2",
-                  "font-mono text-xs font-semibold transition-colors duration-200",
+                  "trce-hotspot -translate-x-1/2 -translate-y-1/2",
                   isSelected
-                    ? "border-signal bg-signal text-background"
+                    ? "trce-hotspot--selected"
                     : isExamined
-                      ? "border-evidence bg-evidence/20 text-evidence"
-                      : "border-border bg-background text-muted-foreground hover:border-signal hover:text-signal",
+                      ? "trce-hotspot--examined"
+                      : "",
                 ].join(" ")}
                 style={{
                   left: `${point.position.x}%`,
                   top: `${point.position.y}%`,
                 }}
               >
-                {String(index + 1).padStart(2, "0")}
+                <span aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
               </button>
             );
           })}
