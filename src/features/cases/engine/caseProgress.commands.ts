@@ -2,8 +2,12 @@ import type { CaseFile } from "../types/case.types";
 import { getNewInterrogationEvidenceUnlocks } from "./resolveInterrogationEvidenceUnlocks";
 import { getNewEvidenceUnlocks } from "./resolveEvidenceUnlocks";
 import type { CaseProgress, InvestigationBoardLink } from "./caseProgress.types";
-import type { CaseAccusation } from "./caseProgress.types";
+import type {
+  CaseAccusation,
+  CaseReportSnapshot,
+} from "./caseProgress.types";
 import { getNewSceneEvidenceUnlocks } from "./resolveSceneEvidenceUnlocks";
+import { getCaseReportReadiness } from "./caseReport.readiness";
 
 export interface AskInterrogationTopicResult {
   progress: CaseProgress;
@@ -16,7 +20,7 @@ export function askInterrogationTopic(
   personId: string,
   topicId: string,
 ): AskInterrogationTopicResult {
-  if (progress.askedInterrogationTopicIds.includes(topicId)) {
+  if (progress.caseReport || progress.askedInterrogationTopicIds.includes(topicId)) {
     return { progress, newEvidenceIds: [] };
   }
 
@@ -62,6 +66,7 @@ export function reviewEvidence(
   evidenceId: string,
 ) {
   if (
+    progress.caseReport ||
     !progress.discoveredEvidenceIds.includes(evidenceId) ||
     progress.reviewedEvidenceIds.includes(evidenceId)
   ) {
@@ -96,7 +101,7 @@ export function examineScenePoint(
   caseFile: CaseFile,
   pointId: string,
 ) {
-  if (progress.examinedScenePointIds.includes(pointId)) {
+  if (progress.caseReport || progress.examinedScenePointIds.includes(pointId)) {
     return { progress, newEvidenceIds: [] };
   }
 
@@ -131,6 +136,10 @@ export function createBoardLink(
   caseFile: CaseFile,
   link: InvestigationBoardLink,
 ) {
+  if (progress.caseReport) {
+    return { progress, newEvidenceIds: [] };
+  }
+
   const nextProgress = {
     ...progress,
     phase: progress.phase === "briefing" ? "investigating" : progress.phase,
@@ -154,7 +163,7 @@ export function createBoardLink(
 }
 
 export function removeBoardLink(progress: CaseProgress, linkId: string) {
-  if (!progress.boardLinks.some((link) => link.id === linkId)) {
+  if (progress.caseReport || !progress.boardLinks.some((link) => link.id === linkId)) {
     return progress;
   }
 
@@ -169,6 +178,7 @@ const emptyAccusation: CaseAccusation = {
   timelineEventIds: [],
   evidenceIds: [],
   rejectedEvidenceIds: [],
+  alternativeSuspectIds: [],
   rationale: "",
 };
 
@@ -176,6 +186,10 @@ export function updateCaseAccusation(
   progress: CaseProgress,
   update: Partial<CaseAccusation>,
 ): CaseProgress {
+  if (progress.caseReport) {
+    return progress;
+  }
+
   return {
     ...progress,
     phase: "theory",
@@ -183,5 +197,47 @@ export function updateCaseAccusation(
       ...(progress.accusation ?? emptyAccusation),
       ...update,
     },
+  };
+}
+
+export function finalizeCaseReport(
+  progress: CaseProgress,
+  caseFile: CaseFile,
+  reportId: string,
+  createdAt: string,
+): CaseProgress {
+  if (progress.caseReport || !progress.accusation) {
+    return progress;
+  }
+
+  const readiness = getCaseReportReadiness(progress, caseFile);
+
+  if (!readiness.isReady) {
+    return progress;
+  }
+
+  const caseReport: CaseReportSnapshot = {
+    id: reportId,
+    caseId: progress.caseId,
+    createdAt,
+    policyVersion: "case-report-v1",
+    accusation: {
+      ...progress.accusation,
+      motiveFactIds: [...progress.accusation.motiveFactIds],
+      timelineEventIds: [...progress.accusation.timelineEventIds],
+      evidenceIds: [...progress.accusation.evidenceIds],
+      rejectedEvidenceIds: [...progress.accusation.rejectedEvidenceIds],
+      alternativeSuspectIds: [...progress.accusation.alternativeSuspectIds],
+    },
+    reviewedEvidenceIds: [...progress.reviewedEvidenceIds],
+    askedInterrogationTopicIds: [...progress.askedInterrogationTopicIds],
+    examinedScenePointIds: [...progress.examinedScenePointIds],
+    boardLinks: progress.boardLinks.map((link) => ({ ...link })),
+  };
+
+  return {
+    ...progress,
+    phase: "resolved",
+    caseReport,
   };
 }

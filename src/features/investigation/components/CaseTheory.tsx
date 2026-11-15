@@ -9,6 +9,7 @@ const emptyAccusation: CaseAccusation = {
   timelineEventIds: [],
   evidenceIds: [],
   rejectedEvidenceIds: [],
+  alternativeSuspectIds: [],
   rationale: "",
 };
 
@@ -20,8 +21,9 @@ function toggleId(ids: string[], id: string) {
 
 export function CaseTheory() {
   const { locale, t } = useLocale();
-const { progress, updateAccusation } = useCaseProgress();
+  const { progress, updateAccusation } = useCaseProgress();
   const draft = progress.accusation ?? emptyAccusation;
+  const isFinalized = Boolean(progress.caseReport);
 
   const suspects = activeCaseFile.people.filter(
     (person) => person.role === "suspect",
@@ -83,6 +85,12 @@ function updateDraft(update: Partial<CaseAccusation>) {
         >
           {t.case.theoryWorkspace.autosave}
         </p>
+
+        {isFinalized && (
+          <p className="mt-4 border-l-2 border-evidence bg-evidence/10 px-4 py-3 text-sm leading-6 text-evidence">
+            {t.case.theoryWorkspace.finalized}
+          </p>
+        )}
       </div>
 
       <div className="section-content-spacing content-gap grid xl:grid-cols-2">
@@ -100,7 +108,15 @@ function updateDraft(update: Partial<CaseAccusation>) {
                   key={person.id}
                   type="button"
                   aria-pressed={isSelected}
-                  onClick={() => updateDraft({ suspectId: person.id })}
+                  onClick={() =>
+                    updateDraft({
+                      suspectId: person.id,
+                      alternativeSuspectIds: draft.alternativeSuspectIds.filter(
+                        (suspectId) => suspectId !== person.id,
+                      ),
+                    })
+                  }
+                  disabled={isFinalized}
                   className={[
                     "border p-4 text-left transition-colors duration-200",
                     isSelected
@@ -140,6 +156,7 @@ function updateDraft(update: Partial<CaseAccusation>) {
                       motiveFactIds: isSelected ? [] : [motive.id],
                     })
                   }
+                  disabled={isFinalized}
                   className={[
                     "w-full border p-4 text-left transition-colors duration-200",
                     isSelected
@@ -162,7 +179,57 @@ function updateDraft(update: Partial<CaseAccusation>) {
 
         <section className="card-spacing border border-border bg-surface">
           <p className="font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-evidence">
-            03 // {t.case.theoryWorkspace.supportingEvidence}
+            03 // {t.case.theoryWorkspace.alternativeHypotheses}
+          </p>
+
+          <p className="mt-4 text-sm leading-6 text-foreground-secondary">
+            {t.case.theoryWorkspace.alternativeHypothesesDescription}
+          </p>
+
+          <div className="mt-5 space-y-3">
+            {suspects
+              .filter((person) => person.id !== draft.suspectId)
+              .map((person) => {
+                const isSelected = draft.alternativeSuspectIds.includes(person.id);
+
+                return (
+                  <label
+                    key={person.id}
+                    className="flex cursor-pointer gap-3 border border-border-subtle bg-background p-4 text-sm leading-6 transition-colors hover:border-muted-foreground"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={isSelected}
+                      disabled={isFinalized}
+                      onChange={() =>
+                        updateDraft({
+                          alternativeSuspectIds: toggleId(
+                            draft.alternativeSuspectIds,
+                            person.id,
+                          ),
+                        })
+                      }
+                      className="mt-1 size-4 accent-evidence"
+                    />
+
+                    <span>
+                      <span className="font-mono text-[0.6875rem] font-semibold tracking-[0.1em] text-muted-foreground">
+                        {person.occupation[locale]}
+                      </span>
+
+                      <span className="ml-3 text-foreground">
+                        {person.name[locale]}
+                      </span>
+                    </span>
+                  </label>
+                );
+              })}
+          </div>
+        </section>
+
+        <section className="card-spacing border border-border bg-surface">
+          <p className="font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-evidence">
+            04 // {t.case.theoryWorkspace.supportingEvidence}
           </p>
 
           <div className="mt-5 space-y-3">
@@ -177,6 +244,7 @@ function updateDraft(update: Partial<CaseAccusation>) {
                   <input
                     type="checkbox"
                     checked={isSelected}
+                    disabled={isFinalized}
                     onChange={() => toggleSupportingEvidence(evidence.id)}
                     className="mt-1 size-4 accent-signal"
                   />
@@ -198,7 +266,7 @@ function updateDraft(update: Partial<CaseAccusation>) {
 
         <section className="card-spacing border border-border bg-surface">
           <p className="font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-evidence">
-            04 // {t.case.theoryWorkspace.timeline}
+            05 // {t.case.theoryWorkspace.timeline}
           </p>
 
           <div className="mt-5 space-y-3">
@@ -213,6 +281,7 @@ function updateDraft(update: Partial<CaseAccusation>) {
                   <input
                     type="checkbox"
                     checked={isSelected}
+                    disabled={isFinalized}
                     onChange={() =>
                       updateDraft({
                         timelineEventIds: toggleId(
@@ -241,7 +310,7 @@ function updateDraft(update: Partial<CaseAccusation>) {
 
         <section className="card-spacing border border-border bg-surface">
           <p className="font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-evidence">
-            05 // {t.case.theoryWorkspace.rejectedEvidence}
+            06 // {t.case.theoryWorkspace.rejectedEvidence}
           </p>
 
           <div className="mt-5 space-y-3">
@@ -256,6 +325,7 @@ function updateDraft(update: Partial<CaseAccusation>) {
                   <input
                     type="checkbox"
                     checked={isSelected}
+                    disabled={isFinalized}
                     onChange={() => toggleRejectedEvidence(evidence.id)}
                     className="mt-1 size-4 accent-evidence"
                   />
@@ -277,11 +347,12 @@ function updateDraft(update: Partial<CaseAccusation>) {
 
         <section className="card-spacing border border-border bg-surface">
           <p className="font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-evidence">
-            06 // {t.case.theoryWorkspace.rationale}
+            07 // {t.case.theoryWorkspace.rationale}
           </p>
 
           <textarea
             value={draft.rationale}
+            disabled={isFinalized}
             onChange={(event) =>
               updateDraft({ rationale: event.target.value })
             }

@@ -8,12 +8,12 @@ export function createCaseProgress(caseFile: CaseFile): CaseProgress {
     discoveredEvidenceIds: caseFile.evidence
       .filter((evidence) => evidence.availability === "initial")
       .map((evidence) => evidence.id),
-      reviewedEvidenceIds: [],
+    reviewedEvidenceIds: [],
     reviewedPersonIds: [],
     reviewedStatementIds: [],
     reviewedTimelineEventIds: [],
     askedInterrogationTopicIds: [],
-          characterKnowledgeByPersonId: {},
+    characterKnowledgeByPersonId: {},
     examinedScenePointIds: [],
     boardLinks: [],
   };

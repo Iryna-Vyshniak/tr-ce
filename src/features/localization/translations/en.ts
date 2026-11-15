@@ -52,6 +52,7 @@ export const en = {
       interrogation: 'Interrogation',
       scene: 'Scene examination',
       theory: 'Theory',
+      report: 'Report',
     },
 
     evidenceWorkspace: {
@@ -127,10 +128,53 @@ export const en = {
       motive: 'Possible motive',
       supportingEvidence: 'Supporting evidence',
       timeline: 'Key events',
-      rejectedEvidence: 'Rejected leads',
+      rejectedEvidence: 'Counterevidence and limits',
+      alternativeHypotheses: 'Competing hypotheses',
+      alternativeHypothesesDescription:
+        'Mark plausible alternatives that the report must still account for.',
       rationale: 'Rationale',
       rationalePlaceholder:
         'Explain how the selected evidence, motive, and timeline account for Marta’s disappearance.',
+      finalized:
+        'A report has already been fixed. This draft is now read-only.',
+    },
+
+    reportWorkspace: {
+      eyebrow: 'Final case report',
+      title: 'Review and fix the conclusion',
+      description:
+        'The client checks material completeness and provenance. It has no Ground Truth and does not judge whether the conclusion is correct.',
+      readiness: 'Review readiness',
+      complete: 'All report-structure requirements are complete.',
+      incomplete: 'Complete the required items before fixing the report.',
+      requirements: {
+        subject: 'A claim subject is selected',
+        motive: 'A motive or interest is selected',
+        evidence: 'At least two reviewed pieces of evidence are selected',
+        timeline: 'A supported timeline event is selected',
+        countercase: 'An alternative or counterevidence is considered',
+        graph: 'The graph connects the claim to selected evidence',
+        rationale: 'The rationale has at least 120 characters',
+      },
+      finalize: 'Fix case report',
+      finalizationNote:
+        'Fixing creates an immutable local snapshot. A new conclusion requires a new report version.',
+      reportLocked: 'Case report fixed',
+      reportId: 'Snapshot ID',
+      createdAt: 'Fixed at',
+      policy: 'Policy',
+      evidenceGraph: 'Reasoning chain',
+      source: 'Source',
+      observation: 'Observation',
+      inference: 'Interpretation',
+      conclusion: 'Conclusion',
+      noEvidence: 'No supporting evidence was captured in this snapshot.',
+      primaryClaim: 'Primary claim',
+      alternatives: 'Considered alternatives',
+      limitations: 'Counterevidence and limits',
+      noAlternatives: 'Not recorded',
+      groundTruthBoundary:
+        'Ground Truth is isolated outside the client. Final comparison is possible only inside a protected server boundary.',
     },
 
     timelineWorkspace: {

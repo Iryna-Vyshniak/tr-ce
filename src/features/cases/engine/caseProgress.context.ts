@@ -15,6 +15,7 @@ export interface CaseProgressContextValue {
   createBoardLink: (link: InvestigationBoardLink) => string[];
   removeBoardLink: (linkId: string) => void;
   updateAccusation: (update: Partial<CaseAccusation>) => void;
+  finalizeCaseReport: () => void;
 }
 
 export const CaseProgressContext =

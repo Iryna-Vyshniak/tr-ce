@@ -139,48 +139,7 @@ export interface CaseContradiction {
   statementIds: string[];
 }
 
-export interface CaseFact {
-  id: string;
-  text: LocalizedText;
-}
-
-export interface CharacterRelationship {
-  characterId: string;
-  relationship: LocalizedText;
-}
-
-export interface CharacterPrivateState {
-  characterId: string;
-  personality: LocalizedText[];
-  relationships: CharacterRelationship[];
-  knownFactIds: string[];
-  secretFactIds: string[];
-  actualTimelineEventIds: string[];
-  lieStatementIds: string[];
-  unknownFactIds: string[];
-  emotionalState: LocalizedText;
-}
-
-export interface CaseResolutionCriteria {
-  requiredCulpritId: string;
-  requiredMotiveFactIds: string[];
-  requiredTimelineEventIds: string[];
-  requiredEvidenceIds: string[];
-}
-
-export interface CaseGroundTruth {
-  culpritId: string;
-  narrative: LocalizedText;
-  facts: CaseFact[];
-  characterStates: CharacterPrivateState[];
-  contradictions: CaseContradiction[];
-  resolutionCriteria: CaseResolutionCriteria;
-}
-
-/**
- * Дані, які можна безпечно віддавати гравцеві.
- * Прихована істина справи навмисно зберігається окремо в CaseGroundTruth.
- */
+/** Дані справи, які можна безпечно віддавати клієнтові. */
 export interface CaseFile {
   summary: CaseSummary;
   metadata: CaseMetadata;

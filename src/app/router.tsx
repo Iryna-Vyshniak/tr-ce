@@ -87,6 +87,15 @@ export const router = createBrowserRouter([
               return { Component: CaseTheory };
             },
           },
+          {
+            path: "report",
+            lazy: async () => {
+              const { CaseReport } =
+                await import("../features/investigation/components/CaseReport");
+
+              return { Component: CaseReport };
+            },
+          },
         ],
       },
     ],

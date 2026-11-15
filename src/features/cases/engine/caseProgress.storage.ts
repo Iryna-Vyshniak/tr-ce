@@ -5,6 +5,7 @@ import type {
 import { createCaseProgress } from "./createCaseProgress";
 import type {
   CaseAccusation,
+  CaseReportSnapshot,
   CaseProgress,
   InvestigationBoardLink,
   InvestigationPhase,
@@ -16,6 +17,7 @@ type StoredCaseProgress = Omit<
 > & {
   askedInterrogationTopicIds?: unknown;
   examinedScenePointIds?: unknown;
+  caseReport?: unknown;
 };
 
 const storageKeyPrefix = "tr-ce:case-progress:";
@@ -90,7 +92,25 @@ function isCaseAccusation(value: unknown): value is CaseAccusation {
     isStringArray(value.timelineEventIds) &&
     isStringArray(value.evidenceIds) &&
     isStringArray(value.rejectedEvidenceIds) &&
+    (value.alternativeSuspectIds === undefined ||
+      isStringArray(value.alternativeSuspectIds)) &&
     typeof value.rationale === "string"
+  );
+}
+
+function isCaseReport(value: unknown, caseId: string): value is CaseReportSnapshot {
+  return (
+    isRecord(value) &&
+    value.caseId === caseId &&
+    typeof value.id === "string" &&
+    typeof value.createdAt === "string" &&
+    value.policyVersion === "case-report-v1" &&
+    isCaseAccusation(value.accusation) &&
+    isStringArray(value.reviewedEvidenceIds) &&
+    isStringArray(value.askedInterrogationTopicIds) &&
+    isStringArray(value.examinedScenePointIds) &&
+    Array.isArray(value.boardLinks) &&
+    value.boardLinks.every(isBoardLink)
   );
 }
 
@@ -108,7 +128,8 @@ function isStoredCaseProgress(
     isStringArray(value.reviewedTimelineEventIds) &&
     Array.isArray(value.boardLinks) &&
     value.boardLinks.every(isBoardLink) &&
-    (value.accusation === undefined || isCaseAccusation(value.accusation))
+    (value.accusation === undefined || isCaseAccusation(value.accusation)) &&
+    (value.caseReport === undefined || isCaseReport(value.caseReport, caseId))
   );
 }
 
@@ -163,7 +184,17 @@ reviewedPersonIds: parsedProgress.reviewedPersonIds,
         ? parsedProgress.examinedScenePointIds
         : [],
       boardLinks: parsedProgress.boardLinks,
-      accusation: parsedProgress.accusation,
+      accusation: parsedProgress.accusation
+        ? {
+            ...parsedProgress.accusation,
+            alternativeSuspectIds: isStringArray(
+              parsedProgress.accusation.alternativeSuspectIds,
+            )
+              ? parsedProgress.accusation.alternativeSuspectIds
+              : [],
+          }
+        : undefined,
+      caseReport: parsedProgress.caseReport,
     };
   } catch {
     return initialProgress;

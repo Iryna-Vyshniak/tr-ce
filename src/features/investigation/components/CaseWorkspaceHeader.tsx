@@ -2,6 +2,9 @@
 import { Link, NavLink } from "react-router-dom";
 
 import type { CaseSummary } from "../../cases/types/case.types";
+import { activeCaseFile } from "../../cases/data/activeCase";
+import { getCaseCompletion } from "../../cases/engine/caseReport.readiness";
+import { useCaseProgress } from "../../cases/engine/useCaseProgress";
 import { useLocale } from "../../localization/hooks/useLocale";
 
 interface CaseWorkspaceHeaderProps {
@@ -17,16 +20,16 @@ const workspaceNavigation = [
   { key: "timeline", path: "timeline", end: false },
   { key: "board", path: "board", end: false },
   { key: "theory", path: "theory", end: false },
+  { key: "report", path: "report", end: false },
 ] as const;
 
 export function CaseWorkspaceHeader({
   caseData,
 }: CaseWorkspaceHeaderProps) {
   const { locale, t } = useLocale();
+  const { progress: caseProgress } = useCaseProgress();
 
-  const progress = Number.isFinite(caseData.progress)
-    ? Math.min(100, Math.max(0, caseData.progress))
-    : 0;
+  const progress = getCaseCompletion(caseProgress, activeCaseFile);
 
   return (
     <header className="border-b border-border bg-background/30">

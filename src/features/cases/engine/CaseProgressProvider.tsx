@@ -1,4 +1,7 @@
-import { updateCaseAccusation as updateCaseAccusationCommand } from "./caseProgress.commands";
+import {
+  finalizeCaseReport as finalizeCaseReportCommand,
+  updateCaseAccusation as updateCaseAccusationCommand,
+} from "./caseProgress.commands";
 import type { CaseAccusation } from "./caseProgress.types";
 import {
   createBoardLink as createBoardLinkCommand,
@@ -103,6 +106,18 @@ export function CaseProgressProvider({
     },
     updateAccusation: (update: Partial<CaseAccusation>) => {
       const nextProgress = updateCaseAccusationCommand(progress, update);
+
+      if (nextProgress !== progress) {
+        setProgress(nextProgress);
+      }
+    },
+    finalizeCaseReport: () => {
+      const nextProgress = finalizeCaseReportCommand(
+        progress,
+        caseFile,
+        crypto.randomUUID(),
+        new Date().toISOString(),
+      );
 
       if (nextProgress !== progress) {
         setProgress(nextProgress);

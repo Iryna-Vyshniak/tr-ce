@@ -52,6 +52,7 @@ export const uk = {
       interrogation: 'Допит',
       scene: 'Огляд місця',
       theory: 'Теорія',
+      report: 'Звіт',
     },
 
     evidenceWorkspace: {
@@ -128,10 +129,53 @@ export const uk = {
       motive: 'Ймовірний мотив',
       supportingEvidence: 'Докази на підтримку',
       timeline: 'Ключові події',
-      rejectedEvidence: 'Відкинуті версії',
+      rejectedEvidence: 'Контрдокази та обмеження',
+      alternativeHypotheses: 'Конкурентні гіпотези',
+      alternativeHypothesesDescription:
+        'Познач реалістичні альтернативи, які ще потребують пояснення у звіті.',
       rationale: 'Обґрунтування',
       rationalePlaceholder:
         'Опиши, як обрані докази, мотив і хронологія пояснюють зникнення Марти.',
+      finalized:
+        'Звіт уже зафіксовано. Ця чернетка лишається доступною лише для читання.',
+    },
+
+    reportWorkspace: {
+      eyebrow: 'Фінальний case report',
+      title: 'Перевір і зафіксуй висновок',
+      description:
+        'Клієнт перевіряє повноту та походження матеріалів. Він не знає Ground Truth і не оцінює, чи висновок є правильним.',
+      readiness: 'Готовність до review',
+      complete: 'Усі вимоги до структури звіту виконані.',
+      incomplete: 'Доповни обов’язкові елементи перед фіксацією звіту.',
+      requirements: {
+        subject: 'Визначено суб’єкта claim',
+        motive: 'Позначено мотив або інтерес',
+        evidence: 'Є щонайменше два перевірені докази',
+        timeline: 'Обрано підтверджену подію хронології',
+        countercase: 'Розглянуто альтернативу або контрдоказ',
+        graph: 'Граф пов’язує claim з обраним доказом',
+        rationale: 'Обґрунтування містить щонайменше 120 символів',
+      },
+      finalize: 'Зафіксувати case report',
+      finalizationNote:
+        'Після фіксації створюється незмінний локальний snapshot. Для нового висновку потрібна нова версія report.',
+      reportLocked: 'Case report зафіксовано',
+      reportId: 'Ідентифікатор snapshot',
+      createdAt: 'Зафіксовано',
+      policy: 'Політика',
+      evidenceGraph: 'Ланцюг обґрунтування',
+      source: 'Джерело',
+      observation: 'Спостереження',
+      inference: 'Інтерпретація',
+      conclusion: 'Висновок',
+      noEvidence: 'У snapshot немає обраних доказів.',
+      primaryClaim: 'Основний claim',
+      alternatives: 'Розглянуті альтернативи',
+      limitations: 'Контрдокази та обмеження',
+      noAlternatives: 'Не зафіксовано',
+      groundTruthBoundary:
+        'Ground Truth ізольовано поза клієнтом. Остаточна звірка можлива лише у захищеному серверному контурі.',
     },
 
     timelineWorkspace: {

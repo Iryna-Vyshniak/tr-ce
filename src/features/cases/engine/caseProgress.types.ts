@@ -1,4 +1,3 @@
-import type { LocalizedText } from "../../localization/localization.types";
 import type { BoardRelation } from "../types/case.types";
 
 export type InvestigationPhase =
@@ -21,7 +20,20 @@ export interface CaseAccusation {
   timelineEventIds: string[];
   evidenceIds: string[];
   rejectedEvidenceIds: string[];
+  alternativeSuspectIds: string[];
   rationale: string;
+}
+
+export interface CaseReportSnapshot {
+  id: string;
+  caseId: string;
+  createdAt: string;
+  policyVersion: "case-report-v1";
+  accusation: CaseAccusation;
+  reviewedEvidenceIds: string[];
+  askedInterrogationTopicIds: string[];
+  examinedScenePointIds: string[];
+  boardLinks: InvestigationBoardLink[];
 }
 
 export interface CaseProgress {
@@ -37,10 +49,5 @@ export interface CaseProgress {
   examinedScenePointIds: string[];
   boardLinks: InvestigationBoardLink[];
   accusation?: CaseAccusation;
-}
-
-export interface CaseResolution {
-  isCorrect: boolean;
-  score: number;
-  feedback: LocalizedText[];
+  caseReport?: CaseReportSnapshot;
 }
