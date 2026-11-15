@@ -2,6 +2,9 @@ import { useState } from "react";
 
 import evidenceGlassShardImage from "../../../assets/evidence-glass-shard.png";
 import glassRoomMainImage from "../../../assets/glass-room-main.png";
+import sceneEntryLockImage from "../../../assets/scene-entry-lock.png";
+import scenePanoramicWallImage from "../../../assets/scene-panoramic-wall.png";
+import sceneWorkDeskImage from "../../../assets/scene-work-desk.png";
 import { activeCaseFile } from "../../cases/data/activeCase";
 import { useCaseProgress } from "../../cases/engine/useCaseProgress";
 import { useLocale } from "../../localization/hooks/useLocale";
@@ -12,6 +15,13 @@ const scenePointAnchors: Record<string, { x: number; y: number }> = {
   "scene-002-work-desk": { x: 62, y: 72 },
   "scene-003-panoramic-wall": { x: 84, y: 26 },
   "scene-004-inner-wall": { x: 47, y: 53 },
+};
+
+const sceneDetailImages: Record<string, string> = {
+  "scene-001-entry-lock": sceneEntryLockImage,
+  "scene-002-work-desk": sceneWorkDeskImage,
+  "scene-003-panoramic-wall": scenePanoramicWallImage,
+  "scene-004-inner-wall": evidenceGlassShardImage,
 };
 
 export function CaseScene() {
@@ -33,8 +43,9 @@ export function CaseScene() {
   const selectedPoint = scenePoints.find(
     (point) => point.id === selectedPointId,
   );
-  const selectedPointHasEvidenceImage =
-    selectedPoint?.evidenceId === "ev-006-glass-shard";
+  const selectedPointImage = selectedPoint
+    ? sceneDetailImages[selectedPoint.id]
+    : undefined;
 
   function handleExaminePoint(pointId: string) {
     const newEvidenceIds = examineScenePoint(pointId);
@@ -149,11 +160,11 @@ export function CaseScene() {
                 selectedPoint.id,
               ) ? (
                 <>
-                  {selectedPointHasEvidenceImage && (
+                  {selectedPointImage && (
                     <figure className="trce-scene-detail mt-6">
                       <img
                         alt={`${selectedPoint.title[locale]} — ${selectedPoint.observation[locale]}`}
-                        src={evidenceGlassShardImage}
+                        src={selectedPointImage}
                       />
                       <figcaption>
                         {selectedPoint.title[locale]}
